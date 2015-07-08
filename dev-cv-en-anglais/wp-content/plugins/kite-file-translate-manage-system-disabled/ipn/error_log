@@ -1,0 +1,9 @@
+[28-Dec-2012 12:46:44] WordPress database error Duplicate entry '1' for key 'PRIMARY' for query   
+		INSERT INTO wp_ktr_emails (id, name, title, salutation, footer) VALUES
+		(1, 'admin_new_order', 'New Order (Admin)', '', ''),
+		(2, 'client_new_order', 'New Order (Client)', '', ''),
+		(3, 'admin_payment_received', 'Payment Received (Admin)', '', ''),
+		(4, 'client_payment_received', 'Payment Received (Client)', '', ''),
+		(5, 'translator_order_assigned', 'Task assigned and document(s) sent (Translator)', '', ''),
+		(6, 'admin_translation_uploaded', 'Document(s) returned by translator (Admin)', '', ''),
+		(7, 'client_translation_ready', 'Translation ready (Client)', '', '') made by include('wp-config.php'), require_once('wp-settings.php'), do_action('init'), call_user_func_array, ktr_init_method, ktr_tables_create, create_ktr_emails_table, dbDelta

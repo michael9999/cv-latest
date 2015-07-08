@@ -1,0 +1,63 @@
+.accWidget {
+     display: none;
+}
+
+.accWidget h2 {
+
+     background-color: white;
+     border-bottom: 1px solid #ECEBEA;
+
+
+     color: #5898E2;
+     cursor: pointer;
+     font: bold 14px arial,sans-serif;
+     margin-bottom: 10px;
+     margin-top: 10px;
+     outline: medium none;
+     padding: 5px;
+     text-align: center;
+     text-decoration: none;
+     text-shadow: 0pt 0px 0pt #B4B0AE;
+    padding-bottom: 10px;
+
+}
+
+.chrome.accWidget h2 {
+     border-radius: 3px 3px 3px 3px;
+     border: 1px solid #CCCCCC;
+     color: #777777;
+     cursor: pointer;
+     font: 12px/14px Arial,Tahoma,Verdana,sans-serif;
+     margin-bottom: 5px;
+     margin-top: 5px;
+     outline: medium none;
+     padding: 5px;
+     text-align: center;
+     text-decoration: none;
+}
+
+#start {
+     margin-left: 5px;
+}
+
+.accWidget a {
+     font-size: 12.5px;
+     margin-bottom: 14px;
+     margin-left: 5px;
+     text-shadow: 0pt 0px 0pt #F7F7F7;
+}
+
+ul.accWidget {
+     background-color: white;
+     border-radius: 20px 20px 20px 20px;
+     border: 1px solid #BFBDBD;
+     color: #5898E2;
+     cursor: pointer;
+     font: bold 14px arial,sans-serif;
+     margin-left: -6px;
+     margin-top: 25px;
+     outline: medium none;
+     padding: 10px;
+     text-decoration: none;
+     width: 95%;
+}
