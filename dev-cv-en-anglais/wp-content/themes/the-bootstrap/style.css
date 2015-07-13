@@ -1,0 +1,2558 @@
+/** style.css
+ * 
+ * Theme Name:	CV-en-anglais
+ * Theme URI:	http://en.wp.obenland.it/the-bootstrap/
+ * Description:	Modified version for cv-en-anglais. A WordPress Theme based on Bootstrap, from Twitter. It features a 100% responsive layout, a superb gallery and image handling with a custom image meta widget and carousel for gallery post-formats, the Glyphicon Icon set, a clean and simple design and a lot more! The Bootstrap runs on HTML5 and CSS3, a 12-column grid and comes with custom jQuery plugins. See the Bootstrap documentation on GitHub for reference.
+ * Author:		InDaCloud / Tom Brehm based on Konstantin Obenland
+ * Author URI:	http://indacloud.fr/
+ * Version:		1.0.0
+ * Tags:		black, blue, white, light, custom-background, custom-header, custom-menu, featured-images, flexible-header, flexible-width, full-width-template, left-sidebar, microformats, post-formats, right-sidebar, sticky-post, theme-options, threaded-comments, translation-ready, two-columns
+ * Text Domain:	the-bootstrap
+ * Domain Path:	/lang
+ *
+ * License:		GNU General Public License v3.0
+ * License URI:	http://www.gnu.org/licenses/gpl-3.0.html
+ *
+ *
+ *	Copyright (C) 2012 Konstantin Obenland <konstantin@obenland.it>
+ *
+ *	This program is free software: you can redistribute it and/or modify
+ *	it under the terms of the GNU General Public License as published by
+ *	the Free Software Foundation, either version 3 of the License, or
+ *	(at your option) any later version.
+ *
+ *	This program is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *	GNU General Public License for more details.
+ *
+ *	You should have received a copy of the GNU General Public License
+ *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
+
+/*
+*	Global
+*/
+
+/* add tickbox to services presentation page */
+span.imagetick {
+background-image: url('http://www.test-sw2.com/staging-cv-en-anglais/wp-content/themes/the-bootstrap/img/nice-green-tick.gif');
+}
+/* end */
+
+body {
+	color: #555;
+}
+a:link, a:visited {
+	/*color:#17969f;
+	text-decoration: none;*/
+
+}
+a:hover, a:active{
+	color: #1d6a6f;
+	text-decoration: none;
+}
+a.btn:link, a.btn:visited{
+	/*color: #fff;*/
+}
+h1 {
+	font-size: 28px;
+	border-bottom: 1px #EEE solid;
+	padding-bottom: 10px;
+}
+.page-header {
+	padding-bottom: 9px;
+	margin: 20px 0 11px;
+	border-bottom: 1px solid #EEE;
+}
+.page-header h1{
+	border: none;
+	padding-bottom: 0;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 20px;
+    margin: -0.5%;
+}
+h2{
+	font-size: 22px;
+}
+h3{
+	font-size: 18px;
+}
+
+/* =Elements
+-------------------------------------------------------------- */
+
+blockquote cite:before {
+	content: '\2014 \00A0';
+}
+
+blockquote cite {
+	color: #999999;
+	display: block;
+	font-size: 13px;
+	line-height: 18px;
+}
+
+figure {
+	margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6, .clear {
+	clear: both;
+}
+
+
+/* =Classes
+-------------------------------------------------------------- */
+
+.assistive-text {
+	clip: rect(1px, 1px, 1px, 1px);
+	position: absolute !important;
+}
+
+body > .container {
+	margin: 18px auto;
+}
+
+/* Right Content */
+.sidebar-content #primary,
+.sidebar-content #attachment-comment {
+	float: right;
+	margin: 0 20px 0 0;
+}
+
+.block {
+	display: block;
+}
+
+
+/* =Page
+-------------------------------------------------------------- */
+
+#page {
+	margin: 0;
+	padding: 88px 0 0;
+}
+
+#header-image {
+	display: block;
+}
+
+#menu-alert {
+	margin: 4px 0 0;
+	padding: 6px 35px 6px 14px;
+	position: absolute;
+}
+
+#branding hgroup, #header-image, .entry-content {
+	margin-bottom: 8px;
+	margin-top: 8px;
+}
+
+.entry-attachment {
+	margin-bottom: 36px;
+}
+
+.single #author-info,
+.author #author-info,
+.single article.post,
+.single article.page {
+	margin-bottom: 54px;
+}
+
+#author-info,
+article.post,
+article.page {
+	margin-bottom: 72px;
+}
+
+.page-header,
+.entry-content {
+	word-wrap: break-word;
+}
+
+.post-password-form legend {
+	font-size: inherit;
+}
+
+.entry-content .twitter-tweet-rendered {
+	max-width: 100% !important;
+}
+
+
+/* =Comments
+-------------------------------------------------------------- */
+
+#comments-title {
+	border-bottom: 1px solid #EEEEEE;
+	font-size: 19.5px;
+	margin: 0 0 27px;
+}
+
+#comment,
+.entry-content iframe,
+.entry-content embed {
+	max-width: 100%;
+}
+
+.commentlist > li {
+	margin-bottom: 36px;
+}
+
+.commentlist ul.children {
+	margin: 10px 0 18px;
+	list-style: none;
+}
+
+#reply-title {
+	position: relative;
+}
+
+#reply-title small {
+	position: absolute;
+	right: 0;
+	top: 7px;
+}
+
+
+/* =Sidebar
+-------------------------------------------------------------- */
+
+.form-search {
+	margin: 0;
+}
+
+.widget {
+	word-wrap: break-word;
+}
+
+.widget .wp-caption {
+	display: inline-block;
+}
+
+
+/* =Images
+-------------------------------------------------------------- */
+
+.entry-content .post-thumbnail {
+	margin: 0 20px 20px 0;
+}
+
+.entry-attachment .thumbnail.attachment-table {
+	display: table;
+	margin: 0 auto;
+}
+
+.thumbnail > img {
+	width: auto\9; /* Cure IE8 max-width bug */
+}
+
+img.wp-smiley {
+	border: none;
+	margin-bottom: 0;
+	margin-top: 0;
+	padding: 0;
+}
+
+.gallery-columns-3.thumbnails [class*="span"] {
+	width: 29.3%;
+}
+.gallery-columns-5.thumbnails [class*="span"] {
+	width: 15.9%;
+}
+.gallery-columns-6.thumbnails [class*="span"] {
+	width: 12.6%;
+}
+.gallery-columns-7.thumbnails [class*="span"] {
+	width: 10.2%;
+}
+
+
+/* =Footer
+-------------------------------------------------------------- */
+footer#colophon {
+	border-top: 1px solid lightgray;
+	padding: 20px;
+	margin: 20px 0 0;
+}
+
+#colophon .credits {
+	margin: 0;
+}
+
+#site-generator {
+	float: right;
+	font-family: Georgia, "Bitstream Charter", serif;
+	font-style: italic;
+}
+
+#site-generator a {
+	background: url("img/wordpress.png") no-repeat scroll left center transparent;
+	color: #787878;
+	display: inline-block;
+	line-height: 16px;
+	padding-left: 20px;
+	text-decoration: none;
+}
+
+#site-generator.footer-nav-menu a {
+	margin-top: 10px;
+}
+
+table .label {
+	background-color: transparent;
+	border-radius: none;
+	color: inherit;
+	font-size: inherit;
+	text-transform: inherit;
+}
+
+
+/* =Jetpack Support
+-------------------------------------------------------------- */
+
+.comment-subscription-form > input[type=checkbox] {
+	position: absolute;
+}
+
+.comment-subscription-form > label {
+	min-height: 18px;
+	padding-left: 18px;
+}
+
+
+/* =Bootstrap Adjustments
+-------------------------------------------------------------- */
+
+.navbar-fixed-top,
+.navbar-fixed-bottom {
+	position: fixed;
+}
+
+#comment,
+.thumbnail {
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.label .post-edit-link,
+.label .comment-edit-link {
+	color: #FFFFFF;
+}
+
+.navbar-search {
+	height: 34px;
+}
+
+.pagination span {
+	background-color: #f5f5f5;
+	color: #999999;
+	cursor: default;
+}
+
+.pagination span.dots {
+	background-color: #FFFFFF;
+}
+
+
+/* =WordPress Core
+-------------------------------------------------------------- */
+
+.aligncenter {
+	display:block;
+	margin: 0 auto 20px;
+}
+
+.alignright {
+	float:right;
+	margin: 0 0 20px 20px;
+}
+
+.alignleft {
+	float:left;
+	margin: 0 20px 20px 0;
+}
+
+.wp-caption {
+	max-width: 100%;
+}
+
+.wp-caption .wp-caption-text,
+.gallery-caption,
+.entry-caption {
+	padding: 0 9px 9px;
+	text-align: center;
+}
+
+.wp-caption .wp-caption-text {
+	padding-top: 9px;
+}
+
+.wp-caption.alignnone {
+	margin: 5px 20px 20px 0;
+}
+
+.wp-caption.alignleft {
+	margin: 5px 20px 20px 0;
+}
+
+.wp-caption.alignright {
+	margin: 5px 0 20px 20px;
+}
+
+.sticky {}
+.bypostauthor {}
+
+
+/* =Responsiveness
+-------------------------------------------------------------- */
+
+@media (max-width: 767px) {
+	body {
+		padding:0;
+	}
+	.container {
+		width: auto;
+		padding: 0 ;
+	}
+	#page {
+		margin: 0;
+		padding: 97px 10px 10px;
+	}
+	.thumbnail[class*="span"],
+	.gallery [class*="span"] .thumbnail {
+		display: table;
+		float: left;
+	}
+	.carousel .item > img {
+		width: 100%;
+	}
+	.thumbnails > li {
+		float: left;
+		margin-left: 20px;
+	}
+	.gallery-columns-2.thumbnails > li:nth-child(2n+1),
+	.gallery-columns-3.thumbnails > li:nth-child(3n+1),
+	.gallery-columns-4.thumbnails > li:nth-child(4n+1),
+	.gallery-columns-5.thumbnails > li:nth-child(5n+1),
+	.gallery-columns-6.thumbnails > li:nth-child(6n+1),
+	.gallery-columns-7.thumbnails > li:nth-child(7n+1),
+	.gallery-columns-8.thumbnails > li:nth-child(8n+1),
+	.gallery-columns-1.thumbnails > li {
+		margin-left:0;
+	}
+	.gallery-columns-2.thumbnails [class*="span"] {
+		width: 47.4%;
+	}
+	.gallery-columns-3.thumbnails [class*="span"] {
+		width: 29.9%;
+	}
+	.gallery-columns-4.thumbnails [class*="span"] {
+		width: 21.2%;
+	}
+	.gallery-columns-6.thumbnails [class*="span"] {
+		width: 12.4%;
+	}
+	.gallery-columns-7.thumbnails [class*="span"] {
+		width: 9.9%;
+	}
+	.gallery-columns-8.thumbnails [class*="span"] {
+		width: 8.7%;
+	}
+	.sidebar-content #primary,
+	.sidebar-content #attachment-comment {
+		float: none;
+		margin: inherit;
+	}
+	#s {
+		display: inline-block;
+	}
+	#site-generator,
+	#site-generator.footer-nav-menu a {
+		float: none;
+		margin-top: 5px;
+	}
+	textarea[class*="span"] {
+		height: auto;
+	}
+	.navbar-fixed-top, .navbar-fixed-bottom {
+		margin: 0;
+	}
+	
+	
+	
+	
+	
+}
+
+@media (min-width: 1200px) {
+	#page {
+		margin-right: -30px;
+		padding: 88px 0 10px;
+	}
+	.sidebar-content #primary,
+	.sidebar-content #attachment-comment {
+		margin-right: 30px;
+	}
+	.wp-caption {
+		display: table;
+	}
+}
+
+
+.navbar .nav {
+	position: relative;
+	left: 0;
+	display: block;
+	float: right;
+	margin: 25px 10px 0 0;
+}
+@media (max-width: 979px){
+	.nav-collapse .nav {
+		float: none;
+		margin: 0 0 10px;
+	}	
+	#page {
+		padding: 97px 0 0;
+		margin: 0
+	}
+}
+
+.navbar .nav > li > a {
+	font-size: 18px;
+}
+.navbar .brand {
+	max-width: 70%;
+	margin-left: 0px;
+}
+.navbar .btn-navbar {
+	margin-right: 20px;
+	margin-top: 30px;
+	color: #FFF;
+}
+.navbar .nav > .active > a, .navbar .nav > .active > a:hover, .navbar .nav > .active > a:focus {
+	color: #333;
+	text-decoration: none;
+	box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+	-moz-box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+	-webkit-box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+	background-color: transparent;
+}
+
+@media (max-width: 979px){
+	.navbar-fixed-top .navbar-inner, .navbar-fixed-bottom .navbar-inner {
+		padding: 5px;
+		min-height: 88px;
+	}
+	
+	/* Paypal form */
+	
+	#test-name-label {
+    margin-right: 2%;
+    clear: both;
+    }
+	
+	/* end Paypal */
+	
+}
+.hero {
+	/*background: lightgray;*/
+	margin-bottom: 20px;
+    /*background-image: linear-gradient(to bottom, #94B7B9 50%, #749091 100%);*/
+background-color: green;
+
+}
+.page-template-templates_home-php article.page {
+	margin: 0;
+}
+
+.page-template-templates_home-php #page>.container {
+	width: 100%;
+}
+.page-template-templates_home-php #page>.container>.row{
+	margin: 0;
+}
+
+
+#primary, #secondary {
+	margin-top: 20px;
+}
+
+@media screen and (min-width: 768px){
+	#secondary {
+		margin-top: 10px;
+	}
+}
+
+.well{
+	background: white;
+}
+
+
+/*
+*	InDaCloud
+*	Start of personalization
+*/
+
+/*
+*	Help center
+*/
+.content-help {
+	position: relative;
+}
+.content-help .content-left {
+	position: relative;
+}
+.content-help .content-left ul {
+	position: absolute;
+	width: 100%;
+	margin-top: 20px;
+}
+.content-help.row-fluid .content-right {
+	margin-left: -1px;
+	padding-left: 2.564102564102564%;
+	padding-top: 15px;
+	padding-right: 15px;
+	padding-bottom: 15px;
+	border: 1px solid #D8D8D8;
+	border-radius: 8px;
+	-webkit-border-radius: 8px;
+	min-height: 500px;
+	background: #FFF;
+
+}
+.content-help ul.nav li:first-child{
+	border-top: 1px solid #d8d8d8;	
+}
+.content-help ul.nav li {
+	border-left: 0;
+	border-right: 1px solid #d8d8d8;
+	border-bottom: 1px solid #d8d8d8;
+	margin: 0;
+	padding-left: 1px;
+}
+.content-help ul.nav li.active, .content-help ul.nav li:hover{
+	background-color: white;
+	border-right: 0;
+	border-left: 1px solid #d8d8d8;
+	padding-left: 0px;
+}
+
+.content-help ul.nav li a {
+	padding: 20px 5px 20px 15px;
+	color: #777;
+
+}
+.content-help ul.nav li.active a, .content-help ul.nav li a:hover {
+
+	color: #777;
+	background-color: white;
+}
+.content-help ul.childrens {
+	margin: 0;
+	list-style-position: inside;
+}
+.content-help ul.childrens li {
+	line-height: 40px;
+	margin-right: 2.564102564102564%;
+    list-style: none;
+}
+
+.content-help ul.childrens li:before {
+    content: "+";
+}
+
+.content-help ul.childrens li a {
+	padding:10px 5px;
+	font-size: 16px;
+	color: #00898B;
+    font-weight:bold;
+}
+
+.content-help ul.childrens li a:hover {
+    padding:10px 5px;
+	font-size: 16px;
+	color: #00898B;
+    font-weight:bold;
+    text-decoration:underline;
+}
+
+
+@media (max-width: 767px){
+
+	.content-help .content-left ul {
+		position: static;
+		width: 100%;
+		margin-top: 0;
+	}
+	.content-help ul.nav li {
+		border-left: 0;
+		border-right: 0;
+		border-bottom: 1px solid #d8d8d8;
+		margin: 0;
+		padding-left: 0px;
+	}
+	.content-help ul.nav li.active, .content-help ul.nav li:hover{
+		background-color: white;
+		border-right: 0;
+		border-left: 0;
+		padding-left: 0px;
+	}
+
+}
+
+/*
+*	buddypress part
+*/
+
+.buddypress #content, .bbpress #content {
+	padding: 5px 10px;
+
+}
+.buddypress #bp-menu, .bbpress #bp-menu {
+	position: relative;
+}
+.buddypress #menu-buddypress, 
+.bbpress #menu-buddypress {
+	list-style: none;
+	position: absolute;
+	width: 100%;
+	margin-top: 20px;
+	margin-left: 0;
+}
+
+.buddypress ul#menu-buddypress li:first-child, 
+.bbpress ul#menu-buddypress li:first-child{
+	border-top: 1px solid #d8d8d8;	
+}
+.buddypress ul#menu-buddypress li, 
+.bbpress ul#menu-buddypress li {
+	border-left: 0;
+	border-right: 1px solid #d8d8d8;
+	border-bottom: 1px solid #d8d8d8;
+	margin: 0;
+	padding-left: 1px;
+	line-height: 60px;
+}
+.buddypress ul#menu-buddypress li.active, .buddypress ul#menu-buddypress li:hover, 
+.bbpress ul#menu-buddypress li.active, .bbpress ul#menu-buddypress li:hover{
+	background-color: white;
+	border-right: 0;
+	border-left: 1px solid #d8d8d8;
+	padding-left: 0px;
+}
+
+.buddypress ul#menu-buddypress li a,
+.bbpress ul#menu-buddypress li a {
+	padding: 20px 5px 20px 15px;
+	color: #777;
+
+}
+.buddypress ul#menu-buddypress li.active a, .buddypress ul#menu-buddypress li a:hover,
+.bbpress ul#menu-buddypress li.active a, .bbpress ul#menu-buddypress li a:hover{
+	color: #777;
+	background-color: white;
+}
+
+.buddypress #content.row-fluid .page,
+.bbpress #content.row-fluid .page {
+	margin-left: -1px;
+	padding-left: 2.564102564102564%;
+	padding-top: 15px;
+	padding-right: 15px;
+	padding-bottom: 15px;
+	border: 1px solid #D8D8D8;
+	border-radius: 8px;
+	-webkit-border-radius: 8px;
+	min-height: 500px;
+	background: #FFF;
+	clear:none;
+	float: left;
+}
+
+@media (max-width: 767px){
+
+	.buddypress #menu-buddypress, .bbpress #menu-buddypress {
+		position: static;
+		width: 100%;
+		margin-top: 0;
+	}
+	.buddypress #menu-buddypress li, .bbpress #menu-buddypress li {
+		border-left: 0;
+		border-right: 0;
+		border-bottom: 1px solid #d8d8d8;
+		margin: 0;
+		padding-left: 0px;
+	}
+	.buddypress #menu-buddypress li.active, .buddypress #menu-buddypress li:hover,
+	.bbpress #menu-buddypress li.active, .bbpress #menu-buddypress li:hover{
+		background-color: white;
+		border-right: 0;
+		border-left: 0;
+		padding-left: 0px;
+	}
+
+}
+
+
+/*
+*	Breadcrumb
+*/
+.breadcrumb {
+	background: transparent;
+	font-weight: bold;
+}
+.breadcrumb a {
+	
+}
+.breadcrumb li{
+	background: white;
+	border-top : 1px solid #bbb;
+	border-bottom : 1px solid #bbb;
+	padding: 6px 10px;
+	background-repeat: no-repeat;
+}
+.breadcrumb li.first{
+	border-left: 1px solid #bbb;
+}
+.breadcrumb li.next, .breadcrumb li.last{
+	background-image: url(img/breadcrumb_next.png);
+	background-position: left -2px;
+	padding-left: 20px;
+}
+.breadcrumb li.finish{
+	background-image: url(img/breadcrumb_last.png);
+	background-position: -1px -2px;
+	background-color: rgba(0, 0, 0, 0);
+	border: 0px;
+}
+
+
+/*
+*	Simple Social
+*/
+.simplesocialbuttons {
+	float: none;
+	clear: both;
+	width: 100%;
+	text-align: right;
+}
+.simplesocialbutton {
+	display: inline-block;
+}
+.simplesocialbutton.ssb-button-fblike {
+	margin-right: 20px;
+}
+
+/*
+* START OF MICHAEL'S AMENDMENTS
+*
+*/
+
+.btn-home-btn-mike-homepage{
+    
+    
+   -moz-box-sizing: border-box;
+    background-color: #F6E312;
+    background-image: -moz-linear-gradient(center top , #F6E312 0%, #F9C80D 100%);
+    background-image: -webkit-linear-gradient(top, #F6E312, #F9C80D);
+    background-image: -o-linear-gradient(top, #F6E312, #F9C80D);
+    background-image: linear-gradient(to bottom, #F6E312, #F9C80D);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#F6E312), to(#F9C80D));
+
+    border-color: #E9AC1A;
+    border-radius: 3px;
+    border-style: solid;
+    border-width: 1px;
+    color: #333333;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 18px;
+    font-weight: bold;
+    height: 34px;
+    line-height: 32px;
+
+    overflow: visible;
+    padding: 0 15px;
+    text-decoration: none !important;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+    vertical-align: middle;
+    white-space: nowrap;
+    width: auto;
+
+	margin-left: 2%;
+	margin-top: 4%;
+    
+    
+}
+
+.btn-home-btn-mike-homepage:hover{
+ 
+    background-image:  -moz-linear-gradient(center top , #F6E312 100%, #F9C80D 0%);
+    background-color: #F6E312;
+    background-image: -moz-linear-gradient(center top , #F6E312 0%, #F6E312 100%);
+    background-image: -webkit-linear-gradient(top, #F6E312, #F6E312);
+    background-image: -o-linear-gradient(top, #F6E312, #F6E312);
+    background-image: linear-gradient(to bottom, #F6E312, #F6E312);
+   
+    
+    border-color: #E9AC1A;
+    border-radius: 3px;
+    border-style: solid;
+    border-width: 1px;
+    color: #333333;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 18px;
+    font-weight: bold;
+    height: 34px;
+    line-height: 32px;
+  
+    overflow: visible;
+    padding: 0 15px;
+    text-decoration: none !important;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+    vertical-align: middle;
+    white-space: nowrap;
+    width: auto;
+	
+	/*my change */
+	margin-left: 2%;
+    margin-top: 4%;
+}
+
+.btn-home-btn-mike {
+	
+background-color: #226FDB;
+	
+    /*background-image: -moz-linear-gradient(center top , #0088CC, #0055CC);*/
+	
+	background-image: -moz-linear-gradient(center top , #226FDB, #226FDB);
+	
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#226FDB), to(#226FDB));
+	
+	/*---------------------------*/
+
+
+	
+ 	/*background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);*/
+    
+	background-repeat: repeat-x;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    color: white;
+    margin: 0px;
+    text-shadow: none;
+    font-weight: bold;	
+	
+	
+
+}
+
+.btn-home-btn-mike:hover {
+  
+	
+	background-color: #1C79FB;
+    background-image: -moz-linear-gradient(center top, #1C79FB, #1C79FB);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#1C79FB), to(#1C79FB));
+    background-repeat: repeat-x;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+color: white;
+margin: 0px;
+text-shadow: none;
+font-weight: bold;	
+	
+	
+	
+}
+
+
+
+/* sort out link color on homepage call-to-action buttons */
+
+a.btn-home-btn-mike:link, a.btn-home-btn-mike::visited{
+
+  color: #333333;
+
+
+}
+
+
+/* title text on homepage */
+
+div#cv-homepage-h2{
+
+color: white;
+font-weight: bold;
+font-size: 32px;
+margin-top: 4%;
+margin-bottom: 4%;
+
+
+}
+
+
+#cv-homepage-text{
+
+margin-bottom: 4%;
+color: white;
+font-size: 18px;
+margin-top: 8%;
+
+}
+
+/* sales text homepage */
+
+#cv-homepage-sales-text{
+
+margin-bottom: 4%;
+color: white;
+font-size: 14px;
+
+
+}
+
+/* style bullet points */
+
+#cv-homepage-sales-text ul li{
+
+margin-bottom: 2%;
+color: white;
+font-size: 16px;
+text-decoration: none;
+
+}
+
+/* links on homepage */
+
+#link-sale {
+    color: #F6E312;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+#link-sale:hover {
+    color: orange;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+
+/*sidbar on article pages*/
+
+
+#secondary.widget-area{
+
+margin-top:90px;
+
+
+}
+
+/*widget titles*/
+aside#wp-accordion h2.widget-title{
+    
+     font-size:12px;
+    margin-top:-3%;
+    margin-bottom:-17%;
+    
+}
+
+/* background colour of main section on homepage */
+
+.hero {
+    background-color: #097287;
+}
+
+/* widget when user is not logged in */
+
+ul.accWidget-notlogged {
+   /* background-color: #FFFFFF;
+    border: 1px solid #BFBDBD;
+    border-radius: 20px;
+    color: #5898E2;
+    cursor: pointer;
+    font: bold 14px arial,sans-serif;
+    margin-left: -6px;
+    margin-top: 0%;
+    outline: medium none;
+    padding: 10px;
+    text-decoration: none;
+    text-align: center;*/
+    
+    border: 1px solid #E3E3E3;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) inset;
+    margin-bottom: 10px;
+    min-height: 20px;
+    padding: 0px;
+    background-color: #FFFFFF;
+    margin-left: -10%;
+    
+    
+}
+
+/* buttons showing services offered */
+
+.btn-services-side{
+
+    background-color: #276195;
+    background-image: linear-gradient(#3C88CC, #276195);
+    background-repeat: repeat-x;
+    border: 0 none;
+    border-radius: 0.25em;
+    box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.1), 0 -2px 0 0 rgba(0, 0, 0, 0.2) inset;
+    color: #FFFFFF;
+    display: inline-block;
+    font-family: 'Open Sans',sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1.1;
+    min-width: 80px;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+    transition: all 0.25s linear 0s;
+
+}
+
+/* text "our services" */
+
+#services-text{
+    
+    color: black;
+    
+}
+
+#service-text{
+    
+    
+color: #333333;
+font-size: 13px;
+vertical-align: middle;
+    
+}
+
+/*more info text*/
+
+#service-text-more{
+    
+    
+color: #5898E2;
+font-size: 13px;
+vertical-align: middle;
+    
+}
+
+/* help/contact button desktop */
+
+#help-btn-cv, #help-btn-cv-2 {
+    
+	
+	  -moz-box-sizing: border-box;
+    background-color: #F6E312;
+    background-image: -moz-linear-gradient(center top , #F6E312 0%, #F9C80D 100%);
+    background-image: -webkit-linear-gradient(top, #F6E312, #F9C80D);
+    background-image: -o-linear-gradient(top, #F6E312, #F9C80D);
+    background-image: linear-gradient(to bottom, #F6E312, #F9C80D);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#F6E312), to(#F9C80D));
+	
+	/*background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#F6E312), to(#F9C80D));*/
+ 	 /*background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);*/
+	
+    border-color: #E9AC1A;
+    border-radius: 3px;
+    border-style: solid;
+    border-width: 1px;
+    color: #333333;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+    height: 34px;
+    line-height: 34px;
+    /*margin: 30px 0 0;*/
+    overflow: visible;
+    padding: 0 15px;
+    text-decoration: none !important;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+    vertical-align: middle;
+    white-space: nowrap;
+    width: auto;
+	/*my change */
+	margin-left: -8%;
+	
+
+	
+
+}
+
+#help-btn-cv:hover, #help-btn-cv-2:hover {
+
+    
+    background-image:  -moz-linear-gradient(center top , #F6E312 100%, #F9C80D 0%);
+    background-color: #F6E312;
+    background-image: -moz-linear-gradient(center top , #F6E312 0%, #F6E312 100%);
+    background-image: -webkit-linear-gradient(top, #F6E312, #F6E312);
+    background-image: -o-linear-gradient(top, #F6E312, #F6E312);
+    background-image: linear-gradient(to bottom, #F6E312, #F6E312);
+    /*background-image: -webkit-gradient(linear, 0 0, 0 100%, from(white), to(white));*/
+    
+    border-color: #E9AC1A;
+    border-radius: 3px;
+    border-style: solid;
+    border-width: 1px;
+    color: #333333;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+    height: 34px;
+    line-height: 34px;
+    /*margin: 30px 0 0;*/
+    overflow: visible;
+    padding: 0 15px;
+    text-decoration: none !important;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+    vertical-align: middle;
+    white-space: nowrap;
+    width: auto;
+	
+	/*my change */
+	margin-left: -8%;
+
+}
+
+#holder-help-btn{
+
+margin-top: 5%;
+text-align: center;
+
+}
+
+/* text on contact/help page */
+
+#cv-contact-text{
+
+color: #5898E2;
+font-weight: bold;
+
+}
+
+
+/* michael's change */
+
+/* user not logged in Desktop version */
+
+
+#holder-intro-text-nl{
+    
+    text-align:center;
+    padding-top: 5%;
+    
+}
+
+#holder-intro-text-nl a{
+    
+     margin:auto;
+     font-size: 19px;
+     font-weight: bold;
+    
+}
+
+#holder-get-started{
+	
+	 text-align:center;
+    padding-top: 0%;
+	
+}
+
+#holder-get-started a{
+	
+	 margin:auto;
+	
+}
+
+#services-text{
+	
+	padding-left:10px;
+	font-size: 15px;
+	font-weight: bold;
+	
+}
+
+.me tr{
+	
+	text-align:center;
+		
+}
+
+.me tr #service-text2, #service-text-more{
+	
+	 margin:auto;
+	vertical-align: center;
+		
+}
+
+.me td{
+	
+	vertical-align: center;
+		
+}
+
+
+#help-btn-cv-2{
+	
+/*margin-left: -7%;
+    padding: 11px 10%;*/
+	
+}
+
+#help-btn-cv-2: hover{
+	
+/*margin-left: -7%;
+    padding: 11px 10%;*/
+	
+}
+
+/*
+* ******************************* ALL SERVICES PAGE ***********************
+*
+*/
+
+/* solves overflow on righthand side */
+
+.content-right-new{
+    
+  
+    border: 1px solid #D8D8D8;
+    border-radius: 8px;
+    margin-left: -1px;
+    min-height: 500px;
+    padding: 15px 0 15px 0;
+    
+    
+    
+}
+
+
+h1.pricing-choice-plan-title{
+    
+    font-size: 17px;
+    line-height: 20px;
+    padding-bottom: 10px;
+    
+    
+}
+
+
+article.pricing .compare-table .compare-table-key td {
+    background: none repeat scroll 0 0 #FFFFFF;
+    padding: 0;
+}
+
+
+article.pricing .compare-table .pricing-choice-plan, article.pricing .compare-table .pricing-choice, article.pricing .compare-table .pricing-choice-plan-overview {
+    float: none;
+    margin: 0;
+    width: 160px !important;
+}
+
+
+article.pricing .compare-table td {
+    background: none repeat scroll 0 0 #F3F3F3;
+    border-right: 10px solid #E9E9E9;
+    padding: 10px;
+    text-align: center;
+    width: 140px;
+}
+
+article.pricing .pricing-choice {
+    float: left;
+    overflow: hidden;
+    text-align: center;
+}
+
+
+td.pricing-choice, td.col2, td.col3, td.col1{
+    
+    border-right: 5px solid #E9E9E9;
+    padding: 10px;
+    text-align: center;
+    
+    
+}
+
+tr.compare-table-header td, tr.compare-table-sub td {
+    
+    border-right: 5px solid #E9E9E9;
+    padding: 10px;
+    text-align: center;
+
+    
+}
+
+h1.entry-title-updated{
+    
+    
+font-size: 28px;
+    margin-top: -5px;
+    padding-bottom: 0;
+    padding-left: 15px;
+    
+    
+}
+
+/* buy buttons */
+
+div.pricing-choice-plan-buy{
+    
+    text-align: center;
+    
+}
+
+div.pricing-choice-plan-buy a{
+    
+    /*margin: auto;
+     background: none repeat scroll 0 0 #ECECEC;
+    color: #808080;
+
+border-radius: 20px;
+
+
+text-transform: uppercase;*/
+    
+}
+
+.serv-sell-btn{
+    
+	  -moz-box-sizing: border-box;
+    background-color: #F6E312;
+    background-image: -moz-linear-gradient(center top , #F6E312 0%, #F9C80D 100%);
+    background-image: -webkit-linear-gradient(top, #F6E312, #F9C80D);
+    background-image: -o-linear-gradient(top, #F6E312, #F9C80D);
+    background-image: linear-gradient(to bottom, #F6E312, #F9C80D);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#F6E312), to(#F9C80D));
+	
+    border-color: #E9AC1A;
+    border-radius: 10px;
+    border-style: solid;
+    border-width: 1px;
+    color: #333333;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 13px;
+    font-weight: bold;
+    height: 34px;
+    line-height: 32px;
+    /*margin: 30px 0 0;*/
+    overflow: visible;
+    padding: 0 5px;
+    text-decoration: none !important;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+    vertical-align: middle;
+    white-space: nowrap;
+    width: auto;
+	/*my change */
+	margin-left: -8%;    
+}
+
+/* end all services page */
+
+
+/* end desktop version */
+
+
+
+/************************************** Ipad mini landscape (min-width: 768px) and (max-width: 778px) ******************************************
+
+(min-width: 769px) and (max-width: 1024px)*/
+
+@media (min-width: 769px) and (max-width: 1023px){
+
+	
+/* help button positionning */
+	
+	#holder-help-btn{
+		
+		margin-top: 7%;
+		text-align: center;
+		margin-left: -29%;
+		
+	}
+	
+	
+	#help-btn-cv{
+		
+		margin: auto;
+		/*padding: 11px 10%;*/
+		margin-left: -27%;
+		font-size: 18px;
+		
+	}
+	
+	#help-btn-cv:hover{
+		
+		margin: auto;
+		/*padding: 11px 10%;*/
+		margin-left: -27%;
+		font-size: 18px;
+		
+	}
+	
+	
+	
+	.well{
+		
+	padding: 15px 40px 10px 30px;	
+	width: 70%;
+	/*margin-right: 5;*/
+	margin-left: -15%;		
+	
+		
+	}
+	
+	/* width of rows in service table */
+	
+	.table th, .table td {
+		
+		
+	padding: 6px 19px 6px 6px;	
+		
+		
+		
+	}	
+	
+/* resize "sign up" sidebar widget for non logged in users */
+	
+table.me{
+	    
+	 
+	    padding: 15px 40px 10px 30px;	
+	    margin-left:-5%;
+		width: 70%;
+
+	    
+	}
+	
+/* resize row height and width */
+	
+.me th, .me tr {
+
+        padding: 6px 19px 6px 6px;	
+
+}	
+
+/* resize text  in "sign up menu" for non logged in users */
+
+
+#service-text2 {
+    font-size: 13px;
+    margin-left: 10%;
+    padding-left: 8%;
+}
+
+	
+#service-text-more{
+    
+    font-size: 11px;
+    
+}	
+
+/* resize help button for users who are not logged in */
+
+#help-btn-cv-2 {
+    
+	-moz-box-sizing: border-box;
+    background-color: #F6E312;
+    background-image: -moz-linear-gradient(center top , #F6E312 0%, #F9C80D 100%);
+    background-image: -webkit-linear-gradient(top, #F6E312, #F9C80D);
+    background-image: -o-linear-gradient(top, #F6E312, #F9C80D);
+    background-image: linear-gradient(to bottom, #F6E312, #F9C80D);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#F6E312), to(#F9C80D));
+	
+	/*background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#F6E312), to(#F9C80D));*/
+ 	 /*background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);*/
+	
+    border-color: #E9AC1A;
+    border-radius: 3px;
+    border-style: solid;
+    border-width: 1px;
+    color: #333333;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+    height: 34px;
+    line-height: 32px;
+    /*margin: 30px 0 0;*/
+    overflow: visible;
+    padding: 0 15px;
+    text-decoration: none !important;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+    vertical-align: middle;
+    white-space: nowrap;
+    width: auto;
+	/*my change */
+	margin-left: -8%;
+    
+    
+    
+}
+
+
+
+
+#help-btn-cv-2:hover{
+    
+    background-image:  -moz-linear-gradient(center top , #F6E312 100%, #F9C80D 0%);
+    background-color: #F6E312;
+    background-image: -moz-linear-gradient(center top , #F6E312 0%, #F6E312 100%);
+    background-image: -webkit-linear-gradient(top, #F6E312, #F6E312);
+    background-image: -o-linear-gradient(top, #F6E312, #F6E312);
+    background-image: linear-gradient(to bottom, #F6E312, #F6E312);
+    /*background-image: -webkit-gradient(linear, 0 0, 0 100%, from(white), to(white));*/
+    
+    border-color: #E9AC1A;
+    border-radius: 3px;
+    border-style: solid;
+    border-width: 1px;
+    color: #333333;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+    height: 34px;
+    line-height: 32px;
+    /*margin: 30px 0 0;*/
+    overflow: visible;
+    padding: 0 15px;
+    text-decoration: none !important;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+    vertical-align: middle;
+    white-space: nowrap;
+    width: auto;
+	
+	/*my change */
+	margin-left: -8%;
+
+
+    
+    /*background-color: #1C9E12;
+    background-image: linear-gradient(to bottom, #14DB05, #14DB05);
+    background-repeat: repeat-x;
+    border: 1px solid #BBBBBB;
+    border-radius: 4px;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
+    color: #FFFFFF;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 11px;
+    text-align: center;*/
+    
+
+}
+
+#help-btn-cv-2:hover{
+		
+		/*padding: 11px 10%;*/
+		margin-left: 8%;
+		font-size: 18px;
+		
+	}
+
+
+	#help-btn-cv-2{
+		
+		/*padding: 11px 10%;*/
+		margin-left: 8%;
+		font-size: 18px;
+		
+	}
+
+/* widget for "site presentation video" for users who are not logged in*/
+	
+#pres-not-logged{
+
+margin-left: -10%;
+padding: 15px 40px 10px 30px;
+   	
+	
+}	
+
+/* style services box*/
+
+#cv-service-block{
+    
+    
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #E3E3E3;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) inset;
+    margin-bottom: 20px;
+    min-height: 20px;
+    padding: 0px;
+    
+    
+}
+
+/* text inside the "services" widget box*/	
+
+#services-text{
+		
+		font-size: 16px;
+    padding-left: 4%;
+    padding-top: 4%;
+    font-weight: bold;
+    vertical-align: middle;
+}
+
+/* remove padding from services table */
+
+table.me-service, table.me-service td  {
+    
+    padding: 8px 0px 2px 5px;
+    
+}
+
+/* add some padding as necessary */
+
+table.me-service tr  {
+    
+    text-align: center;
+    
+}
+
+#service-text{
+    
+    margin: auto;
+    padding: 5px;
+    
+}
+
+#service-text-more{
+    
+    margin: auto;
+    padding-left: -5px;
+    
+}
+
+table.me-service tr  {
+    
+    text-align: center;
+    
+}
+
+#small-mike {
+    
+    text-align: center;
+    
+}
+
+#small-mike a {
+    
+    margin: auto;
+    
+}
+
+
+/* intro text nl user */
+
+#holder-intro-text-nl{
+    
+    text-align:center;
+    padding-top: 5%;
+    
+}
+
+#holder-intro-text-nl a{
+    
+     margin:auto;
+     font-size: 15px;
+     font-weight: bold;
+    
+}
+
+/* "get started" button */
+
+#holder-get-started{
+    
+     text-align:center;
+     
+    
+}
+
+
+.btn-home-btn-mike{
+    
+    
+    margin:auto;
+    
+}
+
+/* resize "get started" for logged out users */
+	
+	table.me{
+	    
+	 
+	    padding: 0px;	
+	    margin-left: 0%;
+		width: 100%;
+
+	    
+	}
+	
+	/* resize row height and width */
+	
+.me th, .me tr {
+
+padding: 6px 19px 6px 6px;	
+
+}	
+
+
+
+}
+
+/****************************************** **************************************** /
+
+/************************************** Ipad mini landscape (min-width: 1024px) and (max-width: 1025px) ******************************************
+
+/*(min-width: 1024px) and (max-width: 1025px)*/
+
+@media (min-width: 769px) and (max-width: 1025px){
+
+	
+/* help button positionning */
+	
+	#holder-help-btn{
+		
+		margin-top: 7%;
+		text-align: center;
+		margin-left: -29%;
+		
+	}
+	
+	
+	#help-btn-cv{
+		
+		margin: auto;
+		/*padding: 11px 10%;*/
+		/*margin-left: -27%;*/
+		font-size: 18px;
+		
+	}
+	
+	#help-btn-cv:hover{
+		
+		margin: auto;
+		/*padding: 11px 10%;*/
+		/*margin-left: -27%;*/
+		font-size: 18px;
+		
+	}
+	
+	
+	
+	.well{
+		
+	padding: 15px 40px 10px 30px;	
+	width: 70%;
+	/*margin-right: 5;*/
+	margin-left: -15%;		
+	
+		
+	}
+	
+	/* width of rows in service table */
+	
+	.table th, .table td {
+		
+		
+	padding: 6px 19px 6px 6px;	
+		
+		
+		
+	}	
+	
+/* resize "sign up" sidebar widget for non logged in users */
+	
+table.me{
+	    
+	 
+	    padding: 15px 40px 10px 30px;	
+	    margin-left:-5%;
+		width: 70%;
+
+	    
+	}
+	
+/* resize row height and width */
+	
+.me th, .me tr {
+
+        padding: 6px 19px 6px 6px;	
+
+}	
+
+/* resize text  in "sign up menu" for non logged in users */
+
+
+#service-text2 {
+    font-size: 13px;
+    margin-left: 10%;
+    padding-left: 8%;
+}
+
+	
+#service-text-more{
+    
+    font-size: 11px;
+    
+}	
+
+/* resize help button for users who are not logged in */
+
+#help-btn-cv-2 {
+    
+	-moz-box-sizing: border-box;
+    background-color: #F6E312;
+    background-image: -moz-linear-gradient(center top , #F6E312 0%, #F9C80D 100%);
+    background-image: -webkit-linear-gradient(top, #F6E312, #F9C80D);
+    background-image: -o-linear-gradient(top, #F6E312, #F9C80D);
+    background-image: linear-gradient(to bottom, #F6E312, #F9C80D);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#F6E312), to(#F9C80D));
+	
+	/*background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#F6E312), to(#F9C80D));*/
+ 	 /*background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);*/
+	
+    border-color: #E9AC1A;
+    border-radius: 3px;
+    border-style: solid;
+    border-width: 1px;
+    color: #333333;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+    height: 34px;
+    line-height: 32px;
+    /*margin: 30px 0 0;*/
+    overflow: visible;
+    padding: 0 15px;
+    text-decoration: none !important;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+    vertical-align: middle;
+    white-space: nowrap;
+    width: auto;
+	/*my change */
+	margin-left: -8%;
+    
+    
+    
+}
+
+
+
+
+#help-btn-cv-2:hover{
+    
+    background-image:  -moz-linear-gradient(center top , #F6E312 100%, #F9C80D 0%);
+    background-color: #F6E312;
+    background-image: -moz-linear-gradient(center top , #F6E312 0%, #F6E312 100%);
+    background-image: -webkit-linear-gradient(top, #F6E312, #F6E312);
+    background-image: -o-linear-gradient(top, #F6E312, #F6E312);
+    background-image: linear-gradient(to bottom, #F6E312, #F6E312);
+    /*background-image: -webkit-gradient(linear, 0 0, 0 100%, from(white), to(white));*/
+    
+    border-color: #E9AC1A;
+    border-radius: 3px;
+    border-style: solid;
+    border-width: 1px;
+    color: #333333;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+    height: 34px;
+    line-height: 32px;
+    /*margin: 30px 0 0;*/
+    overflow: visible;
+    padding: 0 15px;
+    text-decoration: none !important;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+    vertical-align: middle;
+    white-space: nowrap;
+    width: auto;
+	
+	/*my change */
+	margin-left: -8%;
+
+
+    
+    /*background-color: #1C9E12;
+    background-image: linear-gradient(to bottom, #14DB05, #14DB05);
+    background-repeat: repeat-x;
+    border: 1px solid #BBBBBB;
+    border-radius: 4px;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
+    color: #FFFFFF;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 11px;
+    text-align: center;*/
+    
+
+}
+
+#help-btn-cv-2:hover{
+		
+		/*padding: 11px 10%;*/
+		margin-left: 8%;
+		font-size: 18px;
+		
+	}
+
+
+	#help-btn-cv-2{
+		
+		/*padding: 11px 10%;*/
+		margin-left: 8%;
+		font-size: 18px;
+		
+	}
+
+/* widget for "site presentation video" for users who are not logged in*/
+	
+#pres-not-logged{
+
+margin-left: -10%;
+padding: 15px 40px 10px 30px;
+   	
+	
+}	
+
+/* style services box*/
+
+#cv-service-block{
+    
+    
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #E3E3E3;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) inset;
+    margin-bottom: 20px;
+    min-height: 20px;
+    padding: 0px;
+    
+    
+}
+
+/* text inside the "services" widget box*/	
+
+#services-text{
+		
+		font-size: 16px;
+    padding-left: 4%;
+    padding-top: 4%;
+    font-weight: bold;
+    vertical-align: middle;
+}
+
+/* remove padding from services table */
+
+table.me-service, table.me-service td  {
+    
+    padding: 8px 0px 2px 5px;
+    
+}
+
+/* add some padding as necessary */
+
+table.me-service tr  {
+    
+    text-align: center;
+    
+}
+
+#service-text{
+    
+    margin: auto;
+    padding: 5px;
+    
+}
+
+#service-text-more{
+    
+    margin: auto;
+    padding-left: -5px;
+    
+}
+
+table.me-service tr  {
+    
+    text-align: center;
+    
+}
+
+#small-mike {
+    
+    text-align: center;
+    
+}
+
+#small-mike a {
+    
+    margin: auto;
+    
+}
+
+
+/* intro text nl user */
+
+#holder-intro-text-nl{
+    
+    text-align:center;
+    padding-top: 5%;
+    
+}
+
+#holder-intro-text-nl a{
+    
+     margin:auto;
+     font-size: 15px;
+     font-weight: bold;
+    
+}
+
+/* "get started" button */
+
+#holder-get-started{
+    
+     text-align:center;
+     
+    
+}
+
+
+.btn-home-btn-mike{
+    
+    
+    margin:auto;
+    
+}
+
+/* resize "get started" for logged out users */
+	
+table.me{
+	    
+	 
+	    padding: 0px;	
+	    margin-left: 0%;
+		width: 100%;
+
+	    
+	}
+	
+/* resize row height and width */
+	
+.me th, .me tr {
+
+padding: 6px 19px 6px 6px;	
+
+}	
+
+
+
+}
+
+
+/* change background color of services pages */
+
+.white2{
+
+background-color: white;
+
+}
+
+
+#title-serv{
+
+width: 300px; 
+float: left;
+
+}
+
+
+/* new 'buy' button 00C
+ C00 33FF00 00CC00 */
+
+.serv-sell-btn-corr {
+       
+    background-image: linear-gradient(to bottom, #00CC00, #097054);
+    border-color: #097054;
+    border-radius: 3px;
+    border-style: solid;
+    border-width: 1px;
+    box-sizing: border-box;
+    color: white;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+    height: 34px;
+    line-height: 32px;
+    margin-left: 0%;
+    margin-top: 0%;
+    overflow: visible;
+    padding: 0 15px;
+    text-decoration: none !important;
+    /*text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);*/
+    vertical-align: middle;
+    white-space: nowrap;
+    width: auto;
+
+
+
+
+}
+
+.serv-sell-btn-corr:hover {
+    
+     background-image: linear-gradient(to bottom, #00CC00, #0E9E77);
+    border-color: #097054;
+    border-radius: 3px;
+    border-style: solid;
+    border-width: 1px;
+    box-sizing: border-box;
+    color: white;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+    height: 34px;
+    line-height: 32px;
+    margin-left: 0%;
+    overflow: visible;
+    padding: 0 15px;
+    text-decoration: none !important;
+    /*text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);*/
+    vertical-align: middle;
+    white-space: nowrap;
+    width: auto;
+
+
+}
+
+
+
+/* buy button using id WPCF7 obligation */
+
+/* new 'buy' button */
+
+.wpcf7-submit {
+     background-image: linear-gradient(to bottom, #00CC00, #097054);
+    border-color: #097054;
+    border-radius: 3px;
+    border-style: solid;
+    border-width: 1px;
+    box-sizing: border-box;
+    color: white;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+    height: 34px;
+    line-height: 32px;
+    margin-left: 0%;
+    margin-top: 0%;
+    overflow: visible;
+    padding: 0 15px;
+    text-decoration: none !important;
+    /*text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);*/
+    vertical-align: middle;
+    white-space: nowrap;
+    width: auto;
+
+}
+
+.wpcf7-submit:hover {
+    
+    background-image: linear-gradient(to bottom, #00CC00, #0E9E77);
+    border-color: #097054;
+    border-radius: 3px;
+    border-style: solid;
+    border-width: 1px;
+    box-sizing: border-box;
+    color: white;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+    height: 34px;
+    line-height: 32px;
+    margin-left: 0%;
+    overflow: visible;
+    padding: 0 15px;
+    text-decoration: none !important;
+    /*text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);*/
+    vertical-align: middle;
+    white-space: nowrap;
+    width: auto;
+
+}
+
+
+
+/* Paypal pages - green break line */
+
+#paypal-break-line{
+
+border-bottom: 1px solid green;
+margin-left: -3%;
+margin-top:5%;
+margin-bottom:2%;
+
+
+}
+
+/* hide paypal form at start */
+
+#pp-holder{
+    
+    display:none;
+    
+}
+
+#free-holder{
+    
+    display:none;
+    
+}
+
+
+/* hide "connection to paypal message at start */
+
+#paypal-send-to-msg{
+    
+  display:none;
+  font-size: 20px;
+    margin-bottom: 5%;
+    margin-top: 5%;
+    color: #0088cc;
+    
+}
+
+#free-send-to-msg{
+    
+  display:none;
+  font-size: 20px;
+    margin-bottom: 5%;
+    margin-top: 5%;
+    color: #0088cc;
+    
+}
+
+
+/* buttons on paypal pages, keeps them inline vertical */
+ul#buttons-sell-trad{
+    
+    margin-top: 4%;
+    margin-left: 0%;
+    
+}
+
+
+ul#buttons-sell-trad li{
+    
+    display: inline;
+    text-decoration: none;
+    margin-right:2%;
+    
+}
+
+ul li.qa-list-item{
+    
+    text-decoration: none;
+    
+}
+
+/* help button on paypal pages */
+
+#serv-help-btn-corr{
+    
+     -moz-box-sizing: border-box;
+    background-color: #F6E312;
+    background-image: -moz-linear-gradient(center top , #F6E312 0%, #F9C80D 100%);
+    background-image: -webkit-linear-gradient(top, #F6E312, #F9C80D);
+    background-image: -o-linear-gradient(top, #F6E312, #F9C80D);
+    background-image: linear-gradient(to bottom, #F6E312, #F9C80D);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#F6E312), to(#F9C80D));
+	
+	/*background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#F6E312), to(#F9C80D));*/
+ 	 /*background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);*/
+	
+    border-color: #E9AC1A;
+    border-radius: 3px;
+    border-style: solid;
+    border-width: 1px;
+    color: #333333;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+    height: 34px;
+    line-height: 34px;
+    /*margin: 30px 0 0;*/
+    overflow: visible;
+    padding: 0 15px;
+    text-decoration: none !important;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+    vertical-align: middle;
+    white-space: nowrap;
+    width: auto;
+	/*my change */
+	margin-left: 0%;
+
+    
+}
+
+#serv-help-btn-corr:hover {
+
+    
+    background-image:  -moz-linear-gradient(center top , #F6E312 100%, #F9C80D 0%);
+    background-color: #F6E312;
+    background-image: -moz-linear-gradient(center top , #F6E312 0%, #F6E312 100%);
+    background-image: -webkit-linear-gradient(top, #F6E312, #F6E312);
+    background-image: -o-linear-gradient(top, #F6E312, #F6E312);
+    background-image: linear-gradient(to bottom, #F6E312, #F6E312);
+    /*background-image: -webkit-gradient(linear, 0 0, 0 100%, from(white), to(white));*/
+    
+    border-color: #E9AC1A;
+    border-radius: 3px;
+    border-style: solid;
+    border-width: 1px;
+    color: #333333;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+    height: 34px;
+    line-height: 34px;
+    /*margin: 30px 0 0;*/
+    overflow: visible;
+    padding: 0 15px;
+    text-decoration: none !important;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+    vertical-align: middle;
+    white-space: nowrap;
+    width: auto;
+	
+	/*my change */
+	margin-left: 0%;
+
+}
+
+.sales-qa{
+
+margin-left: 3%;
+
+
+}
+
+#pay-pal-sign{
+    
+    margin-left: 2%;
+    
+}
+
+/*------------------- Please wait msg on form validation ----------------*/
+
+#wait-plz{
+    
+    display: none;
+    color: #0088cc;
+
+font-weight: bold;
+
+font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px
+    
+}
+
+/*------------------- Help centre form ----------------*/
+
+#holder-name{
+
+float: left; 
+margin-right: 4%;
+
+
+}
+
+#holder-subject{
+
+float: left; 
+margin-right: 4%;
+
+
+}
+
+
+#holder-button{
+
+margin-top: 12%;
+
+
+
+}
+
+#holder-message{
+
+float: left; 
+margin-right: 4%;
+margin-top: -2%;
+
+
+}
+
+#test-text-captcha-help{
+
+margin-top: -2.1%
+
+}
+
+#dev_perso{
+
+margin-top: 4%;
+margin-bottom: 4%;
+
+}
+
+#aut_quest{
+
+margin-top: 4%;
+margin-bottom: 4%;
+
+}
+
+#cv-contact-text{
+
+margin-top: 4%;
+margin-bottom: 4%;
+
+}
+
+/* -------------- end Help centre form --------------- */
+
+
+/***************************************** **************************************/
+
+/****************************************** **************************************** /
+
+
+/* End of file style.css */
+/* Location: ./wp-content/themes/the-bootstrap/style.css */

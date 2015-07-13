@@ -1,0 +1,138 @@
+/* Force table to not be like tables anymore */
+	table.compare-table, thead, tbody, th, td, tr { 
+		display: block; 
+	}
+	
+	/* Hide table headers (but not display: none;, for accessibility) */
+	compare-table.thead tr { 
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+		background-color: yellow;
+	}
+	
+	compare-table.tr { border: 1px solid #ccc; }
+	
+	compare-table.td { 
+		/* Behave  like a "row" */
+		border: none;
+		border-bottom: 1px solid #eee; 
+		position: relative;
+		padding-left: 50%; 
+	}
+	
+	compare-table.td:before { 
+		/* Now like a table header */
+		position: absolute;
+		/* Top/left values mimic padding */
+		top: 6px;
+		left: 6px;
+		width: 45%; 
+		padding-right: 10px; 
+		white-space: nowrap;
+	}
+	
+	/* hide "more info" buttons */
+	
+	
+	
+	tr.compare-table-header *{
+	    
+	    display: none;
+	    
+	}
+	
+	tr.compare-table-sub{
+	    
+	    display: none;
+	    
+	}
+	
+	td.col1{
+	    
+	    
+	    display: none;
+	    
+	}
+	
+	td.pricing-choice, td.col2, td.col3, td.col1 {
+	    
+	    border-right: 0 px;
+	    
+	}
+	
+	.serv-sell-btn {
+	 
+	margin-left: 0%;    
+	    
+	}
+	
+	.m-hide{
+	    
+	    margin-left: 1%;
+	    display: inline-block;
+	    
+	}
+
+
+/* righthand side bar */
+
+.well {
+    margin-left: -5%;
+    padding: 15px 40px 10px 30px;
+    width: 70%;
+}
+
+/* services tab on righthand side */
+
+#cv-service-block {
+    margin-left: -5%;
+    width: 100%;
+}
+
+/* Paypal form */
+
+#test-name-label{
+
+float: left;
+margin-right: 2%;
+
+}
+
+
+#test-upload-label{
+
+margin-top: 5%
+
+}
+
+#test-upload{
+
+width: 80%;
+height: 80px;
+
+}
+
+#test-captchar{
+
+float: left;
+
+}
+
+/* end Paypal */
+
+@media (max-width: 979px){
+	.navbar-fixed-top .navbar-inner, .navbar-fixed-bottom .navbar-inner {
+		padding: 5px;
+		min-height: 88px;
+	}
+	
+	/* Paypal form */
+	
+	#test-email-label {
+    
+    clear:both;
+    }
+}	
+	/* end Paypal */
+

@@ -1,0 +1,118 @@
+/*#link-holder
+{
+	width:100%;
+}
+
+#add_link
+{
+	background: none repeat scroll 0 0 #FFFFFF;
+    padding: 10px 0;
+}
+
+#add_link_address
+{
+	 border: 1px solid blue;
+    border-radius: 3px 3px 3px 3px;
+}
+
+#add_link_name
+{
+	border: 1px solid blue;
+    border-radius: 3px 3px 3px 3px;
+}
+
+#add_link_button, #delete, #notes-add,#link-content a#delete_link, #update_link, #delete-button {
+    background: none repeat scroll 0 0 #5F9CC5;
+    border-radius: 3px 3px 3px 3px;
+    color: #FFFFFF;
+    padding: 5px 15px;
+    text-align: center;
+}
+
+#link-content table,#notes-content table
+{
+ 	width:100%;
+}
+
+#test_link_delete
+{
+
+}
+
+#link-content tr td
+{
+	width:30%;
+}
+
+#notes-content tr td:first-child
+{
+	width:70%;
+}
+
+
+
+a#delete_link
+{
+	
+}
+
+.link_table
+{
+
+}
+
+/*#delete,#notes-add
+{
+	background:#0066FF;
+	color:#FFFFFF;
+	padding:5px 10px;
+	border-radius:3px;
+}*/
+
+/*#uniDelete
+{
+	margin-top:10px;
+}
+
+#notes-add
+{
+	margin-left:10px;
+}
+
+.ui-li-heading {
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0.6em 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#add_link_button
+{
+	 left: 2px;
+    position: relative;
+    top: 2px;
+}
+
+#notes-content tr td:first-child div,#link-content tr td:first-child div
+{
+	overflow:hidden;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+	width:100%;
+}
+
+*/
+
+.checkBoxLinkVisit
+{
+	text-align:left;
+	color:#0000CC;
+}
+
+.checkBoxLink
+{
+	text-align:left;
+}

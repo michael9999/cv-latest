@@ -1,0 +1,252 @@
+.accWidget {
+     display: none;
+}
+
+.accWidget h2 {
+
+     background-color: white;
+    border-bottom: 1px solid #ECEBEA;
+    color: #555555;
+    cursor: pointer;
+    font: bold 14px arial,sans-serif;
+    margin-bottom: 10px;
+    margin-top: 0px;
+    outline: medium none;
+    padding: 5px 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    text-shadow: 0 0 0 #B4B0AE;
+    letter-spacing: 0.01px;
+
+}
+
+.chrome.accWidget h2 {
+     border-radius: 3px 3px 3px 3px;
+     border: 1px solid #CCCCCC;
+     color: #777777;
+     cursor: pointer;
+     font: 12px/14px Arial,Tahoma,Verdana,sans-serif;
+     margin-bottom: 5px;
+     margin-top: 5px;
+     outline: medium none;
+     padding: 5px;
+     text-align: center;
+     text-decoration: none;
+}
+
+/* position links with tickboxes */
+
+#start {
+
+     position: absolute;
+    margin-bottom: 20px;
+    margin-left: 0;
+    margin-top: 0%;
+   
+}
+
+#structure-inner, #contenu-inner, #advanced-inner {
+    margin-bottom: 20px;
+    margin-left: 0;
+    margin-top: 0%;
+    position: absolute;
+}
+
+.accWidget a {
+    
+    font-size: 12.5px;
+    margin-bottom: 14px;
+    margin-left: 5px;
+    text-shadow: 0 0 0 #F7F7F7;
+}
+
+ul.accWidget {
+     background-color: white;
+     border-radius: 20px 20px 20px 20px;
+     border: 0px solid #BFBDBD;
+     color: #5898E2;
+     cursor: pointer;
+     font: bold 14px arial,sans-serif;
+     margin-left: -6px;
+     margin-top: 12%;
+     outline: medium none;
+     padding: 10px;
+     text-decoration: none;
+   
+}
+
+ul.accWidget li {
+
+     margin-left: 0%;
+     list-style-type: none;
+
+
+
+}
+
+
+
+
+div#wp-accordion input[type="checkbox"] {
+
+margin-left: 0px;
+margin-bottom: 10px;
+
+}
+
+/* Styling for individual links in application */
+
+div#wp-accordion a{
+
+color: #2FA70A
+
+}
+
+div#wp-accordion a:hover{
+
+/*color: #DA2D34*/
+
+
+}
+
+/*STYLING FOR STEP BY STEP APP*/
+
+p#trial{
+
+margin-top: 5%;
+margin-bottom: 0%;
+margin-left: 0%;
+
+}
+
+/* links in App */
+
+a#start{
+
+color: #0088CC;
+
+}
+
+a#start:hover{
+
+/*color: #17969F;*/
+color: #1C9E12;
+
+}
+
+a#structure-inner{
+
+color: #0088CC;
+
+}
+
+a#structure-inner:hover{
+
+/*color: #17969F;*/
+color: #1C9E12;
+
+}
+
+a#contenu-inner{
+
+color: #0088CC;
+
+}
+
+a#contenu-inner:hover{
+
+/*color: #17969F;*/
+color: #1C9E12;
+
+}
+
+a#advanced-inner{
+
+color: #0088CC;
+
+}
+
+a#advanced-inner:hover{
+
+/*color: #17969F;*/
+color: #1C9E12;
+
+}
+
+
+
+/* top-bottom margins for sections on app */
+
+
+li#text-3{
+
+margin-top: 0%;
+
+}
+
+/*@media (max-width: 768px){
+
+	
+	.accordion_content{
+		
+		
+	margin-left: -10%;	
+		
+	}
+	
+	
+	
+	
+	
+}*/
+
+/* Ipad mini landscape (min-width: 768px) and (max-width: 778px)*/
+
+@media (min-width: 769px) and (max-width: 1024px){
+	
+
+	/* padding for tick boxes */
+	
+	.accordion_content{	
+		
+	margin-left: -16%;	
+		
+	}
+	
+	/* serivices widget */
+	
+	#cv-service-block{
+
+	/*margin-left: -15%; padding: 15px 40px 10px 30px;*/
+	
+ /* margin-left: -15%;*/
+    
+    width: 100%;
+
+
+	}
+	
+	/* size of text inside services widget */
+	
+	#service-text{
+		
+		font-size: 13px;
+	}
+	
+	#service-text-more{
+		
+		font-size: 13px;
+		
+		
+	}
+	
+	.btn-small{
+		
+		padding: 6px;
+		font-size: 14px;
+		
+	}
+	
+	
+	
+}	

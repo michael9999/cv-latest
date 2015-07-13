@@ -1,0 +1,111 @@
+/* Force table to not be like tables anymore */
+	table.compare-table, thead, tbody, th, td, tr { 
+		display: block; 
+	}
+	
+	/* Hide table headers (but not display: none;, for accessibility) */
+	compare-table.thead tr { 
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+		background-color: yellow;
+	}
+	
+	compare-table.tr { border: 1px solid #ccc; }
+	
+	compare-table.td { 
+		/* Behave  like a "row" */
+		border: none;
+		border-bottom: 1px solid #eee; 
+		position: relative;
+		padding-left: 50%; 
+	}
+	
+	compare-table.td:before { 
+		/* Now like a table header */
+		position: absolute;
+		/* Top/left values mimic padding */
+		top: 6px;
+		left: 6px;
+		width: 45%; 
+		padding-right: 10px; 
+		white-space: nowrap;
+	}
+	
+	/* hide "more info" buttons */
+	
+	
+	
+	tr.compare-table-header *{
+	    
+	    display: none;
+	    
+	}
+	
+	tr.compare-table-sub{
+	    
+	    display: none;
+	    
+	}
+	
+	td.col1{
+	    
+	    
+	    display: none;
+	    
+	}
+	
+	td.pricing-choice, td.col2, td.col3, td.col1 {
+	    
+	    border-right: 0 px;
+	    
+	}
+	
+	.serv-sell-btn {
+	 
+	margin-left: 0%;    
+	    
+	}
+	
+	.m-hide{
+	    
+	    margin-left: 1%;
+	    display: inline-block;
+	    
+	}
+
+
+/* righthand side bar and accordion app */
+
+.well {
+    display: inline;
+    margin-left: 0;
+    padding: 0;
+    width: 100%;
+   
+}
+
+.accordion_content {
+    margin-left: 0;
+}
+
+#holder-help-btn {
+    margin-bottom: 2%;
+    
+}
+
+#help-btn-cv, #help-btn-cv-2{
+    
+    margin-left: 0%;
+    
+}
+
+/* services tab on righthand side */
+
+#cv-service-block {
+    margin-left: 0%;
+    width: 100%;
+}
+
+
+
