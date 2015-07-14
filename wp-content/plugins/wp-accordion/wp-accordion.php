@@ -76,13 +76,18 @@ var user = "<?php echo $cur_user ?>";
 <?php
 
 // ----------------------  END MY CHANGES
+
+// try to get current url 1234
+		
+$Myroot = (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/';		
+		
         echo //$jq.    
         
-        
-           '<script type="text/javascript" src="http://www.test-sw2.com/staging-cv-en-anglais/wp-content/plugins/wp-accordion/js/help.js"></script>
-<script type="text/javascript" src="http://www.test-sw2.com/staging-cv-en-anglais/wp-content/plugins/wp-accordion/js/jquery.uniform.js"></script>
-<script type="text/javascript" src="http://www.test-sw2.com/staging-cv-en-anglais/wp-content/plugins/wp-accordion/js/accordion-trial.js"></script>
+           '<script type="text/javascript" src="' . $Myroot . 'wp-content/plugins/wp-accordion/js/help.js"></script>
+<script type="text/javascript" src="' . $Myroot . 'wp-content/plugins/wp-accordion/js/jquery.uniform.js"></script>
+<script type="text/javascript" src="' . $Myroot . 'wp-content/plugins/wp-accordion/js/accordion-trial.js"></script>
 <ul class="accWidget">';
+        
             dynamic_sidebar('bee_accordion');    
         echo '</ul>
         <form name="hidden">
