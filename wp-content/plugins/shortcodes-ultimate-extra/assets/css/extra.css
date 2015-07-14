@@ -1,3 +1,9 @@
+/*
+	Shortcodes Ultimate Skins
+	Author: Vladimir Anokhin
+	Link: http://gndev.info/shortcodes-ultimate/extra/
+---------------------------------------------------------------*/
+
 /*		Common
 ---------------------------------------------------------------*/
 
@@ -9,6 +15,20 @@
 .sue-clearfix:after { clear: both; }
 .sue-content-wrap > *:first-child { margin-top: 0; }
 .sue-content-wrap > *:last-child { margin-bottom: 0; }
+
+/*		Common class for clickable panels
+---------------------------------------------------------------*/
+
+.sue-panel-clickable {
+	cursor: pointer;
+	-webkit-transition: opacity .2s;
+	-moz-transition: opacity .2s;
+	transition: opacity .2s;
+}
+.sue-panel-clickable:hover {
+	opacity: 0.75;
+	filter: alpha(opacity=75);
+}
 
 /*		Splash
 ---------------------------------------------------------------*/
@@ -135,18 +155,129 @@
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffe4ce',GradientType=0 );
 }
 
-/*		Common class for clickable panels
+/*		Splash
 ---------------------------------------------------------------*/
 
-.sue-panel-clickable {
-	cursor: pointer;
-	-webkit-transition: opacity .2s;
-	-moz-transition: opacity .2s;
-	transition: opacity .2s;
+.sue-exit-popup { display: none; }
+.sue-exit-popup-screen {
+	position: relative;
+	width: 94%;
+	max-width: 480px;
+	margin: 44px auto;
+	padding: 44px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
 }
-.sue-panel-clickable:hover {
-	opacity: 0.75;
-	filter: alpha(opacity=75);
+
+.sue-exit-popup-style-dark .mfp-bg { background: #000; }
+.sue-exit-popup-style-dark .mfp-close {
+	color: #fff;
+	text-shadow: none;
+}
+.sue-exit-popup-style-dark .sue-exit-popup-screen {
+	background: transparent;
+	color: #fff;
+}
+
+.sue-exit-popup-style-dark-boxed .mfp-bg { background: #000; }
+.sue-exit-popup-style-dark-boxed .sue-exit-popup-screen {
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	background: #fff;
+	color: #333;
+}
+
+.sue-exit-popup-style-light .mfp-bg { background: #fff; }
+.sue-exit-popup-style-light .sue-exit-popup-screen {
+	background: transparent;
+	color: #000;
+}
+
+.sue-exit-popup-style-light-boxed .mfp-bg { background: #fff; }
+.sue-exit-popup-style-light-boxed .sue-exit-popup-screen {
+	border: 1px solid #ccc;
+	-webkit-border-radius: 15px;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+	background: #fff;
+	-webkit-box-shadow: 0 0 25px #ccc;
+	-moz-box-shadow: 0 0 25px #ccc;
+	box-shadow: 0 0 25px #ccc;
+	color: #333;
+}
+
+.sue-exit-popup-style-maintenance .mfp-bg { background: #000 url('../images/maintenance.png'); }
+.sue-exit-popup-style-maintenance .sue-exit-popup-screen {
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	background: #fff;
+	color: #333;
+}
+
+.sue-exit-popup-style-blue-boxed .mfp-bg { background: #66B2FF; }
+.sue-exit-popup-style-blue-boxed .sue-exit-popup-screen {
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	background: #E8F4FF;
+	-webkit-box-shadow: 0 0 10px #00254A;
+	-moz-box-shadow: 0 0 10px #00254A;
+	box-shadow: 0 0 10px #00254A;
+	color: #00172E;
+}
+
+.sue-exit-popup-style-light-boxed-blue .mfp-bg { background: #fff; }
+.sue-exit-popup-style-light-boxed-blue .sue-exit-popup-screen {
+	border: 7px solid #66B2FF;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	background: #feffff; /* Old browsers */
+	background: -moz-linear-gradient(top,  #feffff 0%, #ddf1f9 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#feffff), color-stop(100%,#ddf1f9)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #feffff 0%,#ddf1f9 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #feffff 0%,#ddf1f9 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #feffff 0%,#ddf1f9 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #feffff 0%,#ddf1f9 100%); /* W3C */
+	color: #333;
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#feffff', endColorstr='#ddf1f9',GradientType=0 ); /* IE6-9 */
+}
+
+.sue-exit-popup-style-light-boxed-green .mfp-bg { background: #fff; }
+.sue-exit-popup-style-light-boxed-green .sue-exit-popup-screen {
+	border: 7px solid #92E54E;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	background: #f8ffe8;
+	background: -moz-linear-gradient(top,  #f8ffe8 0%, #e3f5ab 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f8ffe8), color-stop(100%,#e3f5ab));
+	background: -webkit-linear-gradient(top,  #f8ffe8 0%,#e3f5ab 100%);
+	background: -o-linear-gradient(top,  #f8ffe8 0%,#e3f5ab 100%);
+	background: -ms-linear-gradient(top,  #f8ffe8 0%,#e3f5ab 100%);
+	background: linear-gradient(to bottom,  #f8ffe8 0%,#e3f5ab 100%);
+	color: #333;
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8ffe8', endColorstr='#e3f5ab',GradientType=0 );
+}
+
+.sue-exit-popup-style-light-boxed-orange .mfp-bg { background: #fff; }
+.sue-exit-popup-style-light-boxed-orange .sue-exit-popup-screen {
+	border: 7px solid #FF8121;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	background: #ffffff;
+	background: -moz-linear-gradient(top,  #ffffff 0%, #ffe4ce 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#ffe4ce));
+	background: -webkit-linear-gradient(top,  #ffffff 0%,#ffe4ce 100%);
+	background: -o-linear-gradient(top,  #ffffff 0%,#ffe4ce 100%);
+	background: -ms-linear-gradient(top,  #ffffff 0%,#ffe4ce 100%);
+	background: linear-gradient(to bottom,  #ffffff 0%,#ffe4ce 100%);
+	color: #333;
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffe4ce',GradientType=0 );
 }
 
 /*		Panel
@@ -440,6 +571,12 @@
 .sue-section {
 	width: 100%;
 	margin: 0;
+}
+.sue-section {
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
 }
 .sue-section-content {
 	width: 90%;

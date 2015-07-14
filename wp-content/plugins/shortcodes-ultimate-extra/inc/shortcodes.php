@@ -34,6 +34,35 @@ class Shortcodes_Ultimate_Extra_Shortcodes {
 		return '<div class="sue-splash" data-once="' . $atts['once'] . '" data-cookie="' . $cookie . '" data-esc="' . $atts['esc'] . '" data-close="' . $atts['close'] . '" data-onclick="' . $atts['onclick'] . '" data-url="' . $atts['url'] . '" data-opacity="' . (string) $atts['opacity'] . '" data-width="' . $atts['width'] . '" data-style="sue-splash-style-' . $atts['style'] . '" data-delay="' . (string) $atts['delay'] . '"><div class="sue-splash-screen sue-content-wrap' . su_ecssc( $atts ) . '">' . do_shortcode( $content ) . '</div></div>';
 	}
 
+	public static function exit_popup( $atts = null, $content = null ) {
+		$atts = shortcode_atts( array(
+				'style'    => 'dark',
+				'width'    => 480,
+				'opacity'  => 80,
+				'onclick'  => 'close-bg',
+				'url'      => get_bloginfo( 'url' ),
+				'esc'      => 'yes',
+				'close'    => 'yes',
+				'once'     => 'no',
+				'class'    => ''
+			), $atts, 'splash' );
+		// Don't show splash screen in preview mode
+		if ( did_action( 'su/generator/preview/before' ) ) return __( 'This shortcode doesn\'t work in live preview. Please insert it into editor and preview on the site.', 'sue' );
+		// Prepare cookie name for current page
+		$cookie = 'sue_exit_popup_' . md5( $_SERVER['REQUEST_URI'] );
+		// Don't show splash screen twice
+		if ( $atts['once'] === 'yes' && isset( $_COOKIE[$cookie] ) ) return;
+		// Prepare opacity
+		$atts['opacity'] = ( !is_numeric( $atts['opacity'] ) || $atts['opacity'] > 100 || $atts['opacity'] < 0 ) ? 0.8 : $atts['opacity'] / 100;
+		// Request assets
+		su_query_asset( 'css', 'magnific-popup' );
+		su_query_asset( 'css', 'su-extra' );
+		su_query_asset( 'js', 'jquery' );
+		su_query_asset( 'js', 'magnific-popup' );
+		su_query_asset( 'js', 'su-extra' );
+		return '<div class="sue-exit-popup" data-once="' . $atts['once'] . '" data-cookie="' . $cookie . '" data-esc="' . $atts['esc'] . '" data-close="' . $atts['close'] . '" data-onclick="' . $atts['onclick'] . '" data-url="' . $atts['url'] . '" data-opacity="' . (string) $atts['opacity'] . '" data-width="' . $atts['width'] . '" data-style="sue-exit-popup-style-' . $atts['style'] . '"><div class="sue-exit-popup-screen sue-content-wrap' . su_ecssc( $atts ) . '">' . do_shortcode( $content ) . '</div></div>';
+	}
+
 	public static function panel( $atts = null, $content = null ) {
 		$atts = shortcode_atts( array(
 				'background' => '#ffffff',
@@ -221,6 +250,7 @@ class Shortcodes_Ultimate_Extra_Shortcodes {
 				'image'         => '',
 				'repeat'        => 'repeat',
 				'parallax'      => 'yes',
+				'mobile'        => 'yes',
 				'speed'         => '10',
 				'max_width'     => '960',
 				'margin'        => '0px 0px 0px 0px',
@@ -257,7 +287,7 @@ class Shortcodes_Ultimate_Extra_Shortcodes {
 		// Query stylesheet
 		su_query_asset( 'css', 'su-extra' );
 		// Output
-		return '<div class="sue-section' . su_ecssc( $atts ) . '" data-url="' . $atts['url'] . '" data-speed="' . $atts['speed'] . '" style="background:' . $background . ';margin:' . $atts['margin'] . ';padding:' . $atts['padding'] . ';border-top:' . $atts['border'] . ';border-bottom:' . $atts['border'] . '"><div class="sue-section-content sue-content-wrap" style="max-width:' . $atts['max_width'] . 'px;text-align:' . $atts['text_align'] . ';color:' . $atts['color'] . ';-webkit-text-shadow:' . $atts['text_shadow'] . ';-moz-text-shadow:' . $atts['text_shadow'] . ';text-shadow:' . $atts['text_shadow'] . '">' . do_shortcode( $content ) . '</div></div>';
+		return '<div class="sue-section' . su_ecssc( $atts ) . '" data-url="' . $atts['url'] . '" data-speed="' . $atts['speed'] . '" data-mobile="' . $atts['mobile'] . '" style="background:' . $background . ';margin:' . $atts['margin'] . ';padding:' . $atts['padding'] . ';border-top:' . $atts['border'] . ';border-bottom:' . $atts['border'] . '"><div class="sue-section-content sue-content-wrap" style="max-width:' . $atts['max_width'] . 'px;text-align:' . $atts['text_align'] . ';color:' . $atts['color'] . ';-webkit-text-shadow:' . $atts['text_shadow'] . ';-moz-text-shadow:' . $atts['text_shadow'] . ';text-shadow:' . $atts['text_shadow'] . '">' . do_shortcode( $content ) . '</div></div>';
 	}
 
 	public static function pricing_table( $atts = null, $content = null ) {

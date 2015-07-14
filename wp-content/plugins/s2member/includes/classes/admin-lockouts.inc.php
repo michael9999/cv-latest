@@ -14,7 +14,7 @@
  * @package s2Member\Admin_Lockouts
  * @since 3.5
  */
-if(realpath(__FILE__) === realpath($_SERVER['SCRIPT_FILENAME']))
+if(!defined('WPINC')) // MUST have WordPress.
 	exit ('Do not access this file directly.');
 
 if(!class_exists('c_ws_plugin__s2member_admin_lockouts'))
@@ -44,7 +44,7 @@ if(!class_exists('c_ws_plugin__s2member_admin_lockouts'))
 			if(is_admin() && (!defined('DOING_AJAX') || !DOING_AJAX) && !current_user_can('edit_posts') /* Give Filters a chance here too. */)
 				if(apply_filters('ws_plugin__s2member_admin_lockout', $GLOBALS['WS_PLUGIN__']['s2member']['o']['force_admin_lockouts'], get_defined_vars()))
 				{
-					if($redirection_url = c_ws_plugin__s2member_login_redirects::login_redirection_url())
+					if(($redirection_url = c_ws_plugin__s2member_login_redirects::login_redirection_url()))
 						wp_redirect($redirection_url).exit ( /* Special Redirection. */);
 
 					else // Else we use the Login Welcome Page configured for s2Member.

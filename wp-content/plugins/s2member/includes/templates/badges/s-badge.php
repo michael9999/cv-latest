@@ -1,14 +1,16 @@
 <?php
-if(realpath(__FILE__) === realpath($_SERVER["SCRIPT_FILENAME"]))
+if(!defined('WPINC')) // MUST have WordPress.
 	exit("Do not access this file directly.");
 
 switch('%%v%%')
 {
 	case 'v2':
+	case '2':
 		$width_height_attr = 'width="180" height="58"';
 		$width_height_styles = 'width:180px; height:58px;';
 		break;
 	case 'v3':
+	case '3':
 		$width_height_attr = 'width="80" height="15"';
 		$width_height_styles = 'width:80px; height:15px;';
 		break;

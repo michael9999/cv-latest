@@ -1,6 +1,8 @@
 <?php
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly
+}
 
 if ( ! class_exists( 'WC_Email_New_Order' ) ) :
 
@@ -63,7 +65,7 @@ class WC_Email_New_Order extends WC_Email {
 
 			$this->find['order-date']      = '{order_date}';
 			$this->find['order-number']    = '{order_number}';
-			
+
 			$this->replace['order-date']   = date_i18n( wc_date_format(), strtotime( $this->object->order_date ) );
 			$this->replace['order-number'] = $this->object->get_order_number();
 		}
@@ -109,14 +111,14 @@ class WC_Email_New_Order extends WC_Email {
 		return ob_get_clean();
 	}
 
-    /**
-     * Initialise Settings Form Fields
-     *
-     * @access public
-     * @return void
-     */
-    function init_form_fields() {
-    	$this->form_fields = array(
+	/**
+	 * Initialise Settings Form Fields
+	 *
+	 * @access public
+	 * @return void
+	 */
+	function init_form_fields() {
+		$this->form_fields = array(
 			'enabled' => array(
 				'title' 		=> __( 'Enable/Disable', 'woocommerce' ),
 				'type' 			=> 'checkbox',
@@ -149,15 +151,11 @@ class WC_Email_New_Order extends WC_Email {
 				'type' 			=> 'select',
 				'description' 	=> __( 'Choose which format of email to send.', 'woocommerce' ),
 				'default' 		=> 'html',
-				'class'			=> 'email_type',
-				'options'		=> array(
-					'plain'		 	=> __( 'Plain text', 'woocommerce' ),
-					'html' 			=> __( 'HTML', 'woocommerce' ),
-					'multipart' 	=> __( 'Multipart', 'woocommerce' ),
-				)
+				'class'			=> 'email_type wc-enhanced-select',
+				'options'		=> $this->get_email_type_options()
 			)
 		);
-    }
+	}
 }
 
 endif;

@@ -14,7 +14,7 @@
  * @package s2Member\CCAPS
  * @since 140514
  */
-if(realpath(__FILE__) === realpath($_SERVER['SCRIPT_FILENAME']))
+if(!defined('WPINC')) // MUST have WordPress.
 	exit ('Do not access this file directly.');
 
 if(!class_exists('c_ws_plugin__s2member_access_cap_times'))
@@ -27,6 +27,10 @@ if(!class_exists('c_ws_plugin__s2member_access_cap_times'))
 	 */
 	class c_ws_plugin__s2member_access_cap_times
 	{
+		/**
+		 * @var string Current log time increment.
+		 */
+		protected static $log_time = NULL;
 
 		/**
 		 * @var array Previous array of user CAPS.
@@ -117,7 +121,7 @@ if(!class_exists('c_ws_plugin__s2member_access_cap_times'))
 			foreach($caps as &$_caps_prev_now)
 			{
 				foreach(array_intersect(array_keys($_caps_prev_now), array_keys($role_objects)) as $_role)
-					if($_caps_prev_now[$_role]) // If the cap (i.e. the role) is enabled; merge its caps.
+					if($_caps_prev_now[$_role]) // If the cap (i.e., the role) is enabled; merge its caps.
 						$_caps_prev_now = array_merge($_caps_prev_now, $role_objects[$_role]->capabilities);
 
 				$_s2_caps_prev_now = array();
@@ -130,16 +134,18 @@ if(!class_exists('c_ws_plugin__s2member_access_cap_times'))
 
 			$ac_times = get_user_option('s2member_access_cap_times', $user_id);
 			if(!is_array($ac_times)) $ac_times = array();
-			$time = (float)time();
+
+			if(!isset(self::$log_time))
+				self::$log_time = (float)time();
 
 			foreach($caps['prev'] as $_cap => $_was_enabled)
 				if($_was_enabled && empty($caps['now'][$_cap]))
-					$ac_times[number_format(($time += .0001), 4, '.', '')] = '-'.$_cap;
+					$ac_times[number_format((self::$log_time += .0001), 4, '.', '')] = '-'.$_cap;
 			unset($_cap, $_was_enabled);
 
 			foreach($caps['now'] as $_cap => $_now_enabled)
 				if($_now_enabled && empty($caps['prev'][$_cap]))
-					$ac_times[number_format(($time += .0001), 4, '.', '')] = $_cap;
+					$ac_times[number_format((self::$log_time += .0001), 4, '.', '')] = $_cap;
 			unset($_cap, $_now_enabled);
 
 			update_user_option($user_id, 's2member_access_cap_times', $ac_times);
@@ -193,11 +199,11 @@ if(!class_exists('c_ws_plugin__s2member_access_cap_times'))
 		 * @param array   $access_caps Optional. If not passed, this returns all times for all caps.
 		 *    If passed, please pass an array of specific access capabilities to get the times for.
 		 *    If removal times are desired, you should add a `-` prefix.
-		 *    e.g. `array('ccap_music','level2','-ccap_video')`
+		 *    e.g., `array('ccap_music','level2','-ccap_video')`
 		 *
 		 * @return array An array of all access capability times.
 		 *    Keys are UTC timestamps (w/ microtime precision), values are the capabilities (including `-` prefixed removals).
-		 *    e.g. `array('1234567890.0001' => 'ccap_music', '1234567890.0002' => 'level2', '1234567890.0003' => '-ccap_video')`
+		 *    e.g., `array('1234567890.0001' => 'ccap_music', '1234567890.0002' => 'level2', '1234567890.0003' => '-ccap_video')`
 		 */
 		public static function get_access_cap_times($user_id, $access_caps = array())
 		{

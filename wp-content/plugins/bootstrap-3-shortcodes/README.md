@@ -171,6 +171,7 @@ bordered | Set "bordered" table style (see Bootstrap documentation) | optional |
 striped | Set "striped" table style (see Bootstrap documentation) | optional | true, false | false
 hover | Set "hover" table style (see Bootstrap documentation) | optional | true, false | false
 condensed | Set "condensed" table style (see Bootstrap documentation) | optional | true, false | false
+responsive | Wrap the table in a div with the class "table-respsonve" (see Bootstrap documentation) | optional | true, false | false
 xclass | Any extra classes you want to add | optional | any text | none
 data | Data attribute and value pairs separated by a comma. Pairs separated by pipe (see example at [Button Dropdowns](#button-dropdowns)). | optional | any text | none
 
@@ -216,7 +217,7 @@ data | Data attribute and value pairs separated by a comma. Pairs separated by p
 * * *
 
 ### Responsive Utilities
-	[responsive visible_block="lg md" hidden="sn xs"] ... [/responsive]
+	[responsive block="lg md" hidden="sn xs"] ... [/responsive]
 
 #### [reponsive] parameters
 Parameter | Description | Required | Values | Default
@@ -229,14 +230,14 @@ inline_block | Sizes at which this element is visible and displayed as an "inlin
 xclass | Any extra classes you want to add | optional | any text | none
 data | Data attribute and value pairs separated by a comma. Pairs separated by pipe (see example at [Button Dropdowns](#button-dropdowns)). | optional | any text | none
 
-[Bootstrap emphasis classes documentation](http://getbootstrap.com/css/#type-emphasis)
+[Bootstrap responsive utilities documentation](http://getbootstrap.com/css/#responsive-utilities)
 
 * * *
 
 ### Components
 
 ### Icons
-	[icon type="arrow"]
+	[icon type="arrow-right"]
 
 #### [icon] parameters
 Parameter | Description | Required | Values | Default
@@ -548,7 +549,7 @@ data | Data attribute and value pairs separated by a comma. Pairs separated by p
 
 ### Media Objects
     [media]
-	  [media-object pull="right"]
+	  [media-object media="left"]
 	    ...
 	  [/media-object]
 	  [media-body title="Testing"]
@@ -565,7 +566,8 @@ data | Data attribute and value pairs separated by a comma. Pairs separated by p
 #### [media-object] parameters
 Parameter | Description | Required | Values | Default
 --- | --- | --- | --- | ---
-pull | Whether the image pulls to the left or right | optional | left, right | right
+media | Whether the image pulls to the left or right | optional | left, right | right
+pull | Whether the image pulls to the left or right *Deprecated, use only if your theme uses Bootstrap 3.2 or earlier* | optional | left, right | right
 xclass | Any extra classes you want to add | optional | any text | none
 data | Data attribute and value pairs separated by a comma. Pairs separated by pipe (see example at [Button Dropdowns](#button-dropdowns)). | optional | any text | none
 
@@ -817,7 +819,7 @@ data | Data attribute and value pairs separated by a comma. Pairs separated by p
 * * *
 
 ### Modal
-    [modal text="This is my modal" title="Modal Title Goes Here" xclass="btn btn-primary btn-large"]
+    [modal text="This is my modal" title="Modal Title Goes Here" xclass="btn btn-primary btn-lg"]
         ...
         [modal-footer]
             [button type="primary" link="#" data="dismiss,modal"]Dismiss[/button]

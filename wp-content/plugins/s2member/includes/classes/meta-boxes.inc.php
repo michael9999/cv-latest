@@ -14,7 +14,7 @@
 * @package s2Member\Meta_Boxes
 * @since 3.5
 */
-if (realpath (__FILE__) === realpath ($_SERVER["SCRIPT_FILENAME"]))
+if(!defined('WPINC')) // MUST have WordPress.
 	exit ("Do not access this file directly.");
 
 if (!class_exists ("c_ws_plugin__s2member_meta_boxes"))
@@ -38,7 +38,7 @@ if (!class_exists ("c_ws_plugin__s2member_meta_boxes"))
 				*
 				* @attaches-to ``add_action("add_meta_boxes");``
 				*
-				* @param string $type String indicating type of Post, or another classification *( i.e. `nav_menu_item` )*.
+				* @param string $type String indicating type of Post, or another classification *( i.e., `nav_menu_item` )*.
 				* @return null
 				*/
 				public static function add_meta_boxes ($type = FALSE)
@@ -49,7 +49,7 @@ if (!class_exists ("c_ws_plugin__s2member_meta_boxes"))
 						$excluded_types = apply_filters("ws_plugin__s2member_add_meta_boxes_excluded_types", $excluded_types, get_defined_vars ());
 
 						if (in_array($type, array_keys (get_post_types ())) && !in_array($type, $excluded_types))
-							add_meta_box ("ws-plugin--s2member-security", "s2Member", "c_ws_plugin__s2member_meta_box_security::security_meta_box", $type, "side", "high");
+							add_meta_box ("ws-plugin--s2member-security", "s2Member™", "c_ws_plugin__s2member_meta_box_security::security_meta_box", $type, "side", "high");
 
 						do_action("ws_plugin__s2member_after_add_meta_boxes", get_defined_vars ());
 

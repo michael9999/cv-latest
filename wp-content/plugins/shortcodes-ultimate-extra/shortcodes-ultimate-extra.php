@@ -2,7 +2,7 @@
 /*
   Plugin Name: Shortcodes Ultimate: Extra Shortcodes
   Plugin URI: http://gndev.info/shortcodes-ultimate/extra/
-  Version: 1.5.2
+  Version: 1.5.4
   Author: Vladimir Anokhin
   Author URI: http://gndev.info/
   Description: Extra set of shortcodes for Shortcodes Ultimate
@@ -12,7 +12,7 @@
  */
 
 define( 'SUE_PLUGIN_FILE', __FILE__ );
-define( 'SUE_PLUGIN_VERSION', '1.5.2' );
+define( 'SUE_PLUGIN_VERSION', '1.5.4' );
 
 require_once 'inc/update.php';
 require_once 'inc/shortcodes.php';

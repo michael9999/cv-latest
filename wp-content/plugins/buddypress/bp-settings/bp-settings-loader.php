@@ -8,20 +8,23 @@
  */
 
 // Exit if accessed directly
-if ( !defined( 'ABSPATH' ) ) exit;
+defined( 'ABSPATH' ) || exit;
 
 class BP_Settings_Component extends BP_Component {
 
 	/**
 	 * Start the settings component creation process
 	 *
-	 * @since BuddyPress (1.5)
+	 * @since BuddyPress (1.5.0)
 	 */
 	public function __construct() {
 		parent::start(
 			'settings',
 			__( 'Settings', 'buddypress' ),
-			BP_PLUGIN_DIR
+			buddypress()->plugin_dir,
+			array(
+				'adminbar_myaccount_order' => 100
+			)
 		);
 	}
 
@@ -30,7 +33,7 @@ class BP_Settings_Component extends BP_Component {
 	 *
 	 * @global BuddyPress $bp The one true BuddyPress instance
 	 */
-	public function includes() {
+	public function includes( $includes = array() ) {
 		parent::includes( array(
 			'actions',
 			'screens',
@@ -45,9 +48,9 @@ class BP_Settings_Component extends BP_Component {
 	 * The BP_SETTINGS_SLUG constant is deprecated, and only used here for
 	 * backwards compatibility.
 	 *
-	 * @since BuddyPress (1.5)
+	 * @since BuddyPress (1.5.0)
 	 */
-	public function setup_globals() {
+	public function setup_globals( $args = array() ) {
 
 		// Define a slug, if necessary
 		if ( !defined( 'BP_SETTINGS_SLUG' ) )
@@ -61,12 +64,9 @@ class BP_Settings_Component extends BP_Component {
 	}
 
 	/**
-	 * Setup BuddyBar navigation
+	 * Set up navigation.
 	 */
-	public function setup_nav() {
-
-		// Define local variable
-		$sub_nav = array();
+	public function setup_nav( $main_nav = array(), $sub_nav = array() ) {
 
 		// Add the settings navigation item
 		$main_nav = array(
@@ -100,9 +100,10 @@ class BP_Settings_Component extends BP_Component {
 			'user_has_access' => bp_core_can_edit_settings()
 		);
 
-		// Add Notifications nav item
+		// Add Email nav item. Formerly called 'Notifications', we
+		// retain the old slug and function names for backward compat
 		$sub_nav[] = array(
-			'name'            => __( 'Notifications', 'buddypress' ),
+			'name'            => __( 'Email', 'buddypress' ),
 			'slug'            => 'notifications',
 			'parent_url'      => $settings_link,
 			'parent_slug'     => $this->slug,
@@ -143,13 +144,10 @@ class BP_Settings_Component extends BP_Component {
 	/**
 	 * Set up the Toolbar
 	 */
-	public function setup_admin_bar() {
+	public function setup_admin_bar( $wp_admin_nav = array() ) {
 
 		// The instance
 		$bp = buddypress();
-
-		// Prevent debug notices
-		$wp_admin_nav = array();
 
 		// Menus for logged in user
 		if ( is_user_logged_in() ) {
@@ -174,16 +172,18 @@ class BP_Settings_Component extends BP_Component {
 				'href'   => trailingslashit( $settings_link . 'general' )
 			);
 
-			// Notifications
-			$wp_admin_nav[] = array(
-				'parent' => 'my-account-' . $this->id,
-				'id'     => 'my-account-' . $this->id . '-notifications',
-				'title'  => __( 'Notifications', 'buddypress' ),
-				'href'   => trailingslashit( $settings_link . 'notifications' )
-			);
+			// Notifications - only add the tab when there is something to display there.
+			if ( has_action( 'bp_notification_settings' ) ) {
+				$wp_admin_nav[] = array(
+					'parent' => 'my-account-' . $this->id,
+					'id'     => 'my-account-' . $this->id . '-notifications',
+					'title'  => __( 'Email', 'buddypress' ),
+					'href'   => trailingslashit( $settings_link . 'notifications' )
+				);
+			}
 
 			// Delete Account
-			if ( !bp_current_user_can( 'bp_moderate' ) && empty( $bp->site_options['bp-disable-account-deletion'] ) ) {
+			if ( !bp_current_user_can( 'bp_moderate' ) && ! bp_core_get_root_option( 'bp-disable-account-deletion' ) ) {
 				$wp_admin_nav[] = array(
 					'parent' => 'my-account-' . $this->id,
 					'id'     => 'my-account-' . $this->id . '-delete-account',

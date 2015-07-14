@@ -34,6 +34,12 @@ This add-on is distributed as an regular zipped plugin. So, you can install it l
 
 == Changelog ==
 
+= 1.5.4 =
+* Added: new shortcode [exit_popup]
+
+= 1.5.3 =
+* Added: new option for [section nomobile="yes"]. Parallax effect can now be disabled for mobile devices (screen width less than 768px)
+
 = 1.5.2 =
 * Images and headings support for pricing tables
 * Updated Russian translation

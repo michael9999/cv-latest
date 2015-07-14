@@ -35,7 +35,7 @@ class WC_Logger {
 	 */
 	public function __destruct() {
 		foreach ( $this->_handles as $handle ) {
-	       @fclose( escapeshellarg( $handle ) );
+			@fclose( $handle );
 		}
 	}
 
@@ -64,8 +64,8 @@ class WC_Logger {
 	 * Add a log entry to chosen file.
 	 *
 	 * @access public
-	 * @param mixed $handle
-	 * @param mixed $message
+	 * @param string $handle
+	 * @param string $message
 	 * @return void
 	 */
 	public function add( $handle, $message ) {

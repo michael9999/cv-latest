@@ -14,7 +14,7 @@
  * @package s2Member\Login_Customizations
  * @since 3.5
  */
-if(realpath(__FILE__) === realpath($_SERVER['SCRIPT_FILENAME']))
+if(!defined('WPINC')) // MUST have WordPress.
 	exit('Do not access this file directly.');
 
 if(!class_exists('c_ws_plugin__s2member_login_customizations'))
@@ -76,7 +76,7 @@ if(!class_exists('c_ws_plugin__s2member_login_customizations'))
 		}
 
 		/**
-		 * Styles login/registration *( i.e. `/wp-login.php` )*.
+		 * Styles login/registration *( i.e., `/wp-login.php` )*.
 		 *
 		 * @package s2Member\Login_Customizations
 		 * @since 3.5
@@ -99,7 +99,7 @@ if(!class_exists('c_ws_plugin__s2member_login_customizations'))
 			$i   = apply_filters('ws_plugin__s2member_login_header_styles_important', ' !important', get_defined_vars());
 			$a   = apply_filters('ws_plugin__s2member_login_header_styles_array_after_open', $a, get_defined_vars());
 
-			$a[] = 'html, body { border:0'.$i.'; padding: 10px; background:none'.$i.'; }';
+			$a[] = 'html, body { border:0'.$i.'; background:none'.$i.'; }';
 			$a[] = 'html { background-color:#'.$GLOBALS['WS_PLUGIN__']['s2member']['o']['login_reg_background_color'].$i.'; }';
 			$a[] = 'html { background-image:url('.$GLOBALS['WS_PLUGIN__']['s2member']['o']['login_reg_background_image'].')'.$i.'; }';
 			$a[] = 'html { background-repeat:'.$GLOBALS['WS_PLUGIN__']['s2member']['o']['login_reg_background_image_repeat'].$i.'; }';

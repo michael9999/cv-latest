@@ -14,7 +14,7 @@
  * @package s2Member\Queries
  * @since 3.5
  */
-if(realpath(__FILE__) === realpath($_SERVER['SCRIPT_FILENAME']))
+if(!defined('WPINC')) // MUST have WordPress.
 	exit('Do not access this file directly.');
 
 if(!class_exists('c_ws_plugin__s2member_querys'))
@@ -89,7 +89,7 @@ if(!class_exists('c_ws_plugin__s2member_querys'))
 		public static function query_level_access(&$wp_query = NULL, $force = FALSE)
 		{
 			global $wpdb; // Global DB object reference.
-			static $initial_query = TRUE; // Tracks the initial query.
+
 			c_ws_plugin__s2member_querys::$current_wp_query = &$wp_query;
 
 			foreach(array_keys(get_defined_vars()) as $__v) $__refs[$__v] =& $$__v;
@@ -108,8 +108,9 @@ if(!class_exists('c_ws_plugin__s2member_querys'))
 				if((!is_admin() || c_ws_plugin__s2member_querys::_is_admin_ajax_search($wp_query)) && !$wp_query->get('___s2_is_bbp_has_replies') /* See: <http://bit.ly/1obLpv4> */)
 				{
 					$suppressing_filters = $wp_query->get('suppress_filters'); // Filter suppression on?
-					if(!$suppressing_filters && $force // Forcing this routine bypasses all of these other conditionals. Works with API function ``attach_s2member_query_filters()``.
-					   || (!$suppressing_filters && in_array('all', $o) && !($initial_query && $wp_query->is_singular())) // Don't create 404 errors. Allow Security Gate to handle these.
+
+					if((!$suppressing_filters && $force) // Forcing this routine bypasses all of these other conditionals. Works with API function ``attach_s2member_query_filters()``.
+					   || (!$suppressing_filters && in_array('all', $o) && !($wp_query->is_main_query() && $wp_query->is_singular())) // Don't create 404 errors. Allow Security Gate to handle these.
 					   || (!$suppressing_filters && (in_array('all', $o) || in_array('searches', $o)) && $wp_query->is_search()) // Or, is this a search results query, possibly via AJAX: `admin-ajax.php`?
 					   || (!$suppressing_filters && (in_array('all', $o) || in_array('feeds', $o)) && $wp_query->is_feed() && !$wp_query->is_comment_feed()) // Or, is this a feed; and it's NOT for comments?
 					   || (!$suppressing_filters && (in_array('all', $o) || in_array('comment-feeds', $o)) && $wp_query->is_feed() && $wp_query->is_comment_feed()) // Or, is this a feed; and it IS indeed for comments?
@@ -122,9 +123,6 @@ if(!class_exists('c_ws_plugin__s2member_querys'))
 						if($suppressing_filters !== 'n/a' && (in_array('all', $o) || in_array('nav-menus', $o))) // Suppression irrelevant here.
 							if(in_array('wp_get_nav_menu_items', ($callers = (isset($callers) ? $callers : c_ws_plugin__s2member_utilities::callers()))))
 								add_filter('wp_get_nav_menu_items', 'c_ws_plugin__s2member_querys::_query_level_access_navs', 100);
-
-						if($suppressing_filters !== 'n/a' && (in_array('all', $o) || in_array('pages', $o)))
-							add_filter('wp_list_pages_excludes', 'c_ws_plugin__s2member_querys::_query_level_access_list_pages', 100);
 
 						if((is_user_logged_in() && is_object($user = wp_get_current_user()) && !empty($user->ID) && ($user_id = $user->ID)) || !($user = FALSE))
 						{
@@ -253,8 +251,6 @@ if(!class_exists('c_ws_plugin__s2member_querys'))
 			foreach(array_keys(get_defined_vars()) as $__v) $__refs[$__v] =& $$__v;
 			do_action('ws_plugin__s2member_after_query_level_access', get_defined_vars());
 			unset($__refs, $__v); // Housekeeping.
-
-			$initial_query = FALSE; // No longer.
 		}
 
 		/**
@@ -266,7 +262,7 @@ if(!class_exists('c_ws_plugin__s2member_querys'))
 		 * @package s2Member\Queries
 		 * @since 3.5
 		 *
-		 * @param object $wp_query Expects ``$wp_query`` by reference.
+		 * @param WP_Query $wp_query Expects ``$wp_query`` by reference.
 		 */
 		public static function _query_level_access_sys(&$wp_query = NULL)
 		{
@@ -400,6 +396,17 @@ if(!class_exists('c_ws_plugin__s2member_querys'))
 		 */
 		public static function _query_level_access_list_pages($excludes = array())
 		{
+			if(!$GLOBALS['WS_PLUGIN__']['s2member']['o']['filter_wp_query']
+			   || (!in_array('all', $GLOBALS['WS_PLUGIN__']['s2member']['o']['filter_wp_query'])
+			       && !in_array('pages', $GLOBALS['WS_PLUGIN__']['s2member']['o']['filter_wp_query']))
+			) return $excludes; // Not applicable.
+
+			$systematics   = array(); // Initialize.
+			$systematics[] = $GLOBALS['WS_PLUGIN__']['s2member']['o']['file_download_limit_exceeded_page'];
+			if(!is_user_logged_in()) $systematics[] = $GLOBALS['WS_PLUGIN__']['s2member']['o']['login_welcome_page'];
+			$systematics = c_ws_plugin__s2member_utils_arrays::force_integers($systematics); // Force integer values here.
+			$excludes    = array_merge($excludes, $systematics);
+
 			for($n = $GLOBALS['WS_PLUGIN__']['s2member']['c']['levels']; $n >= 0; $n--) // Here we need to exclude any Page not available to the current user.
 			{
 				if($GLOBALS['WS_PLUGIN__']['s2member']['o']['level'.$n.'_pages'] === 'all' && !current_user_can('access_s2member_level'.$n))

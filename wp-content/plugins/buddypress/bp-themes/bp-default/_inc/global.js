@@ -17,22 +17,29 @@ jq(document).ready( function() {
 	bp_init_activity();
 
 	/* Object filter and scope set. */
-	var objects = [ 'members', 'groups', 'blogs', 'forums' ];
+	var objects = [ 'members', 'groups', 'blogs', 'forums' ],
+		$whats_new = jq('#whats-new');
+
 	bp_init_objects( objects );
 
 	/* @mention Compose Scrolling */
-	if ( jq.query.get('r') && jq('textarea#whats-new').length ) {
+	if ( $whats_new.length && bp_get_querystring('r') ) {
+		var $member_nicename = $whats_new.val();
+
 		jq('#whats-new-options').animate({
 			height:'40px'
 		});
-		jq("form#whats-new-form textarea").animate({
+
+		$whats_new.animate({
 			height:'50px'
 		});
-		jq.scrollTo( jq('textarea#whats-new'), 500, {
+
+		jq.scrollTo( $whats_new, 500, {
 			offset:-125,
-			easing:'easeOutQuad'
+			easing:'swing'
 		} );
-		jq('textarea#whats-new').focus();
+
+		$whats_new.val('').focus().val( $member_nicename );
 	}
 
 	/**** Activity Posting ********************************************************/
@@ -46,12 +53,31 @@ jq(document).ready( function() {
 			height:'50px'
 		});
 		jq("#aw-whats-new-submit").prop("disabled", false);
+
+		var $whats_new_form = jq("form#whats-new-form");
+		if ( $whats_new_form.hasClass("submitted") ) {
+			$whats_new_form.removeClass("submitted");
+		}
+	});
+
+	/* On blur, shrink if it's empty */
+	jq('#whats-new').blur( function(){
+		if (!this.value.match(/\S+/)) {
+			this.value = "";
+			jq("#whats-new-options").animate({
+				height:'40px'
+			});
+			jq("form#whats-new-form textarea").animate({
+				height:'20px'
+			});
+			jq("#aw-whats-new-submit").prop("disabled", true);
+		}
 	});
 
 	/* New posts */
 	jq("input#aw-whats-new-submit").click( function() {
 		var button = jq(this);
-		var form = button.parent().parent().parent().parent();
+		var form = button.closest("form#whats-new-form");
 
 		form.children().each( function() {
 			if ( jq.nodeName(this, "textarea") || jq.nodeName(this, "input") )
@@ -62,6 +88,7 @@ jq(document).ready( function() {
 		jq('div.error').remove();
 		button.addClass('loading');
 		button.prop('disabled', true);
+		form.addClass("submitted");
 
 		/* Default POST values */
 		var object = '';
@@ -75,7 +102,7 @@ jq(document).ready( function() {
 
 		jq.post( ajaxurl, {
 			action: 'post_update',
-			'cookie': encodeURIComponent(document.cookie),
+			'cookie': bp_get_cookies(),
 			'_wpnonce_post_update': jq("input#_wpnonce_post_update").val(),
 			'content': content,
 			'object': object,
@@ -102,7 +129,7 @@ jq(document).ready( function() {
 				}
 
 				jq("ul#activity-stream").prepend(response);
-				jq("ul#activity-stream li:first").addClass('new-update');
+				jq("ul#activity-stream li:first").addClass('new-update just-posted');
 
 				if ( 0 != jq("#latest-update").length ) {
 					var l = jq("ul#activity-stream li.new-update .activity-content .activity-inner p").html();
@@ -195,7 +222,7 @@ jq(document).ready( function() {
 
 			jq.post( ajaxurl, {
 				action: 'activity_mark_' + type,
-				'cookie': encodeURIComponent(document.cookie),
+				'cookie': bp_get_cookies(),
 				'id': parent_id
 			},
 			function(response) {
@@ -249,7 +276,7 @@ jq(document).ready( function() {
 
 			jq.post( ajaxurl, {
 				action: 'delete_activity',
-				'cookie': encodeURIComponent(document.cookie),
+				'cookie': bp_get_cookies(),
 				'id': id,
 				'_wpnonce': nonce
 			},
@@ -301,10 +328,17 @@ jq(document).ready( function() {
 
 			var oldest_page = ( jq.cookie('bp-activity-oldestpage') * 1 ) + 1;
 
+			var just_posted = [];
+
+			jq('.activity-list li.just-posted').each( function(){
+				just_posted.push( jq(this).attr('id').replace( 'activity-','' ) );
+			});
+
 			jq.post( ajaxurl, {
 				action: 'activity_get_older_updates',
-				'cookie': encodeURIComponent(document.cookie),
-				'page': oldest_page
+				'cookie': bp_get_cookies(),
+				'page': oldest_page,
+				'exclude_just_posted': just_posted.join(',')
 			},
 			function(response)
 			{
@@ -322,7 +356,7 @@ jq(document).ready( function() {
 	});
 
 	// Activity "Read More" links
-	jq('.activity-read-more a').on('click', function(event) {
+	jq('div.activity').on('click', '.activity-read-more a', function(event) {
 		var target = jq(event.target);
 		var link_id = target.parent().attr('id').split('-');
 		var a_id = link_id[3];
@@ -390,7 +424,7 @@ jq(document).ready( function() {
 			form.slideDown( 200 );
 			jq.scrollTo( form, 500, {
 				offset:-100,
-				easing:'easeOutQuad'
+				easing:'swing'
 			} );
 			jq('#ac-form-' + ids[2] + ' textarea').focus();
 
@@ -416,7 +450,7 @@ jq(document).ready( function() {
 
 			var ajaxdata = {
 				action: 'new_activity_comment',
-				'cookie': encodeURIComponent(document.cookie),
+				'cookie': bp_get_cookies(),
 				'_wpnonce_new_activity_comment': jq("input#_wpnonce_new_activity_comment").val(),
 				'comment_id': comment_id,
 				'form_id': form_id[2],
@@ -436,27 +470,35 @@ jq(document).ready( function() {
 				if ( response[0] + response[1] == '-1' ) {
 					form.append( jq( response.substr( 2, response.length ) ).hide().fadeIn( 200 ) );
 				} else {
+					var activity_comments = form.parent();
 					form.fadeOut( 200, function() {
-						if ( 0 == form.parent().children('ul').length ) {
-							if ( form.parent().hasClass('activity-comments') ) {
-								form.parent().prepend('<ul></ul>');
+						if ( 0 == activity_comments.children('ul').length ) {
+							if ( activity_comments.hasClass('activity-comments') ) {
+								activity_comments.prepend('<ul></ul>');
 							} else {
-								form.parent().append('<ul></ul>');
+								activity_comments.append('<ul></ul>');
 							}
 						}
 
 						/* Preceeding whitespace breaks output with jQuery 1.9.0 */
 						var the_comment = jq.trim( response );
 
-						form.parent().children('ul').append( jq( the_comment ).hide().fadeIn( 200 ) );
+						activity_comments.children('ul').append( jq( the_comment ).hide().fadeIn( 200 ) );
 						form.children('textarea').val('');
-						form.parent().parent().addClass('has-comments');
+						activity_comments.parent().addClass('has-comments');
 					} );
 
 					jq( 'form#' + form.attr('id') + ' textarea').val('');
 
 					/* Increase the "Reply (X)" button count */
 					jq('li#activity-' + form_id[2] + ' a.acomment-reply span').html( Number( jq('li#activity-' + form_id[2] + ' a.acomment-reply span').html() ) + 1 );
+
+					// Increment the 'Show all x comments' string, if present
+					var show_all_a = activity_comments.find('.show-all').find('a');
+					if ( show_all_a ) {
+						var new_count = jq('li#activity-' + form_id[2] + ' a.acomment-reply span').html();
+						show_all_a.html( BP_DTheme.show_x_comments.replace( '%d', new_count ) );
+					}
 				}
 
 				jq(target).prop("disabled", false);
@@ -488,7 +530,7 @@ jq(document).ready( function() {
 
 			jq.post( ajaxurl, {
 				action: 'delete_activity_comment',
-				'cookie': encodeURIComponent(document.cookie),
+				'cookie': bp_get_cookies(),
 				'_wpnonce': nonce,
 				'id': comment_id
 			},
@@ -504,12 +546,20 @@ jq(document).ready( function() {
 						if ( !jq(this).is(':hidden') )
 							child_count++;
 					});
-					comment_li.fadeOut(200);
+					comment_li.fadeOut(200, function() {
+						comment_li.remove();
+					});
 
 					/* Decrease the "Reply (X)" button count */
 					var count_span = jq('li#' + comment_li.parents('ul#activity-stream > li').attr('id') + ' a.acomment-reply span');
 					var new_count = count_span.html() - ( 1 + child_count );
 					count_span.html(new_count);
+
+					// Change the 'Show all x comments' text
+					var show_all_a = comment_li.siblings('.show-all').find('a');
+					if ( show_all_a ) {
+						show_all_a.html( BP_DTheme.show_x_comments.replace( '%d', new_count ) );
+					}
 
 					/* If that was the last comment for the item, remove the has-comments class to clean up the styling */
 					if ( 0 == new_count ) {
@@ -692,6 +742,7 @@ jq(document).ready( function() {
 			var css_id = el.attr('id').split( '-' );
 			var object = css_id[0];
 			var search_terms = false;
+			var pagination_id = jq(target).closest('.pagination-links').attr('id');
 
 			if ( jq('div.dir-search input').length )
 				search_terms = jq('.dir-search input').val();
@@ -703,7 +754,13 @@ jq(document).ready( function() {
 			else
 				var page_number = Number( jq(target).html() );
 
-			bp_filter_request( object, jq.cookie('bp-' + object + '-filter'), jq.cookie('bp-' + object + '-scope'), 'div.' + object, search_terms, page_number, jq.cookie('bp-' + object + '-extras') );
+			if ( pagination_id.indexOf( 'pag-bottom' ) !== -1 ) {
+				var caller = 'pag-bottom';
+			} else {
+				var caller = null;
+			}
+
+			bp_filter_request( object, jq.cookie('bp-' + object + '-filter'), jq.cookie('bp-' + object + '-scope'), 'div.' + object, search_terms, page_number, jq.cookie('bp-' + object + '-extras'), caller );
 
 			return false;
 		}
@@ -760,7 +817,7 @@ jq(document).ready( function() {
 		jq.post( ajaxurl, {
 			action: 'groups_invite_user',
 			'friend_action': friend_action,
-			'cookie': encodeURIComponent(document.cookie),
+			'cookie': bp_get_cookies(),
 			'_wpnonce': jq("input#_wpnonce_invite_uninvite_user").val(),
 			'friend_id': friend_id,
 			'group_id': jq("input#group_id").val()
@@ -783,7 +840,7 @@ jq(document).ready( function() {
 	});
 
 	/* Remove a user from the list of users to invite to a group */
-	jq("#friend-list li a.remove").on('click', function() {
+	jq("#friend-list").on('click', 'li a.remove', function() {
 		jq('.ajax-loader').toggle();
 
 		var friend_id = jq(this).attr('id');
@@ -793,7 +850,7 @@ jq(document).ready( function() {
 		jq.post( ajaxurl, {
 			action: 'groups_invite_user',
 			'friend_action': 'uninvite',
-			'cookie': encodeURIComponent(document.cookie),
+			'cookie': bp_get_cookies(),
 			'_wpnonce': jq("input#_wpnonce_invite_uninvite_user").val(),
 			'friend_id': friend_id,
 			'group_id': jq("input#group_id").val()
@@ -810,26 +867,38 @@ jq(document).ready( function() {
 
 	/** Profile Visibility Settings *********************************/
 	jq('.field-visibility-settings').hide();
-	jq('.visibility-toggle-link').on( 'click', function() {
-		var toggle_div = jq(this).parent();
+	jq( '.visibility-toggle-link' ).on( 'click', function( event ) {
+		event.preventDefault();
 
-		jq(toggle_div).fadeOut( 600, function(){
-			jq(toggle_div).siblings('.field-visibility-settings').slideDown(400);
-		});
-
-		return false;
+		jq( this ).parent().hide().addClass( 'field-visibility-settings-hide' )
+			.siblings( '.field-visibility-settings' ).show().addClass( 'field-visibility-settings-open' );
 	} );
 
-	jq('.field-visibility-settings-close').on( 'click', function() {
-		var settings_div = jq(this).parent();
+	jq( '.field-visibility-settings-close' ).on( 'click', function( event ) {
+		event.preventDefault();
 
-		jq(settings_div).slideUp( 400, function(){
-			jq(settings_div).siblings('.field-visibility-settings-toggle').fadeIn(800);
-		});
+		var settings_div = jq( this ).parent(),
+			vis_setting_text = settings_div.find( 'input:checked' ).parent().text();
 
-		return false;
+		settings_div.hide().removeClass( 'field-visibility-settings-open' )
+			.siblings( '.field-visibility-settings-toggle' )
+				.children( '.current-visibility-level' ).text( vis_setting_text ).end()
+			.show().removeClass( 'field-visibility-settings-hide' );
 	} );
 
+	jq("#profile-edit-form input:not(:submit), #profile-edit-form textarea, #profile-edit-form select, #signup_form input:not(:submit), #signup_form textarea, #signup_form select").change( function() {
+		var shouldconfirm = true;
+
+		jq('#profile-edit-form input:submit, #signup_form input:submit').on( 'click', function() {
+			shouldconfirm = false;
+		});
+
+		window.onbeforeunload = function(e) {
+			if ( shouldconfirm ) {
+				return BP_DTheme.unsaved_changes;
+			}
+		};
+	});
 
 	/** Friendship Requests **************************************/
 
@@ -860,7 +929,7 @@ jq(document).ready( function() {
 
 		jq.post( ajaxurl, {
 			action: action,
-			'cookie': encodeURIComponent(document.cookie),
+			'cookie': bp_get_cookies(),
 			'id': id,
 			'_wpnonce': nonce
 		},
@@ -902,7 +971,7 @@ jq(document).ready( function() {
 
 		jq.post( ajaxurl, {
 			action: 'addremove_friend',
-			'cookie': encodeURIComponent(document.cookie),
+			'cookie': bp_get_cookies(),
 			'fid': fid,
 			'_wpnonce': nonce
 		},
@@ -951,7 +1020,7 @@ jq(document).ready( function() {
 
 		jq.post( ajaxurl, {
 			action: 'joinleave_group',
-			'cookie': encodeURIComponent(document.cookie),
+			'cookie': bp_get_cookies(),
 			'gid': gid,
 			'_wpnonce': nonce
 		},
@@ -959,14 +1028,41 @@ jq(document).ready( function() {
 		{
 			var parentdiv = thelink.parent();
 
-			if ( !jq('body.directory').length )
+			// user groups page
+			if ( ! jq('body.directory').length ) {
 				location.href = location.href;
-			else {
+
+			// groups directory
+			} else {
 				jq(parentdiv).fadeOut(200,
 					function() {
 						parentdiv.fadeIn(200).html(response);
+
+						var mygroups = jq('#groups-personal span');
+						var add      = 1;
+
+						if( thelink.hasClass( 'leave-group' ) ) {
+							// hidden groups slide up
+							if ( parentdiv.hasClass( 'hidden' ) ) {
+								parentdiv.closest('li').slideUp( 200 );
+							}
+
+							add = 0;
+						} else if ( thelink.hasClass( 'request-membership' ) ) {
+							add = false;
+						}
+
+						// change the "My Groups" value
+						if ( add !== false && mygroups.length ) {
+							if ( add ) {
+								mygroups.text( ( mygroups.text() >> 0 ) + 1 );
+							} else {
+								mygroups.text( ( mygroups.text() >> 0 ) - 1 );
+							}
+						}
+
 					}
-					);
+				);
 			}
 		});
 		return false;
@@ -1008,7 +1104,7 @@ jq(document).ready( function() {
 
 			jq.post( ajaxurl, {
 				action: 'messages_send_reply',
-				'cookie': encodeURIComponent(document.cookie),
+				'cookie': bp_get_cookies(),
 				'_wpnonce': jq("input#send_message_nonce").val(),
 
 				'content': jq("#message_content").val(),
@@ -1092,40 +1188,42 @@ jq(document).ready( function() {
 	});
 
 	/* Selecting unread and read messages in inbox */
-	jq("select#message-type-select").change(
-		function() {
-			var selection = jq("select#message-type-select").val();
-			var checkboxes = jq("td input[type='checkbox']");
-			checkboxes.each( function(i) {
-				checkboxes[i].checked = "";
-			});
+	jq( 'body.messages #item-body div.messages' ).on( 'change', '#message-type-select', function() {
+		var selection = this.value;
+		var checkboxes = jq( "td input[type='checkbox']" );
 
-			switch(selection) {
-				case 'unread':
-					var checkboxes = jq("tr.unread td input[type='checkbox']");
-					break;
-				case 'read':
-					var checkboxes = jq("tr.read td input[type='checkbox']");
-					break;
-			}
-			if ( selection != '' ) {
-				checkboxes.each( function(i) {
-					checkboxes[i].checked = "checked";
-				});
-			} else {
-				checkboxes.each( function(i) {
-					checkboxes[i].checked = "";
-				});
-			}
+		checkboxes.each( function(i) {
+			checkboxes[i].checked = "";
+		});
+
+		var checked_value = "checked";
+		switch ( selection ) {
+			case 'unread' :
+				checkboxes = jq("tr.unread td input[type='checkbox']");
+				break;
+			case 'read' :
+				checkboxes = jq("tr.read td input[type='checkbox']");
+				break;
+			case '' :
+				checked_value = "";
+				break;
 		}
-	);
+
+		checkboxes.each( function(i) {
+			checkboxes[i].checked = checked_value;
+		});
+	});
 
 	/* Bulk delete messages */
-	jq("a#delete_inbox_messages, a#delete_sentbox_messages").click( function() {
+	jq( 'body.messages #item-body div.messages' ).on( 'click', '.messages-options-nav a', function() {
+		if ( -1 == jq.inArray( this.id, Array( 'delete_sentbox_messages', 'delete_inbox_messages' ) ) ) {
+			return;
+		}
+
 		checkboxes_tosend = '';
 		checkboxes = jq("#message-threads tr td input[type='checkbox']");
 
-		jq('div#message').remove();
+		jq('#message').remove();
 		jq(this).addClass('loading');
 
 		jq(checkboxes).each( function(i) {
@@ -1148,14 +1246,19 @@ jq(document).ready( function() {
 				jq('#message-threads').before( '<div id="message" class="updated"><p>' + response + '</p></div>' );
 
 				jq(checkboxes).each( function(i) {
-					if( jq(this).is(':checked') )
+					if( jq(this).is(':checked') ) {
+						// We need to uncheck because message is only hidden
+						// Otherwise, AJAX will be fired again with same data
+						jq(this).attr( 'checked', false );
 						jq(this).parent().parent().fadeOut(150);
+					}
 				});
 			}
 
-			jq('div#message').hide().slideDown(150);
-			jq("a#delete_inbox_messages, a#delete_sentbox_messages").removeClass('loading');
+			jq('#message').hide().slideDown(150);
+			jq("#delete_inbox_messages, #delete_sentbox_messages").removeClass('loading');
 		});
+
 		return false;
 	});
 
@@ -1192,25 +1295,25 @@ jq(document).ready( function() {
 
 	/* Clear BP cookies on logout */
 	jq('a.logout').click( function() {
-		jq.cookie('bp-activity-scope', null, {
+		jq.removeCookie('bp-activity-scope', {
 			path: '/'
 		});
-		jq.cookie('bp-activity-filter', null, {
+		jq.removeCookie('bp-activity-filter', {
 			path: '/'
 		});
-		jq.cookie('bp-activity-oldestpage', null, {
+		jq.removeCookie('bp-activity-oldestpage', {
 			path: '/'
 		});
 
 		var objects = [ 'members', 'groups', 'blogs', 'forums' ];
 		jq(objects).each( function(i) {
-			jq.cookie('bp-' + objects[i] + '-scope', null, {
+			jq.removeCookie('bp-' + objects[i] + '-scope', {
 				path: '/'
 			} );
-			jq.cookie('bp-' + objects[i] + '-filter', null, {
+			jq.removeCookie('bp-' + objects[i] + '-filter', {
 				path: '/'
 			} );
-			jq.cookie('bp-' + objects[i] + '-extras', null, {
+			jq.removeCookie('bp-' + objects[i] + '-extras', {
 				path: '/'
 			} );
 		});
@@ -1252,12 +1355,12 @@ function bp_init_objects(objects) {
 }
 
 /* Filter the current content list (groups/members/blogs/topics) */
-function bp_filter_request( object, filter, scope, target, search_terms, page, extras ) {
+function bp_filter_request( object, filter, scope, target, search_terms, page, extras, caller ) {
 	if ( 'activity' == object )
 		return false;
 
-	if ( jq.query.get('s') && !search_terms )
-		search_terms = jq.query.get('s');
+	if ( bp_get_querystring('s') && !search_terms )
+		search_terms = bp_get_querystring('s');
 
 	if ( null == scope )
 		scope = 'all';
@@ -1289,7 +1392,7 @@ function bp_filter_request( object, filter, scope, target, search_terms, page, e
 
 	bp_ajax_request = jq.post( ajaxurl, {
 		action: object + '_filter',
-		'cookie': encodeURIComponent(document.cookie),
+		'cookie': bp_get_cookies(),
 		'object': object,
 		'filter': filter,
 		'search_terms': search_terms,
@@ -1299,10 +1402,23 @@ function bp_filter_request( object, filter, scope, target, search_terms, page, e
 	},
 	function(response)
 	{
-		jq(target).fadeOut( 100, function() {
-			jq(this).html(response);
-			jq(this).fadeIn(100);
-		});
+		/* animate to top if called from bottom pagination */
+		if ( caller == 'pag-bottom' && jq('#subnav').length ) {
+			var top = jq('#subnav').parent();
+			jq('html,body').animate({scrollTop: top.offset().top}, 'slow', function() {
+				jq(target).fadeOut( 100, function() {
+					jq(this).html(response);
+					jq(this).fadeIn(100);
+			 	});
+			});
+
+		} else {
+			jq(target).fadeOut( 100, function() {
+				jq(this).html(response);
+				jq(this).fadeIn(100);
+		 	});
+		}
+
 		jq('.item-list-tabs li.selected').removeClass('loading');
 	});
 }
@@ -1337,7 +1453,7 @@ function bp_activity_request(scope, filter) {
 
 	bp_ajax_request = jq.post( ajaxurl, {
 		action: 'activity_widget_filter',
-		'cookie': encodeURIComponent(document.cookie),
+		'cookie': bp_get_cookies(),
 		'_wpnonce_activity_filter': jq("input#_wpnonce_activity_filter").val(),
 		'scope': scope,
 		'filter': filter
@@ -1388,7 +1504,7 @@ function bp_dtheme_hide_comments() {
 				jq(this).toggle();
 
 				if ( !i )
-					jq(this).before( '<li class="show-all"><a href="#' + parent_li.attr('id') + '/show-all/" title="' + BP_DTheme.show_all_comments + '">' + BP_DTheme.show_all + ' ' + comment_count + ' ' + BP_DTheme.comments + '</a></li>' );
+					jq(this).before( '<li class="show-all"><a href="#' + parent_li.attr('id') + '/show-all/" title="' + BP_DTheme.show_all_comments + '">' + BP_DTheme.show_x_comments.replace( '%d', comment_count ) + '</a></li>' );
 			}
 		});
 
@@ -1431,14 +1547,27 @@ function clear(container) {
 	return;
 }
 
-/* ScrollTo plugin - just inline and minified */
-;(function($){var h=$.scrollTo=function(a,b,c){$(window).scrollTo(a,b,c)};h.defaults={axis:'xy',duration:parseFloat($.fn.jquery)>=1.3?0:1,limit:true};h.window=function(a){return $(window)._scrollable()};$.fn._scrollable=function(){return this.map(function(){var a=this,isWin=!a.nodeName||$.inArray(a.nodeName.toLowerCase(),['iframe','#document','html','body'])!=-1;if(!isWin)return a;var b=(a.contentWindow||a).document||a.ownerDocument||a;return/webkit/i.test(navigator.userAgent)||b.compatMode=='BackCompat'?b.body:b.documentElement})};$.fn.scrollTo=function(e,f,g){if(typeof f=='object'){g=f;f=0}if(typeof g=='function')g={onAfter:g};if(e=='max')e=9e9;g=$.extend({},h.defaults,g);f=f||g.duration;g.queue=g.queue&&g.axis.length>1;if(g.queue)f/=2;g.offset=both(g.offset);g.over=both(g.over);return this._scrollable().each(function(){if(e==null)return;var d=this,$elem=$(d),targ=e,toff,attr={},win=$elem.is('html,body');switch(typeof targ){case'number':case'string':if(/^([+-]=?)?\d+(\.\d+)?(px|%)?$/.test(targ)){targ=both(targ);break}targ=$(targ,this);if(!targ.length)return;case'object':if(targ.is||targ.style)toff=(targ=$(targ)).offset()}$.each(g.axis.split(''),function(i,a){var b=a=='x'?'Left':'Top',pos=b.toLowerCase(),key='scroll'+b,old=d[key],max=h.max(d,a);if(toff){attr[key]=toff[pos]+(win?0:old-$elem.offset()[pos]);if(g.margin){attr[key]-=parseInt(targ.css('margin'+b))||0;attr[key]-=parseInt(targ.css('border'+b+'Width'))||0}attr[key]+=g.offset[pos]||0;if(g.over[pos])attr[key]+=targ[a=='x'?'width':'height']()*g.over[pos]}else{var c=targ[pos];attr[key]=c.slice&&c.slice(-1)=='%'?parseFloat(c)/100*max:c}if(g.limit&&/^\d+$/.test(attr[key]))attr[key]=attr[key]<=0?0:Math.min(attr[key],max);if(!i&&g.queue){if(old!=attr[key])animate(g.onAfterFirst);delete attr[key]}});animate(g.onAfter);function animate(a){$elem.animate(attr,f,g.easing,a&&function(){a.call(this,e,g)})}}).end()};h.max=function(a,b){var c=b=='x'?'Width':'Height',scroll='scroll'+c;if(!$(a).is('html,body'))return a[scroll]-$(a)[c.toLowerCase()]();var d='client'+c,html=a.ownerDocument.documentElement,body=a.ownerDocument.body;return Math.max(html[scroll],body[scroll])-Math.min(html[d],body[d])};function both(a){return typeof a=='object'?a:{top:a,left:a}}})(jQuery);
+/* Returns a querystring of BP cookies (cookies beginning with 'bp-') */
+function bp_get_cookies() {
+	// get all cookies and split into an array
+	var allCookies   = document.cookie.split(";");
 
-/* jQuery Easing Plugin, v1.3 - http://gsgd.co.uk/sandbox/jquery/easing/ */
-jQuery.easing.jswing=jQuery.easing.swing;jQuery.extend(jQuery.easing,{def:"easeOutQuad",swing:function(e,f,a,h,g){return jQuery.easing[jQuery.easing.def](e,f,a,h,g)},easeInQuad:function(e,f,a,h,g){return h*(f/=g)*f+a},easeOutQuad:function(e,f,a,h,g){return -h*(f/=g)*(f-2)+a},easeInOutQuad:function(e,f,a,h,g){if((f/=g/2)<1){return h/2*f*f+a}return -h/2*((--f)*(f-2)-1)+a},easeInCubic:function(e,f,a,h,g){return h*(f/=g)*f*f+a},easeOutCubic:function(e,f,a,h,g){return h*((f=f/g-1)*f*f+1)+a},easeInOutCubic:function(e,f,a,h,g){if((f/=g/2)<1){return h/2*f*f*f+a}return h/2*((f-=2)*f*f+2)+a},easeInQuart:function(e,f,a,h,g){return h*(f/=g)*f*f*f+a},easeOutQuart:function(e,f,a,h,g){return -h*((f=f/g-1)*f*f*f-1)+a},easeInOutQuart:function(e,f,a,h,g){if((f/=g/2)<1){return h/2*f*f*f*f+a}return -h/2*((f-=2)*f*f*f-2)+a},easeInQuint:function(e,f,a,h,g){return h*(f/=g)*f*f*f*f+a},easeOutQuint:function(e,f,a,h,g){return h*((f=f/g-1)*f*f*f*f+1)+a},easeInOutQuint:function(e,f,a,h,g){if((f/=g/2)<1){return h/2*f*f*f*f*f+a}return h/2*((f-=2)*f*f*f*f+2)+a},easeInSine:function(e,f,a,h,g){return -h*Math.cos(f/g*(Math.PI/2))+h+a},easeOutSine:function(e,f,a,h,g){return h*Math.sin(f/g*(Math.PI/2))+a},easeInOutSine:function(e,f,a,h,g){return -h/2*(Math.cos(Math.PI*f/g)-1)+a},easeInExpo:function(e,f,a,h,g){return(f==0)?a:h*Math.pow(2,10*(f/g-1))+a},easeOutExpo:function(e,f,a,h,g){return(f==g)?a+h:h*(-Math.pow(2,-10*f/g)+1)+a},easeInOutExpo:function(e,f,a,h,g){if(f==0){return a}if(f==g){return a+h}if((f/=g/2)<1){return h/2*Math.pow(2,10*(f-1))+a}return h/2*(-Math.pow(2,-10*--f)+2)+a},easeInCirc:function(e,f,a,h,g){return -h*(Math.sqrt(1-(f/=g)*f)-1)+a},easeOutCirc:function(e,f,a,h,g){return h*Math.sqrt(1-(f=f/g-1)*f)+a},easeInOutCirc:function(e,f,a,h,g){if((f/=g/2)<1){return -h/2*(Math.sqrt(1-f*f)-1)+a}return h/2*(Math.sqrt(1-(f-=2)*f)+1)+a},easeInElastic:function(f,h,e,l,k){var i=1.70158;var j=0;var g=l;if(h==0){return e}if((h/=k)==1){return e+l}if(!j){j=k*0.3}if(g<Math.abs(l)){g=l;var i=j/4}else{var i=j/(2*Math.PI)*Math.asin(l/g)}return -(g*Math.pow(2,10*(h-=1))*Math.sin((h*k-i)*(2*Math.PI)/j))+e},easeOutElastic:function(f,h,e,l,k){var i=1.70158;var j=0;var g=l;if(h==0){return e}if((h/=k)==1){return e+l}if(!j){j=k*0.3}if(g<Math.abs(l)){g=l;var i=j/4}else{var i=j/(2*Math.PI)*Math.asin(l/g)}return g*Math.pow(2,-10*h)*Math.sin((h*k-i)*(2*Math.PI)/j)+l+e},easeInOutElastic:function(f,h,e,l,k){var i=1.70158;var j=0;var g=l;if(h==0){return e}if((h/=k/2)==2){return e+l}if(!j){j=k*(0.3*1.5)}if(g<Math.abs(l)){g=l;var i=j/4}else{var i=j/(2*Math.PI)*Math.asin(l/g)}if(h<1){return -0.5*(g*Math.pow(2,10*(h-=1))*Math.sin((h*k-i)*(2*Math.PI)/j))+e}return g*Math.pow(2,-10*(h-=1))*Math.sin((h*k-i)*(2*Math.PI)/j)*0.5+l+e},easeInBack:function(e,f,a,i,h,g){if(g==undefined){g=1.70158}return i*(f/=h)*f*((g+1)*f-g)+a},easeOutBack:function(e,f,a,i,h,g){if(g==undefined){g=1.70158}return i*((f=f/h-1)*f*((g+1)*f+g)+1)+a},easeInOutBack:function(e,f,a,i,h,g){if(g==undefined){g=1.70158}if((f/=h/2)<1){return i/2*(f*f*(((g*=(1.525))+1)*f-g))+a}return i/2*((f-=2)*f*(((g*=(1.525))+1)*f+g)+2)+a},easeInBounce:function(e,f,a,h,g){return h-jQuery.easing.easeOutBounce(e,g-f,0,h,g)+a},easeOutBounce:function(e,f,a,h,g){if((f/=g)<(1/2.75)){return h*(7.5625*f*f)+a}else{if(f<(2/2.75)){return h*(7.5625*(f-=(1.5/2.75))*f+0.75)+a}else{if(f<(2.5/2.75)){return h*(7.5625*(f-=(2.25/2.75))*f+0.9375)+a}else{return h*(7.5625*(f-=(2.625/2.75))*f+0.984375)+a}}}},easeInOutBounce:function(e,f,a,h,g){if(f<g/2){return jQuery.easing.easeInBounce(e,f*2,0,h,g)*0.5+a}return jQuery.easing.easeOutBounce(e,f*2-g,0,h,g)*0.5+h*0.5+a}});
+	var bpCookies    = {};
+	var cookiePrefix = 'bp-';
 
-/* jQuery Cookie plugin */
-jQuery.cookie=function(name,value,options){if(typeof value!='undefined'){options=options||{};if(value===null){value='';options.expires=-1;}var expires='';if(options.expires&&(typeof options.expires=='number'||options.expires.toUTCString)){var date;if(typeof options.expires=='number'){date=new Date();date.setTime(date.getTime()+(options.expires*24*60*60*1000));}else{date=options.expires;}expires='; expires='+date.toUTCString();}var path=options.path?'; path='+(options.path):'';var domain=options.domain?'; domain='+(options.domain):'';var secure=options.secure?'; secure':'';document.cookie=[name,'=',encodeURIComponent(value),expires,path,domain,secure].join('');}else{var cookieValue=null;if(document.cookie&&document.cookie!=''){var cookies=document.cookie.split(';');for(var i=0;i<cookies.length;i++){var cookie=jQuery.trim(cookies[i]);if(cookie.substring(0,name.length+1)==(name+'=')){cookieValue=decodeURIComponent(cookie.substring(name.length+1));break;}}}return cookieValue;}};
+	// loop through cookies
+	for (var i = 0; i < allCookies.length; i++) {
+		var cookie    = allCookies[i];
+		var delimiter = cookie.indexOf("=");
+		var name      = jq.trim( unescape( cookie.slice(0, delimiter) ) );
+		var value     = unescape( cookie.slice(delimiter + 1) );
 
-/* jQuery querystring plugin */
-eval(function(p,a,c,k,e,d){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a)>35?String.fromCharCode(c+29):c.toString(36))};if(!''.replace(/^/,String)){while(c--){d[e(c)]=k[c]||e(c)}k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1};while(c--){if(k[c]){p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c])}}return p}('M 6(A){4 $11=A.11||\'&\';4 $V=A.V===r?r:j;4 $1p=A.1p===r?\'\':\'[]\';4 $13=A.13===r?r:j;4 $D=$13?A.D===j?"#":"?":"";4 $15=A.15===r?r:j;v.1o=M 6(){4 f=6(o,t){8 o!=1v&&o!==x&&(!!t?o.1t==t:j)};4 14=6(1m){4 m,1l=/\\[([^[]*)\\]/g,T=/^([^[]+)(\\[.*\\])?$/.1r(1m),k=T[1],e=[];19(m=1l.1r(T[2]))e.u(m[1]);8[k,e]};4 w=6(3,e,7){4 o,y=e.1b();b(I 3!=\'X\')3=x;b(y===""){b(!3)3=[];b(f(3,L)){3.u(e.h==0?7:w(x,e.z(0),7))}n b(f(3,1a)){4 i=0;19(3[i++]!=x);3[--i]=e.h==0?7:w(3[i],e.z(0),7)}n{3=[];3.u(e.h==0?7:w(x,e.z(0),7))}}n b(y&&y.T(/^\\s*[0-9]+\\s*$/)){4 H=1c(y,10);b(!3)3=[];3[H]=e.h==0?7:w(3[H],e.z(0),7)}n b(y){4 H=y.B(/^\\s*|\\s*$/g,"");b(!3)3={};b(f(3,L)){4 18={};1w(4 i=0;i<3.h;++i){18[i]=3[i]}3=18}3[H]=e.h==0?7:w(3[H],e.z(0),7)}n{8 7}8 3};4 C=6(a){4 p=d;p.l={};b(a.C){v.J(a.Z(),6(5,c){p.O(5,c)})}n{v.J(1u,6(){4 q=""+d;q=q.B(/^[?#]/,\'\');q=q.B(/[;&]$/,\'\');b($V)q=q.B(/[+]/g,\' \');v.J(q.Y(/[&;]/),6(){4 5=1e(d.Y(\'=\')[0]||"");4 c=1e(d.Y(\'=\')[1]||"");b(!5)8;b($15){b(/^[+-]?[0-9]+\\.[0-9]*$/.1d(c))c=1A(c);n b(/^[+-]?[0-9]+$/.1d(c))c=1c(c,10)}c=(!c&&c!==0)?j:c;b(c!==r&&c!==j&&I c!=\'1g\')c=c;p.O(5,c)})})}8 p};C.1H={C:j,1G:6(5,1f){4 7=d.Z(5);8 f(7,1f)},1h:6(5){b(!f(5))8 d.l;4 K=14(5),k=K[0],e=K[1];4 3=d.l[k];19(3!=x&&e.h!=0){3=3[e.1b()]}8 I 3==\'1g\'?3:3||""},Z:6(5){4 3=d.1h(5);b(f(3,1a))8 v.1E(j,{},3);n b(f(3,L))8 3.z(0);8 3},O:6(5,c){4 7=!f(c)?x:c;4 K=14(5),k=K[0],e=K[1];4 3=d.l[k];d.l[k]=w(3,e.z(0),7);8 d},w:6(5,c){8 d.N().O(5,c)},1s:6(5){8 d.O(5,x).17()},1z:6(5){8 d.N().1s(5)},1j:6(){4 p=d;v.J(p.l,6(5,7){1y p.l[5]});8 p},1F:6(Q){4 D=Q.B(/^.*?[#](.+?)(?:\\?.+)?$/,"$1");4 S=Q.B(/^.*?[?](.+?)(?:#.+)?$/,"$1");8 M C(Q.h==S.h?\'\':S,Q.h==D.h?\'\':D)},1x:6(){8 d.N().1j()},N:6(){8 M C(d)},17:6(){6 F(G){4 R=I G=="X"?f(G,L)?[]:{}:G;b(I G==\'X\'){6 1k(o,5,7){b(f(o,L))o.u(7);n o[5]=7}v.J(G,6(5,7){b(!f(7))8 j;1k(R,5,F(7))})}8 R}d.l=F(d.l);8 d},1B:6(){8 d.N().17()},1D:6(){4 i=0,U=[],W=[],p=d;4 16=6(E){E=E+"";b($V)E=E.B(/ /g,"+");8 1C(E)};4 1n=6(1i,5,7){b(!f(7)||7===r)8;4 o=[16(5)];b(7!==j){o.u("=");o.u(16(7))}1i.u(o.P(""))};4 F=6(R,k){4 12=6(5){8!k||k==""?[5].P(""):[k,"[",5,"]"].P("")};v.J(R,6(5,7){b(I 7==\'X\')F(7,12(5));n 1n(W,12(5),7)})};F(d.l);b(W.h>0)U.u($D);U.u(W.P($11));8 U.P("")}};8 M C(1q.S,1q.D)}}(v.1o||{});',62,106,'|||target|var|key|function|value|return|||if|val|this|tokens|is||length||true|base|keys||else||self||false|||push|jQuery|set|null|token|slice|settings|replace|queryObject|hash|str|build|orig|index|typeof|each|parsed|Array|new|copy|SET|join|url|obj|search|match|queryString|spaces|chunks|object|split|get||separator|newKey|prefix|parse|numbers|encode|COMPACT|temp|while|Object|shift|parseInt|test|decodeURIComponent|type|number|GET|arr|EMPTY|add|rx|path|addFields|query|suffix|location|exec|REMOVE|constructor|arguments|undefined|for|empty|delete|remove|parseFloat|compact|encodeURIComponent|toString|extend|load|has|prototype'.split('|'),0,{}))
+		// if BP cookie, store it
+		if ( name.indexOf(cookiePrefix) == 0 ) {
+			bpCookies[name] = value;
+		}
+	}
+
+	// returns BP cookies as querystring
+	return encodeURIComponent( jq.param(bpCookies) );
+}

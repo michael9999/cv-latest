@@ -2,13 +2,15 @@
 /**
  * Debug/Status page
  *
- * @author 		WooThemes
- * @category 	Admin
- * @package 	WooCommerce/Admin/System Status
+ * @author      WooThemes
+ * @category    Admin
+ * @package     WooCommerce/Admin/System Status
  * @version     2.2.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * WC_Admin_Status Class
@@ -19,8 +21,6 @@ class WC_Admin_Status {
 	 * Handles output of the reports page in admin.
 	 */
 	public static function output() {
-		$current_tab = ! empty( $_REQUEST['tab'] ) ? sanitize_title( $_REQUEST['tab'] ) : 'status';
-
 		include_once( 'views/html-admin-page-status.php' );
 	}
 
@@ -35,7 +35,7 @@ class WC_Admin_Status {
 	 * Handles output of tools
 	 */
 	public static function status_tools() {
-		global $woocommerce, $wpdb;
+		global $wpdb;
 
 		$tools = self::get_tools();
 
@@ -44,56 +44,41 @@ class WC_Admin_Status {
 			switch ( $_GET['action'] ) {
 				case 'clear_transients' :
 					wc_delete_product_transients();
+					wc_delete_shop_order_transients();
+					WC_Cache_Helper::get_transient_version( 'shipping', true );
 
 					echo '<div class="updated"><p>' . __( 'Product Transients Cleared', 'woocommerce' ) . '</p></div>';
 				break;
 				case 'clear_expired_transients' :
 
-					// http://w-shadow.com/blog/2012/04/17/delete-stale-transients/
-					$rows = $wpdb->query( "
-						DELETE
-							a, b
-						FROM
-							{$wpdb->options} a, {$wpdb->options} b
-						WHERE
-							a.option_name LIKE '_transient_%' AND
-							a.option_name NOT LIKE '_transient_timeout_%' AND
-							b.option_name = CONCAT(
-								'_transient_timeout_',
-								SUBSTRING(
-									a.option_name,
-									CHAR_LENGTH('_transient_') + 1
-								)
-							)
-							AND b.option_value < UNIX_TIMESTAMP()
-					" );
+					/*
+					 * Deletes all expired transients. The multi-table delete syntax is used
+					 * to delete the transient record from table a, and the corresponding
+					 * transient_timeout record from table b.
+					 *
+					 * Based on code inside core's upgrade_network() function.
+					 */
+					$sql = "DELETE a, b FROM $wpdb->options a, $wpdb->options b
+						WHERE a.option_name LIKE %s
+						AND a.option_name NOT LIKE %s
+						AND b.option_name = CONCAT( '_transient_timeout_', SUBSTRING( a.option_name, 12 ) )
+						AND b.option_value < %d";
+					$rows = $wpdb->query( $wpdb->prepare( $sql, $wpdb->esc_like( '_transient_' ) . '%', $wpdb->esc_like( '_transient_timeout_' ) . '%', time() ) );
 
-					$rows2 = $wpdb->query( "
-						DELETE
-							a, b
-						FROM
-							{$wpdb->options} a, {$wpdb->options} b
-						WHERE
-							a.option_name LIKE '_site_transient_%' AND
-							a.option_name NOT LIKE '_site_transient_timeout_%' AND
-							b.option_name = CONCAT(
-								'_site_transient_timeout_',
-								SUBSTRING(
-									a.option_name,
-									CHAR_LENGTH('_site_transient_') + 1
-								)
-							)
-							AND b.option_value < UNIX_TIMESTAMP()
-					" );
+					$sql = "DELETE a, b FROM $wpdb->options a, $wpdb->options b
+						WHERE a.option_name LIKE %s
+						AND a.option_name NOT LIKE %s
+						AND b.option_name = CONCAT( '_site_transient_timeout_', SUBSTRING( a.option_name, 17 ) )
+						AND b.option_value < %d";
+					$rows2 = $wpdb->query( $wpdb->prepare( $sql, $wpdb->esc_like( '_site_transient_' ) . '%', $wpdb->esc_like( '_site_transient_timeout_' ) . '%', time() ) );
 
 					echo '<div class="updated"><p>' . sprintf( __( '%d Transients Rows Cleared', 'woocommerce' ), $rows + $rows2 ) . '</p></div>';
 
 				break;
 				case 'reset_roles' :
 					// Remove then re-add caps and roles
-					$installer = include( WC()->plugin_path() . '/includes/class-wc-install.php' );
-					$installer->remove_roles();
-					$installer->create_roles();
+					WC_Install::remove_roles();
+					WC_Install::create_roles();
 
 					echo '<div class="updated"><p>' . __( 'Roles successfully reset', 'woocommerce' ) . '</p></div>';
 				break;
@@ -132,13 +117,11 @@ class WC_Admin_Status {
 
 					echo '<div class="updated"><p>' . __( 'Tax rates successfully deleted', 'woocommerce' ) . '</p></div>';
 				break;
-				case 'hide_translation_upgrade' :
-					update_option( 'woocommerce_language_pack_version', array( WC_VERSION , get_locale() ) );
-					$notices = get_option( 'woocommerce_admin_notices', array() );
-					$notices = array_diff( $notices, array( 'translation_upgrade' ) );
-					update_option( 'woocommerce_admin_notices', $notices );
+				case 'reset_tracking' :
+					delete_option( 'woocommerce_allow_tracking' );
+					WC_Admin_Notices::add_notice( 'tracking' );
 
-					echo '<div class="updated"><p>' . __( 'Translation update message hidden successfully!', 'woocommerce' ) . '</p></div>';
+					echo '<div class="updated"><p>' . __( 'Usage tracking settings successfully reset.', 'woocommerce' ) . '</p></div>';
 				break;
 				default :
 					$action = esc_attr( $_GET['action'] );
@@ -190,35 +173,34 @@ class WC_Admin_Status {
 
 	/**
 	 * Get tools
-	 *
 	 * @return array of tools
 	 */
 	public static function get_tools() {
 		$tools = array(
 			'clear_transients' => array(
-				'name'		=> __( 'WC Transients','woocommerce'),
-				'button'	=> __('Clear transients','woocommerce'),
-				'desc'		=> __( 'This tool will clear the product/shop transients cache.', 'woocommerce' ),
+				'name'    => __( 'WC Transients', 'woocommerce' ),
+				'button'  => __( 'Clear transients', 'woocommerce' ),
+				'desc'    => __( 'This tool will clear the product/shop transients cache.', 'woocommerce' ),
 			),
 			'clear_expired_transients' => array(
-				'name'		=> __( 'Expired Transients','woocommerce'),
-				'button'	=> __('Clear expired transients','woocommerce'),
-				'desc'		=> __( 'This tool will clear ALL expired transients from WordPress.', 'woocommerce' ),
+				'name'    => __( 'Expired Transients', 'woocommerce' ),
+				'button'  => __( 'Clear expired transients', 'woocommerce' ),
+				'desc'    => __( 'This tool will clear ALL expired transients from WordPress.', 'woocommerce' ),
 			),
 			'recount_terms' => array(
-				'name'		=> __('Term counts','woocommerce'),
-				'button'	=> __('Recount terms','woocommerce'),
-				'desc'		=> __( 'This tool will recount product terms - useful when changing your settings in a way which hides products from the catalog.', 'woocommerce' ),
+				'name'    => __( 'Term counts', 'woocommerce' ),
+				'button'  => __( 'Recount terms', 'woocommerce' ),
+				'desc'    => __( 'This tool will recount product terms - useful when changing your settings in a way which hides products from the catalog.', 'woocommerce' ),
 			),
 			'reset_roles' => array(
-				'name'		=> __('Capabilities','woocommerce'),
-				'button'	=> __('Reset capabilities','woocommerce'),
-				'desc'		=> __( 'This tool will reset the admin, customer and shop_manager roles to default. Use this if your users cannot access all of the WooCommerce admin pages.', 'woocommerce' ),
+				'name'    => __( 'Capabilities', 'woocommerce' ),
+				'button'  => __( 'Reset capabilities', 'woocommerce' ),
+				'desc'    => __( 'This tool will reset the admin, customer and shop_manager roles to default. Use this if your users cannot access all of the WooCommerce admin pages.', 'woocommerce' ),
 			),
 			'clear_sessions' => array(
-				'name'		=> __('Customer Sessions','woocommerce'),
-				'button'	=> __('Clear all sessions','woocommerce'),
-				'desc'		=> __( '<strong class="red">Warning:</strong> This tool will delete all customer session data from the database, including any current live carts.', 'woocommerce' ),
+				'name'    => __( 'Customer Sessions', 'woocommerce' ),
+				'button'  => __( 'Clear all sessions', 'woocommerce' ),
+				'desc'    => __( '<strong class="red">Warning:</strong> This tool will delete all customer session data from the database, including any current live carts.', 'woocommerce' ),
 			),
 			'install_pages' => array(
 				'name'    => __( 'Install WooCommerce Pages', 'woocommerce' ),
@@ -229,6 +211,11 @@ class WC_Admin_Status {
 				'name'    => __( 'Delete all WooCommerce tax rates', 'woocommerce' ),
 				'button'  => __( 'Delete ALL tax rates', 'woocommerce' ),
 				'desc'    => __( '<strong class="red">Note:</strong> This option will delete ALL of your tax rates, use with caution.', 'woocommerce' ),
+			),
+			'reset_tracking' => array(
+				'name'    => __( 'Reset Usage Tracking Settings', 'woocommerce' ),
+				'button'  => __( 'Reset usage tracking settings', 'woocommerce' ),
+				'desc'    => __( 'This will reset your usage tracking settings, causing it to show the opt-in banner again and not sending any data.', 'woocommerce' ),
 			)
 		);
 
@@ -247,23 +234,31 @@ class WC_Admin_Status {
 	 * Show the logs page
 	 */
 	public static function status_logs() {
+
 		$logs = self::scan_log_files();
-		if ( ! empty( $_POST['log_file'] ) && isset( $logs[ sanitize_title( $_POST['log_file'] ) ] ) ) {
-			$viewed_log = $logs[ sanitize_title( $_POST['log_file'] ) ];
+
+		if ( ! empty( $_REQUEST['log_file'] ) && isset( $logs[ sanitize_title( $_REQUEST['log_file'] ) ] ) ) {
+			$viewed_log = $logs[ sanitize_title( $_REQUEST['log_file'] ) ];
 		} elseif ( $logs ) {
 			$viewed_log = current( $logs );
 		}
+
 		include_once( 'views/html-admin-page-status-logs.php' );
 	}
 
 	/**
 	 * Retrieve metadata from a file. Based on WP Core's get_file_data function
-	 *
-	 * @since 2.1.1
-	 * @param string $file Path to the file
+	 * @since  2.1.1
+	 * @param  string $file Path to the file
 	 * @return string
 	 */
 	public static function get_file_version( $file ) {
+
+		// Avoid notices if file does not exist
+		if ( ! file_exists( $file ) ) {
+			return '';
+		}
+
 		// We don't need to write to the file, so just open for reading.
 		$fp = fopen( $file, 'r' );
 
@@ -285,16 +280,20 @@ class WC_Admin_Status {
 
 	/**
 	 * Scan the template files
-	 *
-	 * @param string $template_path
+	 * @param  string $template_path
 	 * @return array
 	 */
 	public static function scan_template_files( $template_path ) {
+
 		$files         = scandir( $template_path );
 		$result        = array();
+
 		if ( $files ) {
+
 			foreach ( $files as $key => $value ) {
+
 				if ( ! in_array( $value, array( ".",".." ) ) ) {
+
 					if ( is_dir( $template_path . DIRECTORY_SEPARATOR . $value ) ) {
 						$sub_files = self::scan_template_files( $template_path . DIRECTORY_SEPARATOR . $value );
 						foreach ( $sub_files as $sub_file ) {
@@ -311,14 +310,16 @@ class WC_Admin_Status {
 
 	/**
 	 * Scan the log files
-	 *
 	 * @return array
 	 */
 	public static function scan_log_files() {
 		$files         = @scandir( WC_LOG_DIR );
 		$result        = array();
+
 		if ( $files ) {
+
 			foreach ( $files as $key => $value ) {
+
 				if ( ! in_array( $value, array( '.', '..' ) ) ) {
 					if ( ! is_dir( $value ) && strstr( $value, '.log' ) ) {
 						$result[ sanitize_title( $value ) ] = $value;

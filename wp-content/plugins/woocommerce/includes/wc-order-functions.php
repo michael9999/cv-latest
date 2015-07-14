@@ -10,7 +10,9 @@
  * @version     2.1.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly
+}
 
 /**
  * Get all order statuses
@@ -20,15 +22,25 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  */
 function wc_get_order_statuses() {
 	$order_statuses = array(
-		'wc-pending'    => _x( 'Pending payment', 'Order status', 'woocommerce' ),
+		'wc-pending'    => _x( 'Pending Payment', 'Order status', 'woocommerce' ),
 		'wc-processing' => _x( 'Processing', 'Order status', 'woocommerce' ),
-		'wc-on-hold'    => _x( 'On hold', 'Order status', 'woocommerce' ),
+		'wc-on-hold'    => _x( 'On Hold', 'Order status', 'woocommerce' ),
 		'wc-completed'  => _x( 'Completed', 'Order status', 'woocommerce' ),
 		'wc-cancelled'  => _x( 'Cancelled', 'Order status', 'woocommerce' ),
 		'wc-refunded'   => _x( 'Refunded', 'Order status', 'woocommerce' ),
 		'wc-failed'     => _x( 'Failed', 'Order status', 'woocommerce' ),
 	);
 	return apply_filters( 'wc_order_statuses', $order_statuses );
+}
+
+/**
+ * See if a string is an order status.
+ * @param  string $maybe_status Status, including any wc- prefix
+ * @return bool
+ */
+function wc_is_order_status( $maybe_status ) {
+	$order_statuses = wc_get_order_statuses();
+	return isset( $order_statuses[ $maybe_status ] );
 }
 
 /**
@@ -54,7 +66,7 @@ function wc_get_order_status_name( $status ) {
 	$status   = 'wc-' === substr( $status, 0, 3 ) ? substr( $status, 3 ) : $status;
 	$status   = isset( $statuses[ 'wc-' . $status ] ) ? $statuses[ 'wc-' . $status ] : $status;
 
-	return strtolower( $status );
+	return $status;
 }
 
 /**
@@ -122,6 +134,13 @@ function wc_get_order_types( $for = '' ) {
 				}
 			}
 		break;
+		case 'sales-reports' :
+			foreach ( $wc_order_types as $type => $args ) {
+				if ( ! $args['exclude_from_order_sales_reports'] ) {
+					$order_types[] = $type;
+				}
+			}
+		break;
 		default :
 			$order_types = array_keys( $wc_order_types );
 		break;
@@ -159,6 +178,7 @@ function wc_get_order_type( $type ) {
  * 		- exclude_from_order_views (bool) Whether or not this order type is visible by customers when
  * 		viewing orders e.g. on the my account page.
  * 		- exclude_from_order_reports (bool) Whether or not to exclude this type from core reports.
+ * 		- exclude_from_order_sales_reports (bool) Whether or not to exclude this type from core sales reports.
  *
  * @since  2.2
  * @see    register_post_type for $args used in that function
@@ -184,12 +204,13 @@ function wc_register_order_type( $type, $args = array() ) {
 
 	// Register for WC usage
 	$order_type_args = array(
-		'exclude_from_orders_screen' => false,
-		'add_order_meta_boxes'       => true,
-		'exclude_from_order_count'   => false,
-		'exclude_from_order_views'   => false,
-		'exclude_from_order_reports' => false,
-		'class_name'                 => 'WC_Order'
+		'exclude_from_orders_screen'       => false,
+		'add_order_meta_boxes'             => true,
+		'exclude_from_order_count'         => false,
+		'exclude_from_order_views'         => false,
+		'exclude_from_order_reports'       => false,
+		'exclude_from_order_sales_reports' => false,
+		'class_name'                       => 'WC_Order'
 	);
 
 	$args                    = array_intersect_key( $args, $order_type_args );
@@ -206,16 +227,17 @@ function wc_register_order_type( $type, $args = array() ) {
  * @param string $download_id file identifier
  * @param int $product_id product identifier
  * @param WC_Order $order the order
+ * @param  int $qty purchased
  * @return int|bool insert id or false on failure
  */
-function wc_downloadable_file_permission( $download_id, $product_id, $order ) {
+function wc_downloadable_file_permission( $download_id, $product_id, $order, $qty = 1 ) {
 	global $wpdb;
 
 	$user_email = sanitize_email( $order->billing_email );
 	$limit      = trim( get_post_meta( $product_id, '_download_limit', true ) );
 	$expiry     = trim( get_post_meta( $product_id, '_download_expiry', true ) );
 
-	$limit      = empty( $limit ) ? '' : absint( $limit );
+	$limit      = empty( $limit ) ? '' : absint( $limit ) * $qty;
 
 	// Default value is NULL in the table schema
 	$expiry     = empty( $expiry ) ? null : absint( $expiry );
@@ -291,7 +313,7 @@ function wc_downloadable_product_permissions( $order_id ) {
 				$downloads = $_product->get_files();
 
 				foreach ( array_keys( $downloads ) as $download_id ) {
-					wc_downloadable_file_permission( $download_id, $item['variation_id'] > 0 ? $item['variation_id'] : $item['product_id'], $order );
+					wc_downloadable_file_permission( $download_id, $item['variation_id'] > 0 ? $item['variation_id'] : $item['product_id'], $order, $item['qty'] );
 				}
 			}
 		}
@@ -477,8 +499,9 @@ function wc_cancel_unpaid_orders() {
 		foreach ( $unpaid_orders as $unpaid_order ) {
 			$order = wc_get_order( $unpaid_order );
 
-			if ( apply_filters( 'woocommerce_cancel_unpaid_order', true, $order ) )
+			if ( apply_filters( 'woocommerce_cancel_unpaid_order', 'checkout' === get_post_meta( $unpaid_order, '_created_via', true ), $order ) ) {
 				$order->update_status( 'cancelled', __( 'Unpaid order cancelled - time limit reached.', 'woocommerce' ) );
+			}
 		}
 	}
 
@@ -487,7 +510,6 @@ function wc_cancel_unpaid_orders() {
 }
 add_action( 'woocommerce_cancel_unpaid_orders', 'wc_cancel_unpaid_orders' );
 
-
 /**
  * Return the count of processing orders.
  *
@@ -495,11 +517,27 @@ add_action( 'woocommerce_cancel_unpaid_orders', 'wc_cancel_unpaid_orders' );
  * @return int
  */
 function wc_processing_order_count() {
+	return wc_orders_count( 'processing' );
+}
+
+/**
+ * Return the orders count of a specific order status.
+ *
+ * @access public
+ * @return int
+ */
+function wc_orders_count( $status ) {
 	$count = 0;
 
+	$order_statuses = array_keys( wc_get_order_statuses() );
+
+	if ( ! in_array( 'wc-' . $status, $order_statuses ) ) {
+		return 0;
+	}
+
 	foreach ( wc_get_order_types( 'order-count' ) as $type ) {
-		$this_count = wp_count_posts( $type, 'readable' );
-		$count      += isset( $this_count->{'wc-processing'} ) ? $this_count->{'wc-processing'} : 0;
+		$this_count  = wp_count_posts( $type, 'readable' );
+		$count      += isset( $this_count->{'wc-' . $status} ) ? $this_count->{'wc-' . $status} : 0;
 	}
 
 	return $count;
@@ -511,7 +549,8 @@ function wc_processing_order_count() {
  * @param int $post_id (default: 0)
  */
 function wc_delete_shop_order_transients( $post_id = 0 ) {
-	$post_id = absint( $post_id );
+	$post_id             = absint( $post_id );
+	$transients_to_clear = array();
 
 	// Clear report transients
 	$reports = WC_Admin_Reports::get_reports();
@@ -544,11 +583,11 @@ function wc_ship_to_billing_address_only() {
 /**
  * Create a new order refund programmatically
  *
- * Returns a new refund object on success which can then be used to add additonal data.
+ * Returns a new refund object on success which can then be used to add additional data.
  *
  * @since 2.2
  * @param array $args
- * @return WC_Order_Refund on success, WP_Error on failure
+ * @return WC_Order_Refund|WP_Error
  */
 function wc_create_refund( $args = array() ) {
 	$default_args = array(
@@ -570,7 +609,7 @@ function wc_create_refund( $args = array() ) {
 		$refund_data['post_type']     = 'shop_order_refund';
 		$refund_data['post_status']   = 'wc-completed';
 		$refund_data['ping_status']   = 'closed';
-		$refund_data['post_author']   = 1;
+		$refund_data['post_author']   = get_current_user_id() ? get_current_user_id() : 1;
 		$refund_data['post_password'] = uniqid( 'refund_' );
 		$refund_data['post_parent']   = absint( $args['order_id'] );
 		$refund_data['post_title']    = sprintf( __( 'Refund &ndash; %s', 'woocommerce' ), strftime( _x( '%b %d, %Y @ %I:%M %p', 'Order date parsed by strftime', 'woocommerce' ) ) );
@@ -594,11 +633,13 @@ function wc_create_refund( $args = array() ) {
 		// Default refund meta data
 		update_post_meta( $refund_id, '_refund_amount', wc_format_decimal( $args['amount'] ) );
 
+		// Get refund object
+		$refund = wc_get_order( $refund_id );
+
 		// Negative line items
 		if ( sizeof( $args['line_items'] ) > 0 ) {
 			$order       = wc_get_order( $args['order_id'] );
 			$order_items = $order->get_items( array( 'line_item', 'fee', 'shipping' ) );
-			$refund      = wc_get_order( $refund_id );
 
 			foreach ( $args['line_items'] as $refund_item_id => $refund_item ) {
 				if ( isset( $order_items[ $refund_item_id ] ) ) {
@@ -613,7 +654,7 @@ function wc_create_refund( $args = array() ) {
 
 					switch ( $order_items[ $refund_item_id ]['type'] ) {
 						case 'line_item' :
-							$args = array(
+							$line_item_args = array(
 								'totals' => array(
 									'subtotal'     => wc_format_refund_total( $refund_item['refund_total'] ),
 									'total'        => wc_format_refund_total( $refund_item['refund_total'] ),
@@ -622,7 +663,7 @@ function wc_create_refund( $args = array() ) {
 									'tax_data'     => array( 'total' => array_map( 'wc_format_refund_total', $refund_item['refund_tax'] ), 'subtotal' => array_map( 'wc_format_refund_total', $refund_item['refund_tax'] ) )
 								)
 							);
-							$new_item_id = $refund->add_product( $order->get_product_from_item( $order_items[ $refund_item_id ] ), isset( $refund_item['qty'] ) ? $refund_item['qty'] : 0, $args );
+							$new_item_id = $refund->add_product( $order->get_product_from_item( $order_items[ $refund_item_id ] ), isset( $refund_item['qty'] ) ? $refund_item['qty'] : 0, $line_item_args );
 							wc_add_order_item_meta( $new_item_id, '_refunded_item_id', $refund_item_id );
 						break;
 						case 'shipping' :
@@ -651,9 +692,18 @@ function wc_create_refund( $args = array() ) {
 				}
 			}
 			$refund->update_taxes();
-			$refund->calculate_totals( false );
 		}
+
+		$refund->calculate_totals( false );
+
+		// Set total to total refunded which may vary from order items
+		$refund->set_total( wc_format_decimal( $args['amount'] ) * -1, 'total' );
+
+		do_action( 'woocommerce_refund_created', $refund_id );
 	}
+
+	// Clear transients
+	wc_delete_shop_order_transients( $args['order_id'] );
 
 	return new WC_Order_Refund( $refund_id );
 }

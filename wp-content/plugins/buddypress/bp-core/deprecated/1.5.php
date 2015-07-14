@@ -8,7 +8,7 @@
  */
 
 // Exit if accessed directly
-if ( !defined( 'ABSPATH' ) ) exit;
+defined( 'ABSPATH' ) || exit;
 
 /** Loader ********************************************************************/
 
@@ -139,7 +139,7 @@ function bp_core_get_wp_profile() {
 	$ud = get_userdata( bp_displayed_user_id() ); ?>
 
 <div class="bp-widget wp-profile">
-	<h4><?php _e( 'My Profile' ) ?></h4>
+	<h4><?php _e( 'My Profile', 'buddypress' ) ?></h4>
 
 	<table class="wp-profile-fields">
 
@@ -250,7 +250,7 @@ function bp_is_member() {
  * @deprecated use bp_loggedin_user_link()
  */
 function bp_loggedinuser_link() {
-	_deprecated_function( __FUNCTION__, '1.5', 'bp_logged_in_user_link' );
+	_deprecated_function( __FUNCTION__, '1.5', 'bp_loggedin_user_link' );
 	bp_loggedin_user_link();
 }
 
@@ -449,12 +449,12 @@ function bp_is_friend_requests() {
 
 /**
  * Checks to see if a component's URL should be in the root, not under a member page:
- * eg: http://domain.com/groups/the-group NOT http://domain.com/members/andy/groups/the-group
+ * eg: http://example.com/groups/the-group NOT http://example.com/members/andy/groups/the-group
  * You should be using bp_is_root_component().
  *
  * @deprecated BuddyPress (1.5)
  * @deprecated bp_is_root_component()
- * @return true if root component, else false.
+ * @return bool True if root component, else false.
  */
 function bp_core_is_root_component( $component_name ) {
 	_deprecated_function( __FUNCTION__, '1.5', 'bp_is_root_component()' );
@@ -497,8 +497,8 @@ function bp_dtheme_deprecated() {
 	 *
 	 * @deprecated BuddyPress (1.5)
 	 * @deprecated No longer required.
-	 * @param $string $oldvalue Previous value of get_option( 'page_on_front' )
-	 * @param $string $oldvalue New value of get_option( 'page_on_front' )
+	 * @param string $oldvalue Previous value of get_option( 'page_on_front' )
+	 * @param string $oldvalue New value of get_option( 'page_on_front' )
 	 * @return string
 	 * @since BuddyPress (1.2)
 	 */
@@ -561,8 +561,8 @@ function bp_dtheme_deprecated() {
 
 	if ( !function_exists( 'bp_dtheme_add_blog_comments_js' ) ) :
 	/**
-	 * In BuddyPress 1.2.x, this added the javascript needed for blog comment replies.
-	 * As of 1.5.x, we recommend that you enqueue the comment-reply javascript in your theme's header.php.
+	 * In BuddyPress 1.2.x, this added the JavaScript needed for blog comment replies.
+	 * As of 1.5.x, we recommend that you enqueue the comment-reply JavaScript in your theme's header.php.
 	 *
 	 * @deprecated BuddyPress (1.5)
 	 * @deprecated Enqueue the comment-reply script in your theme's header.php.

@@ -233,6 +233,92 @@ class Shortcodes_Ultimate_Extra {
 				)
 			)
 		);
+		$shortcodes['exit_popup'] = array(
+			'name'     => __( 'Exit popup', 'sue' ),
+			'type'     => 'wrap',
+			'group'    => 'extra box',
+			'content'  => __( 'Exit popup content', 'sue' ),
+			'desc'     => __( 'Fully customizable exit popup', 'sue' ),
+			'icon'     => 'bullhorn',
+			'function' => array( 'Shortcodes_Ultimate_Extra_Shortcodes', 'exit_popup' ),
+			'atts'     => array(
+				'style' => array(
+					'type'    => 'select',
+					'default' => 'dark',
+					'name'    => __( 'Style', 'sue' ),
+					'desc'    => __( 'Choose exit popup style', 'sue' ),
+					'values'   => array(
+						'dark'               => __( 'Dark', 'sue' ),
+						'dark-boxed'         => __( 'Dark boxed', 'sue' ),
+						'light'              => __( 'Light', 'sue' ),
+						'light-boxed'        => __( 'Light boxed', 'sue' ),
+						'blue-boxed'         => __( 'Blue boxed', 'sue' ),
+						'light-boxed-blue'   => __( 'Light boxed blue', 'sue' ),
+						'light-boxed-green'  => __( 'Light boxed green', 'sue' ),
+						'light-boxed-orange' => __( 'Light boxed orange', 'sue' ),
+						'maintenance'        => __( 'Maintenance', 'sue' )
+					)
+				),
+				'width' => array(
+					'type'    => 'slider',
+					'min'     => 100,
+					'max'     => 1600,
+					'step'    => 20,
+					'default' => 480,
+					'name'    => __( 'Width', 'sue' ),
+					'desc'    => __( 'Width of exit popup content', 'sue' )
+				),
+				'opacity' => array(
+					'type'    => 'slider',
+					'min'     => 0,
+					'max'     => 100,
+					'step'    => 5,
+					'default' => 80,
+					'name'    => __( 'Opacity', 'sue' ),
+					'desc'    => __( 'Background opacity in percents', 'sue' )
+				),
+				'onclick' => array(
+					'type'    => 'select',
+					'default' => 'close-bg',
+					'name'    => __( 'Action on click', 'sue' ),
+					'desc'    => __( 'Choose exit popup behavior when it is clicked', 'sue' ),
+					'values'  => array(
+						'none'     => __( 'Do nothing', 'sue' ),
+						'close'    => __( 'Close exit popup (click anywhere)', 'sue' ),
+						'close-bg' => __( 'Close on background click', 'sue' ),
+						'url'      => __( 'Go to specified url', 'sue' )
+					)
+				),
+				'url' => array(
+					'name'    => __( 'URL', 'sue' ),
+					'desc'    => __( 'Enter url to go when exit popup is clicked (this option must selected in dropdown list above)', 'sue' ),
+					'default' => get_bloginfo( 'url' )
+				),
+				'esc' => array(
+					'type'    => 'bool',
+					'default' => 'yes',
+					'name'    => __( 'Esc hotkey', 'sue' ),
+					'desc'    => __( 'Close popup by pressing Esc', 'sue' )
+				),
+				'close' => array(
+					'type'    => 'bool',
+					'default' => 'yes',
+					'name'    => __( 'Close button', 'sue' ),
+					'desc'    => __( 'Show Close button', 'sue' )
+				),
+				'once' => array(
+					'type'    => 'bool',
+					'default' => 'no',
+					'name'    => __( 'Show once', 'sue' ),
+					'desc'    => __( 'Show this exit popup only once on this page', 'sue' )
+				),
+				'class' => array(
+					'default' => '',
+					'name'    => __( 'Class', 'sue' ),
+					'desc'    => __( 'Extra CSS class', 'sue' )
+				)
+			)
+		);
 
 		$shortcodes['panel'] = array(
 			'name'     => __( 'Panel', 'sue' ),
@@ -838,6 +924,12 @@ class Shortcodes_Ultimate_Extra {
 					'default' => 'yes',
 					'name'    => __( 'Parallax', 'sue' ),
 					'desc'    => __( 'Enable parallax effect. Parallax effect may not work in Live preview mode', 'sue' )
+				),
+				'mobile' => array(
+					'type'    => 'bool',
+					'default' => 'yes',
+					'name'    => __( 'Enable on mobile devices', 'sue' ),
+					'desc'    => __( 'Enable parallax effect on devices with screen width less than 768px', 'sue' )
 				),
 				'speed' => array(
 					'type'    => 'slider',

@@ -1,4 +1,5 @@
 <?php
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
@@ -29,7 +30,7 @@ class WC_Language_Pack_Upgrader {
 	public function __construct() {
 		add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'check_for_update' ) );
 		add_filter( 'upgrader_pre_download', array( $this, 'version_update' ), 10, 2 );
-		add_action( 'woocommerce_language_pack_updater_check', array( $this, 'has_available_update' ) );
+		add_action( 'woocommerce_installed', array( $this, 'has_available_update' ) );
 		add_filter( 'admin_init', array( $this, 'manual_language_update' ), 999 );
 	}
 
@@ -71,9 +72,15 @@ class WC_Language_Pack_Upgrader {
 	 * @return bool
 	 */
 	public function has_available_update() {
-		$version = get_option( 'woocommerce_language_pack_version', array( '0', get_locale() ) );
+		$locale  = get_locale();
 
-		if ( 'en_US' !== get_locale() && ( ! is_array( $version ) || version_compare( $version[0], WC_VERSION, '<' ) || $version[1] !== get_locale() ) ) {
+		if ( 'en_US' === $locale ) {
+			return false;
+		}
+
+		$version = get_option( 'woocommerce_language_pack_version', array( '0', $locale ) );
+
+		if ( ! is_array( $version ) || version_compare( $version[0], WC_VERSION, '<' ) || $version[1] !== $locale ) {
 			if ( $this->check_if_language_pack_exists() ) {
 				$this->configure_woocommerce_upgrade_notice();
 
@@ -93,12 +100,7 @@ class WC_Language_Pack_Upgrader {
 	 * @return void
 	 */
 	public function configure_woocommerce_upgrade_notice() {
-		$notices = get_option( 'woocommerce_admin_notices', array() );
-		if ( false === array_search( 'translation_upgrade', $notices ) ) {
-			$notices[] = 'translation_upgrade';
-
-			update_option( 'woocommerce_admin_notices', $notices );
-		}
+		WC_Admin_Notices::add_notice( 'translation_upgrade' );
 	}
 
 	/**
@@ -107,7 +109,7 @@ class WC_Language_Pack_Upgrader {
 	 * @return bool
 	 */
 	public function check_if_language_pack_exists() {
-		$response = wp_remote_get( $this->get_language_package_uri(), array( 'sslverify' => false, 'timeout' => 60 ) );
+		$response = wp_safe_remote_get( $this->get_language_package_uri(), array( 'timeout' => 60 ) );
 
 		if ( ! is_wp_error( $response ) && $response['response']['code'] >= 200 && $response['response']['code'] < 300 ) {
 			return true;
@@ -186,7 +188,7 @@ class WC_Language_Pack_Upgrader {
 			}
 
 			// Download the language pack
-			$response = wp_remote_get( $this->get_language_package_uri(), array( 'sslverify' => false, 'timeout' => 60 ) );
+			$response = wp_safe_remote_get( $this->get_language_package_uri(), array( 'timeout' => 60 ) );
 			if ( ! is_wp_error( $response ) && $response['response']['code'] >= 200 && $response['response']['code'] < 300 ) {
 				global $wp_filesystem;
 

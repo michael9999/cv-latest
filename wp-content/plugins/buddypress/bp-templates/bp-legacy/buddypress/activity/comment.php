@@ -12,7 +12,14 @@
 
 ?>
 
-<?php do_action( 'bp_before_activity_comment' ); ?>
+<?php
+
+/**
+ * Fires before the display of an activity comment.
+ *
+ * @since BuddyPress (1.5.0)
+ */
+do_action( 'bp_before_activity_comment' ); ?>
 
 <li id="acomment-<?php bp_activity_comment_id(); ?>">
 	<div class="acomment-avatar">
@@ -24,7 +31,7 @@
 	<div class="acomment-meta">
 		<?php
 		/* translators: 1: user profile link, 2: user name, 3: activity permalink, 4: activity timestamp */
-		printf( __( '<a href="%1$s">%2$s</a> replied <a href="%3$s" class="activity-time-since"><span class="time-since">%4$s</span></a>', 'buddypress' ), bp_get_activity_comment_user_link(), bp_get_activity_comment_name(), bp_get_activity_thread_permalink(), bp_get_activity_comment_date_recorded() );
+		printf( __( '<a href="%1$s">%2$s</a> replied <a href="%3$s" class="activity-time-since"><span class="time-since">%4$s</span></a>', 'buddypress' ), bp_get_activity_comment_user_link(), bp_get_activity_comment_name(), bp_get_activity_comment_permalink(), bp_get_activity_comment_date_recorded() );
 		?>
 	</div>
 
@@ -44,11 +51,25 @@
 
 		<?php endif; ?>
 
-		<?php do_action( 'bp_activity_comment_options' ); ?>
+		<?php
+
+		/**
+		 * Fires after the defualt comment action options display.
+		 *
+		 * @since BuddyPress (1.6.0)
+		 */
+		do_action( 'bp_activity_comment_options' ); ?>
 
 	</div>
 
 	<?php bp_activity_recurse_comments( bp_activity_current_comment() ); ?>
 </li>
 
-<?php do_action( 'bp_after_activity_comment' ); ?>
+<?php
+
+/**
+ * Fires after the display of an activity comment.
+ *
+ * @since BuddyPress (1.5.0)
+ */
+do_action( 'bp_after_activity_comment' ); ?>

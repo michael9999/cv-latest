@@ -315,6 +315,7 @@ class Su_Shortcodes {
 				'desc'        => '',
 				'onclick'     => '',
 				'rel'         => '',
+				'title'       => '',
 				'class'       => ''
 			), $atts, 'button' );
 
@@ -434,8 +435,10 @@ class Su_Shortcodes {
 		$atts['onclick'] = ( $atts['onclick'] ) ? ' onClick="' . $atts['onclick'] . '"' : '';
 		// Prepare rel attribute
 		$atts['rel'] = ( $atts['rel'] ) ? ' rel="' . $atts['rel'] . '"' : '';
+		// Prepare title attribute
+		$atts['title'] = ( $atts['title'] ) ? ' title="' . $atts['title'] . '"' : '';
 		su_query_asset( 'css', 'su-content-shortcodes' );
-		return $before . '<a href="' . su_scattr( $atts['url'] ) . '" class="' . implode( $classes, ' ' ) . '" style="' . implode( $a_css, ';' ) . '" target="_' . $atts['target'] . '"' . $atts['onclick'] . $atts['rel'] . '><span style="' . implode( $span_css, ';' ) . '">' . do_shortcode( $content ) . $desc . '</span></a>' . $after;
+		return $before . '<a href="' . su_scattr( $atts['url'] ) . '" class="' . implode( $classes, ' ' ) . '" style="' . implode( $a_css, ';' ) . '" target="_' . $atts['target'] . '"' . $atts['onclick'] . $atts['rel'] . $atts['title'] . '><span style="' . implode( $span_css, ';' ) . '">' . do_shortcode( stripcslashes( $content ) ) . $desc . '</span></a>' . $after;
 	}
 
 	public static function service( $atts = null, $content = null ) {
@@ -446,6 +449,8 @@ class Su_Shortcodes {
 				'size'        => 32,
 				'class'       => ''
 			), $atts, 'service' );
+		// RTL
+		$rtl = ( is_rtl() ) ? 'right' : 'left';
 		// Built-in icon
 		if ( strpos( $atts['icon'], 'icon:' ) !== false ) {
 			$atts['icon'] = '<i class="fa fa-' . trim( str_replace( 'icon:', '', $atts['icon'] ) ) . '" style="font-size:' . $atts['size'] . 'px;color:' . $atts['icon_color'] . '"></i>';
@@ -456,7 +461,7 @@ class Su_Shortcodes {
 			$atts['icon'] = '<img src="' . $atts['icon'] . '" width="' . $atts['size'] . '" height="' . $atts['size'] . '" alt="' . $atts['title'] . '" />';
 		}
 		su_query_asset( 'css', 'su-box-shortcodes' );
-		return '<div class="su-service' . su_ecssc( $atts ) . '"><div class="su-service-title" style="padding-left:' . round( $atts['size'] + 14 ) . 'px;min-height:' . $atts['size'] . 'px;line-height:' . $atts['size'] . 'px">' . $atts['icon'] . ' ' . su_scattr( $atts['title'] ) . '</div><div class="su-service-content su-clearfix" style="padding-left:' . round( $atts['size'] + 14 ) . 'px">' . do_shortcode( $content ) . '</div></div>';
+		return '<div class="su-service' . su_ecssc( $atts ) . '"><div class="su-service-title" style="padding-' . $rtl . ':' . round( $atts['size'] + 14 ) . 'px;min-height:' . $atts['size'] . 'px;line-height:' . $atts['size'] . 'px">' . $atts['icon'] . ' ' . su_scattr( $atts['title'] ) . '</div><div class="su-service-content su-clearfix" style="padding-' . $rtl . ':' . round( $atts['size'] + 14 ) . 'px">' . do_shortcode( $content ) . '</div></div>';
 	}
 
 	public static function box( $atts = null, $content = null ) {
@@ -954,7 +959,7 @@ class Su_Shortcodes {
 			), $atts, 'document' );
 		if ( $atts['file'] !== null ) $atts['url'] = $atts['file'];
 		su_query_asset( 'css', 'su-media-shortcodes' );
-		return '<div class="su-document su-responsive-media-' . $atts['responsive'] . '"><iframe src="http://docs.google.com/viewer?embedded=true&url=' . $atts['url'] . '" width="' . $atts['width'] . '" height="' . $atts['height'] . '" class="su-document' . su_ecssc( $atts ) . '"></iframe></div>';
+		return '<div class="su-document su-responsive-media-' . $atts['responsive'] . '"><iframe src="//docs.google.com/viewer?embedded=true&url=' . $atts['url'] . '" width="' . $atts['width'] . '" height="' . $atts['height'] . '" class="su-document' . su_ecssc( $atts ) . '"></iframe></div>';
 	}
 
 	public static function gmap( $atts = null, $content = null ) {
@@ -1092,7 +1097,7 @@ class Su_Shortcodes {
 			// Create slides
 			foreach ( (array) $slides as $slide ) {
 				// Crop the image
-				$image = su_image_resize( $slide['image'], round( $atts['width'] / $atts['items'] ), $atts['height'] );
+				$image = su_image_resize( $slide['image'], ( round( $atts['width'] / $atts['items'] ) - 18 ), $atts['height'] );
 				// Prepare slide title
 				$title = ( $atts['title'] === 'yes' && $slide['title'] ) ? '<span class="su-carousel-slide-title">' . stripslashes( $slide['title'] ) . '</span>' : '';
 				// Open slide

@@ -8,12 +8,14 @@ function wppp_render_paypal_button_with_other_amt($args)
 		'currency' => 'USD',
 		'reference' => '',	
 		'return' => site_url(),
+                'cbt' => '',
 		'country_code' => '',
 		'button_image' => '',
                 'button_text' => '',
 		'cancel_url' => '',
                 'new_window' => '',
                 'tax' => '',
+                'rm' => '0',
 	), $args));	
 	
         $email = apply_filters('wppp_widget_any_amt_email', $email);
@@ -41,22 +43,26 @@ function wppp_render_paypal_button_with_other_amt($args)
 	$output .= '<div class="wp_paypal_button_widget_any_amt">';
 	$output .= '<form name="_xclick" class="wp_accept_pp_button_form_any_amount" action="https://www.paypal.com/cgi-bin/webscr" method="post" '.$window_target.'>';
 
-	$output .= '<div class="wp_pp_button_amount_section">Amount: <input type="text" name="amount" value="" size="5"> '.$currency.'</div>';
+	$output .= '<div class="wp_pp_button_amount_section">Amount: <input type="number" min="1" step="any" name="amount" value="" style="max-width:60px;"> '.$currency.'</div>';
 
 	if(!empty($reference)){
 		$output .= '<div class="wp_pp_button_reference_section">';
 		$output .= '<label for="wp_pp_button_reference">'.$reference.'</label>';
 		$output .= '<br />';
-		$output .= '<input type="hidden" name="on0" value="Reference" />';
-		$output .= '<input type="text" name="os0" value="" class="wp_pp_button_reference" />';
+		$output .= '<input type="hidden" name="on0" value="'.apply_filters('wp_pp_button_reference_name','Reference').'" />';
+		$output .= '<input type="text" name="os0" value="'.apply_filters('wp_pp_button_reference_value','').'" class="wp_pp_button_reference" />';
 		$output .= '</div>';
 	}
 			
-	$output .= '<input type="hidden" name="cmd" value="_xclick">';
+	$output .= '<input type="hidden" name="cmd" value="_xclick"><input type="hidden" name="bn" value="TipsandTricks_SP" />';
 	$output .= '<input type="hidden" name="business" value="'.$email.'">';
 	$output .= '<input type="hidden" name="currency_code" value="'.$currency.'">';
 	$output .= '<input type="hidden" name="item_name" value="'.stripslashes($description).'">';
 	$output .= '<input type="hidden" name="return" value="'.$return.'" />';
+        $output .= '<input type="hidden" name="rm" value="'.$rm.'" />';
+        if(!empty($cbt)){
+            $output .= '<input type="hidden" name="cbt" value="'.$cbt.'" />';
+        }
         if(is_numeric($tax)){
             $output .= '<input type="hidden" name="tax" value="'.$tax.'" />';
         }
@@ -84,10 +90,11 @@ function wppp_render_paypal_button_with_other_amt($args)
 function wppp_render_paypal_button_form($args)
 {	
 	extract( shortcode_atts( array(
-		'email' => 'your@paypal-email.com',
+		'email' => '',
 		'currency' => 'USD',
 		'options' => 'Payment for Service 1:15.50|Payment for Service 2:30.00|Payment for Service 3:47.00',
 		'return' => site_url(),
+                'cbt' => '',
 		'reference' => 'Your Email Address',
 		'other_amount' => '',
 		'country_code' => '',
@@ -97,10 +104,15 @@ function wppp_render_paypal_button_form($args)
 		'cancel_url' => '',
                 'new_window' => '',
                 'tax' => '',
+                'rm' => '0',
 	), $args));
 	
         $email = apply_filters('wppp_widget_email', $email);
-                
+	if(empty($email)){
+		$output = '<p style="color: red;">Error! Please enter your PayPal email address for the payment using the "email" parameter in the shortcode</p>';
+		return $output;
+	}
+        
 	$options = explode( '|' , $options);
 	$html_options = '';
 	foreach( $options as $option ) {
@@ -132,7 +144,7 @@ function wppp_render_paypal_button_form($args)
 		<?php 
 		if(!empty($other_amount)){
 			echo '<div class="wp_pp_button_other_amt_section">';
-			echo 'Other Amount: <input type="text" name="other_amount" value="" size="4"> '.$currency;
+			echo 'Other Amount: <input type="number" min="1" step="any" name="other_amount" value="" style="max-width:60px;"> '.$currency;
 			echo '</div>';
 		}
 
@@ -140,8 +152,8 @@ function wppp_render_paypal_button_form($args)
                     echo '<div class="wp_pp_button_reference_section">';
                     echo '<label for="wp_pp_button_reference">'.$reference.'</label>';
                     echo '<br />';
-                    echo '<input type="hidden" name="on0" value="Reference" />';
-                    echo '<input type="text" name="os0" value="" class="wp_pp_button_reference" />';
+                    echo '<input type="hidden" name="on0" value="'.apply_filters('wp_pp_button_reference_name','Reference').'" />';
+                    echo '<input type="text" name="os0" value="'.apply_filters('wp_pp_button_reference_value','').'" class="wp_pp_button_reference" />';
                     echo '</div>';
                 }
 
@@ -152,13 +164,18 @@ function wppp_render_paypal_button_form($args)
 		<?php } ?>
 		
 		<input type="hidden" name="cmd" value="_xclick">
+                <input type="hidden" name="bn" value="TipsandTricks_SP" />
 		<input type="hidden" name="business" value="<?php echo $email; ?>">
 		<input type="hidden" name="currency_code" value="<?php echo $currency; ?>">
 		<input type="hidden" name="item_name" value="">
 		<input type="hidden" name="amount" value="">
-		<input type="hidden" name="return" value="<?php echo $return; ?>" />
+		<input type="hidden" name="return" value="<?php echo $return; ?>" />                
+                <input type="hidden" name="rm" value="<?php echo $rm; ?>" />
 		<input type="hidden" name="email" value="" />
 		<?php
+                if(!empty($cbt)){
+                    echo  '<input type="hidden" name="cbt" value="'.$cbt.'" />';
+                }
                 if(is_numeric($tax)){
                     echo '<input type="hidden" name="tax" value="'.$tax.'" />';
                 }                

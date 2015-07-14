@@ -1,6 +1,8 @@
 <?php
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly
+}
 
 if ( ! class_exists( 'WC_Email_Customer_Note' ) ) :
 
@@ -10,14 +12,14 @@ if ( ! class_exists( 'WC_Email_Customer_Note' ) ) :
  * Customer note emails are sent when you add a note to an order.
  *
  * @class 		WC_Email_Customer_Note
- * @version		2.0.0
+ * @version		2.3.0
  * @package		WooCommerce/Classes/Emails
  * @author 		WooThemes
  * @extends 	WC_Email
  */
 class WC_Email_Customer_Note extends WC_Email {
 
-	var $customer_note;
+	public $customer_note;
 
 	/**
 	 * Constructor
@@ -63,15 +65,18 @@ class WC_Email_Customer_Note extends WC_Email {
 
 			extract( $args );
 
-			$this->object 		= wc_get_order( $order_id );
-			$this->recipient	= $this->object->billing_email;
-			$this->customer_note = $customer_note;
+			if ( $order_id && ( $this->object = wc_get_order( $order_id ) ) ) {
+				$this->recipient     = $this->object->billing_email;
+				$this->customer_note = $customer_note;
 
-			$this->find['order-date']      = '{order_date}';
-			$this->find['order-number']    = '{order_number}';
-			
-			$this->replace['order-date']   = date_i18n( wc_date_format(), strtotime( $this->object->order_date ) );
-			$this->replace['order-number'] = $this->object->get_order_number();
+				$this->find['order-date']      = '{order_date}';
+				$this->find['order-number']    = '{order_number}';
+
+				$this->replace['order-date']   = date_i18n( wc_date_format(), strtotime( $this->object->order_date ) );
+				$this->replace['order-number'] = $this->object->get_order_number();
+			} else {
+				return;
+			}
 		}
 
 		if ( ! $this->is_enabled() || ! $this->get_recipient() ) {

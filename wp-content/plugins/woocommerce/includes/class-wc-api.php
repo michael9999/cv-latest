@@ -10,7 +10,11 @@
  * @since       2.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+if ( ! class_exists( 'WC_API' ) ) :
 
 class WC_API {
 
@@ -251,8 +255,9 @@ class WC_API {
 			$api = strtolower( esc_attr( $wp->query_vars['wc-api'] ) );
 
 			// Load class if exists
-			if ( class_exists( $api ) )
-				$api_class = new $api();
+			if ( class_exists( $api ) ) {
+				new $api();
+			}
 
 			// Trigger actions
 			do_action( 'woocommerce_api_' . $api );
@@ -262,5 +267,8 @@ class WC_API {
 			die('1');
 		}
 	}
-
 }
+
+endif;
+
+return new WC_API();

@@ -8,7 +8,9 @@
  * @version     2.1.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly
+}
 
 if ( ! class_exists( 'WC_Settings_Shipping' ) ) :
 
@@ -37,21 +39,21 @@ class WC_Settings_Shipping extends WC_Settings_Page {
 	 * @return array
 	 */
 	public function get_sections() {
-
 		$sections = array(
 			'' => __( 'Shipping Options', 'woocommerce' )
 		);
 
-		// Load shipping methods so we can show any global options they may have
-		$shipping_methods = WC()->shipping->load_shipping_methods();
+		if ( ! defined( 'WC_INSTALLING' ) ) {
+			// Load shipping methods so we can show any global options they may have
+			$shipping_methods = WC()->shipping->load_shipping_methods();
 
-		foreach ( $shipping_methods as $method ) {
-
-			if ( ! $method->has_settings() ) continue;
-
-			$title = empty( $method->method_title ) ? ucfirst( $method->id ) : $method->method_title;
-
-			$sections[ strtolower( get_class( $method ) ) ] = esc_html( $title );
+			foreach ( $shipping_methods as $method ) {
+				if ( ! $method->has_settings() ) {
+					continue;
+				}
+				$title = empty( $method->method_title ) ? ucfirst( $method->id ) : $method->method_title;
+				$sections[ strtolower( get_class( $method ) ) ] = esc_html( $title );
+			}
 		}
 
 		return apply_filters( 'woocommerce_get_sections_' . $this->id, $sections );
@@ -113,7 +115,7 @@ class WC_Settings_Shipping extends WC_Settings_Page {
 				'title'   => __( 'Shipping Destination', 'woocommerce' ),
 				'desc'    => __( 'This controls which shipping address is used by default.', 'woocommerce' ),
 				'id'      => 'woocommerce_ship_to_destination',
-				'default' => 'shipping',
+				'default' => 'billing',
 				'type'    => 'radio',
 				'options' => array(
 					'shipping'     => __( 'Default to shipping address', 'woocommerce' ),
@@ -131,7 +133,7 @@ class WC_Settings_Shipping extends WC_Settings_Page {
 				'id'       => 'woocommerce_ship_to_countries',
 				'default'  => '',
 				'type'     => 'select',
-				'class'    => 'chosen_select',
+				'class'    => 'wc-enhanced-select',
 				'desc_tip' => false,
 				'options'  => array(
 					''         => __( 'Ship to all countries you sell to', 'woocommerce' ),
@@ -260,19 +262,22 @@ class WC_Settings_Shipping extends WC_Settings_Page {
 	public function save() {
 		global $current_section;
 
+		$wc_shipping = WC_Shipping::instance();
+
 		if ( ! $current_section ) {
+			WC_Admin_Settings::save_fields( $this->get_settings() );
+			$wc_shipping->process_admin_options();
 
-			$settings = $this->get_settings();
-
-			WC_Admin_Settings::save_fields( $settings );
-			WC()->shipping->process_admin_options();
-
-		} elseif ( class_exists( $current_section ) ) {
-
-			$current_section_class = new $current_section();
-
-			do_action( 'woocommerce_update_options_' . $this->id . '_' . $current_section_class->id );
+		} else {
+			foreach ( $wc_shipping->get_shipping_methods() as $method_id => $method ) {
+				if ( $current_section === sanitize_title( get_class( $method ) ) ) {
+					do_action( 'woocommerce_update_options_' . $this->id . '_' . $method->id );
+				}
+			}
 		}
+
+		// Increments the transient version to invalidate cache
+		WC_Cache_Helper::get_transient_version( 'shipping', true );
 	}
 }
 

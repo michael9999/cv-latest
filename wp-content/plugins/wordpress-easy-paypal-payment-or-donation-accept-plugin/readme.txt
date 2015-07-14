@@ -3,8 +3,8 @@ Contributors: Tips and Tricks HQ, Ruhul Amin
 Donate link: https://www.tipsandtricks-hq.com
 Tags: Paypal payment, Accept payment for services or product, PayPal donation, wordpress paypal, paypal for wordpress, paypal plugin for wordpress, paypal integration, paypal, buy now, payment, currency,
 Requires at least: 3.0
-Tested up to: 4.0
-Stable tag: 4.1
+Tested up to: 4.2
+Stable tag: 4.6
 License: GPLv2 or later
 
 Easy to use Wordpress plugin to accept paypal payment for a service or product or donation in one click
@@ -37,6 +37,7 @@ For information, detailed documentation, video tutorial and updates, please visi
 * Ability to open the payment window in a new browser tab or window.
 * Create a payment widget to accept any amount from your customer. Users will specify the amount to pay (useful for donations).
 * Create text based or image based payment buttons.
+* Ability to return the user to a specific page after the payment.
 
 == Usage ==
 
@@ -61,6 +62,26 @@ There are few ways you can use this plugin:
 Visit the plugin site at https://www.tipsandtricks-hq.com/wordpress-easy-paypal-payment-or-donation-accept-plugin-120 for screenshots.
 
 == Changelog ==
+
+= 4.6 =
+- Added two new filters to modify the reference input field name and value programmatically.
+- Added a check to make sure a PayPal email address is specified in the widget shortcode.
+- Added an option to specify the "cbt" parameter via the shortcode.
+- Refactored some code to move all the admin dashboard related code to a separate file.
+
+= 4.5 =
+- The "Other Amount" input field type is now set to "number". This will work better on mobile devices.
+
+= 4.4 =
+- Added a new shortcode parameter so you can optionally set the "rm" variable via the shortcode.
+- WordPress 4.2 compatibility.
+
+= 4.3 = 
+- WordPress 4.1 compatibility.
+
+= 4.2 =
+- Fixed a small issue using the other amount option with the shortcode [wp_paypal_payment].
+- Cleaned up the settings area a bit and made the options more user-friendly.
 
 = 4.1 =
 - The currency code will now be shown after the "Other Amount" field.
@@ -105,4 +126,3 @@ Visit the plugin site at https://www.tipsandtricks-hq.com/wordpress-easy-paypal-
 
 Changelog for old versions can be found at the following URL
 https://www.tipsandtricks-hq.com/wordpress-easy-paypal-payment-or-donation-accept-plugin-120
-

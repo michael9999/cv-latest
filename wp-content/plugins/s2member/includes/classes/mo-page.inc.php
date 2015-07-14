@@ -14,7 +14,7 @@
  * @package s2Member\Membership_Options_Page
  * @since 3.5
  */
-if(realpath(__FILE__) === realpath($_SERVER["SCRIPT_FILENAME"]))
+if(!defined('WPINC')) // MUST have WordPress.
 	exit ("Do not access this file directly.");
 
 if(!class_exists("c_ws_plugin__s2member_mo_page"))
@@ -73,7 +73,7 @@ if(!class_exists("c_ws_plugin__s2member_mo_page"))
 			/*
 			 * s2Member's MOP Vars are now a double-dot (`..`) delimited list of six values.
 			 *
-			 * e.g. .../membership-options-page/
+			 * e.g., .../membership-options-page/
 			 *    ?_s2member_vars=[restriction type]..[requirement type]..[requirement type value]..
 			 *       [seeking type]..[seeking type value]..[seeking URI base 64 encoded]
 			 */

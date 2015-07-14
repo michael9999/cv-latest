@@ -4,6 +4,3 @@
 <IfModule !authz_core_module>
 	deny from all
 </IfModule>
-
-# Disallow directory indexing here.
-	Options -Indexes

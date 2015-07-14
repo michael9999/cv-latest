@@ -14,7 +14,7 @@
 * @package s2Member\Utilities
 * @since 3.5
 */
-if(realpath(__FILE__) === realpath($_SERVER["SCRIPT_FILENAME"]))
+if(!defined('WPINC')) // MUST have WordPress.
 	exit("Do not access this file directly.");
 
 if(!class_exists("c_ws_plugin__s2member_utils_urls"))
@@ -196,9 +196,10 @@ if(!class_exists("c_ws_plugin__s2member_utils_urls"))
 
 								$args["s2member"] = WS_PLUGIN__S2MEMBER_VERSION; // Indicates this is an s2Member connection.
 
-								$args["sslverify"] = (!isset($args["sslverify"])) ? /* Off. */ false : $args["sslverify"];
-
 								$args["httpversion"] = (!isset($args["httpversion"])) ? "1.1" : $args["httpversion"];
+
+								if(!isset($args["sslverify"]) && c_ws_plugin__s2member_utils_conds::is_localhost())
+									$args["sslverify"] = FALSE; // Force this off on localhost installs.
 
 								if((is_array($post_vars) || is_string($post_vars)) && !empty($post_vars))
 									$args = array_merge($args, array("method" => "POST", "body" => $post_vars));

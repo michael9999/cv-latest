@@ -5,29 +5,32 @@ Tags: contact form,database,contact form database,save contact form,form databas
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Requires at least: 3.2.1
-Tested up to: 4.0
-Stable tag: 2.8.15
+Tested up to: 4.2.1
+Stable tag: 2.9.3
 
-Saves submitted form data to the database and allow you to export the data to a file and use short codes to display it.
+Saves submitted form data to the database. Export the data to a file or use short codes to display it.
 
 == Description ==
 
 The "CFDB" plugin saves contact form submissions to your WordPress database and provides and administration page and short codes to view and display the data.
 Video tutorial on the <a href="http://cfdbplugin.com/">CFDB Plugin Site</a>
 
-By simply installing the plugin, it will automatically begin to capture submissions from:
+By simply installing the plugin, it will automatically begin to capture form submissions from:
 
 * JetPack Contact Form plugin
 * Contact Form 7 (CF7) plugin
 * Fast Secure Contact Form (FSCF) plugin
 * Gravity Forms plugin
+* WR ContactForm plugin
+* Quform plugin (BETA)
+* Ninja Forms plugin (BETA)
+* Caldera Forms plugin (BETA)
+* Enfold theme forms
 
 Other form submissions can be saved with the addition of the <a href="http://cfdbplugin.com/?page_id=508">[cfdb-save-form-post]</a> short code on the target submission page.
 
 Contact form plugins are great but generally one thing...the ability to save and retrieve the form data to/from the database.
 If you get a lot of form submissions, then you end up sorting through a lot of email.
-
-Looking at your data in the WP Admin Area
 
 This plugin provides three administration pages in the administration area under the "Contact form DB" submenu.
 
@@ -43,7 +46,7 @@ Use the short code builder page to set short code options.
 == Installation ==
 
 1. Your WordPress site must be running PHP5 or better. This plugin will fail to activate if your site is running PHP4.
-1. Be sure that any of Contact Form 7, Fast Secure Contact Form, JetPack, and/or Gravity Forms is installed and activated
+1. Be sure that one or more of the supported form plugins installed and activated.
 
 == Frequently Asked Questions ==
 
@@ -80,6 +83,102 @@ You can always deactivate the plugin without loosing data.
 1. Admin Panel view of submitted form data
 
 == Changelog ==
+
+= 2.9.4 =
+* Added spreadsheet-like transforms:
+** Sum rows: trans="total=field1,field2,field3"
+** Sum columns: trans=TotalField(field1,field2,field3)
+** Sum both: trans="total=field1,field2&&TotalField(field1,field2,total)"
+** Sum product prices: trans="p1_total=multiply(p1,9.99)&&p2_total=multiply(p2,8.99)&&line_total=sum(p1_total,p2_total)&&TotalField(line_total)"
+
+= 2.9.3 =
+* Fix error on systems where php_uname() is not available
+* Allowing various PHP math functions in "trans"
+
+= 2.9.2 =
+* Fix for some cases where cannot delete row in administration page
+
+= 2.9.1 =
+* Fix for some cases where cannot delete row in administration page
+
+= 2.9 =
+* Additional HTML-injection protections
+* New option when Editor is installed [cfdb-datatable edit="cells"] enables editing of table cells but not column headers
+
+= 2.8.38 =
+* NaturalSortByMultiField transform now supports up to 10 fields to sort on
+
+= 2.8.37 =
+* Now captures form submission from Caldera Forms
+* Formatting changes on CFDB Options page
+
+= 2.8.36 =
+* Now captures form submission from Quform plugin
+* Now captures form submission from Ninja Forms plugin
+
+= 2.8.35 =
+* Reduced cell padding in admin table
+* Fixed typo in new option
+
+= 2.8.34 =
+* Now captures Enfold Theme forms
+* New on Options page: "Use fixed width in Admin datatable"
+* Taiwanese language update
+
+= 2.8.33 =
+* Fixed Delete button on Admin entry detail page
+
+= 2.8.32 =
+* Security patch
+
+= 2.8.31 =
+* Fix to work with Gravity Forms 1.9.1.2
+
+= 2.8.30 =
+* Minor fix to short code builder page
+
+= 2.8.29 =
+* Tweak to install procedure
+
+= 2.8.28 =
+* Security patch
+
+= 2.8.27 =
+* Minor tweak to allow edit mode in short code to be set via $_GET and $_POST
+
+= 2.8.26 =
+* Encoding fix on administration page
+
+= 2.8.25 =
+* Now captures data from WR ContactForm (BETA)
+* New option to allow only Administrators to see CFDB administration screens
+* New option to send CFDB errors to a file to email
+* Bug fix to avoid rare instances of duplicate submit_time
+
+= 2.8.24 =
+* Bug fix related to displaying form names in administration panel with certain characters
+
+= 2.8.23 =
+* Bug fix for Gravity Form integration. Sometimes field value was not captured where there are multiple fields of the same name but only one shown based on conditional field definition.
+
+= 2.8.22 =
+* Changed icon in admin panel
+* Dutch translation update
+
+= 2.8.21 =
+* Added icons to admin panel
+
+= 2.8.20 =
+* Additional XSS protection for admin panels
+
+= 2.8.19 =
+* Swedish translation update
+
+= 2.8.18 =
+* Better XSS protection for admin panels
+
+= 2.8.17 =
+* Bug fix in [cfdb-html] variable substitution when data for column is not present.
 
 = 2.8.16 =
 * Generating the [submit_time] tag for Contact Form 7 is now an option in the Options page and is off by default to avoid the post being flagged as spam
@@ -444,6 +543,15 @@ See "Database Options" -> "Save Cookie Data with Form Submissions" and "Save onl
 * Initial Revision.
 
 == Upgrade Notice ==
+
+= 2.9.2 =
+For users of the CFDB Editor, CFDB 2.9.x will require and upgrade of the CFDB Editor 1.4 as well. See admin notice after upgrade of CFDB.
+
+= 2.9.1 =
+For users of the CFDB Editor, CFDB 2.9.x will require and upgrade of the CFDB Editor 1.4 as well. See admin notice after upgrade of CFDB.
+
+= 2.9 =
+For users of the CFDB Editor, CFDB 2.9 will require and upgrade of the CFDB Editor 1.4 as well. See admin notice after upgrade of CFDB.
 
 = 1.6 =
 New cool DataTable

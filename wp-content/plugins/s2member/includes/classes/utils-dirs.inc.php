@@ -14,7 +14,7 @@
 * @package s2Member\Utilities
 * @since 3.5
 */
-if (realpath (__FILE__) === realpath ($_SERVER["SCRIPT_FILENAME"]))
+if(!defined('WPINC')) // MUST have WordPress.
 	exit ("Do not access this file directly.");
 
 if (!class_exists ("c_ws_plugin__s2member_utils_dirs"))
@@ -164,7 +164,7 @@ if (!class_exists ("c_ws_plugin__s2member_utils_dirs"))
 				* @package s2Member\Utilities
 				* @since 111013
 				*
-				* @param string $jctn Directory location of the Junction (i.e. the link).
+				* @param string $jctn Directory location of the Junction (i.e., the link).
 				* @param string $target Target directory that this Junction will connect to.
 				* @return bool True if created successfully, or already exists, else false.
 				*/
