@@ -67,7 +67,7 @@ $go_query4 = $connection2->Update_NS_Question($this->user, $this->questionId, $t
 
 //$go_query4 = $connection4->Select_All_Unis($_POST["user_current"], $this->uniNb, $this->nameUni);
 
-echo $go_query4;
+//echo $go_query4;
 
 
 }

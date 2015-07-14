@@ -12,9 +12,9 @@
 class Db_info {
 
     private $databaseURL = "localhost";
-    private $databaseUName = "sw2c_eglio22";
-    private $databasePWord = "koO0CeQr7GJXc9GYo";
-    private $databaseName = "sw2c_cv_app";
+    private $databaseUName = "wordpressuser";
+    private $databasePWord = "KzTUPTFAAKXn5vuQ";
+    private $databaseName = "WordPress";
 
     function get_databaseURL(){
             return $this->databaseURL;

@@ -684,7 +684,7 @@ updateNQuestions(user, id_quest, tick_value);
     function getNs(user){
 
 
-      jQuery.post("http://www.test-sw2.com/staging-cv-en-anglais/php/Show_NS_Questions.php", {user_current : user }, function(data){
+      jQuery.post("http://preview.ot2a49z8z4hx5hfrmvtylogdb9ey7gb93l8tnzv7xtakyb9.box.codeanywhere.com/php/Show_NS_Questions.php", {user_current : user }, function(data){
        
 	   if (data.length>0){
 
@@ -747,7 +747,7 @@ function getSquestions(user){
       //function (data) IS THE CALLBACK FUNCTION CALLED AS SOON AS THE DATA HAS BEEN LOADED PROPERLY
       // THE 4TH ATTRIBUTE, NOT USED HERE, IS THE TYPE OF DATA (HTML, XML ETC..) SENT BACK
 
-      jQuery.post("http://www.test-sw2.com/staging-cv-en-anglais/php/Show_S_Questions.php", {user_current : user }, function(data){
+      jQuery.post("http://preview.ot2a49z8z4hx5hfrmvtylogdb9ey7gb93l8tnzv7xtakyb9.box.codeanywhere.com/php/Show_S_Questions.php", {user_current : user }, function(data){
        if (data.length>0){
            
 jQuery("#structure").empty();
@@ -928,7 +928,7 @@ jQuery("#link-item").fadeIn("slow");
       //function (data) IS THE CALLBACK FUNCTION CALLED AS SOON AS THE DATA HAS BEEN LOADED PROPERLY
       // THE 4TH ATTRIBUTE, NOT USED HERE, IS THE TYPE OF DATA (HTML, XML ETC..) SENT BACK
 
-      jQuery.post("http://www.test-sw2.com/staging-cv-en-anglais/php/Show_English_Questions.php", {user_current : user }, function(data){
+      jQuery.post("http://preview.ot2a49z8z4hx5hfrmvtylogdb9ey7gb93l8tnzv7xtakyb9.box.codeanywhere.com/php/Show_English_Questions.php", {user_current : user }, function(data){
        if (data.length>0){
            //("get UCAS: ok to here");
          //$("#search_results").html(data);
@@ -957,7 +957,7 @@ jQuery("#link-item").fadeIn("slow");
       //function (data) IS THE CALLBACK FUNCTION CALLED AS SOON AS THE DATA HAS BEEN LOADED PROPERLY
       // THE 4TH ATTRIBUTE, NOT USED HERE, IS THE TYPE OF DATA (HTML, XML ETC..) SENT BACK
 
-      jQuery.post("http://www.test-sw2.com/staging-cv-en-anglais/php/Show_Before_Leaving_Questions.php", {user_current : user }, function(data){
+      jQuery.post("http://preview.ot2a49z8z4hx5hfrmvtylogdb9ey7gb93l8tnzv7xtakyb9.box.codeanywhere.com/php/Show_Before_Leaving_Questions.php", {user_current : user }, function(data){
        if (data.length>0){
           
          jQuery("#advanced").empty();
@@ -1517,7 +1517,7 @@ jQuery("#note-item").fadeOut("slow", function() {
     //var tick_value = jQuery(event.target).attr('checked');
     //var id_uni = jQuery(event.target).attr('id');
 
-      jQuery.post("http://www.test-sw2.com/staging-cv-en-anglais/php/update_tickbox_N_questions.php", {tick_box_val : tick_value, id : id_uni, user1 : user}, function(data){
+      jQuery.post("http://preview.ot2a49z8z4hx5hfrmvtylogdb9ey7gb93l8tnzv7xtakyb9.box.codeanywhere.com/php/update_tickbox_N_questions.php", {tick_box_val : tick_value, id : id_uni, user1 : user}, function(data){
        if (data.length>0){
           // ("updateNQuestions: ok to here on UPDATE");
          //$("#search_results").html(data);
