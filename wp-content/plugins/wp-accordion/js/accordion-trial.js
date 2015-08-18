@@ -1557,7 +1557,7 @@ jQuery("#note-item").fadeOut("slow", function() {
 // my change
 	
 		
-		jQuery.post("http://preview.ot2a49z8z4hx5hfrmvtylogdb9ey7gb93l8tnzv7xtakyb9.box.codeanywhere.com/php/update_tickbox_N_questions.php", {tick_box_val : tick_value, id : id_uni, user1 : user}, function(data){
+		jQuery.post(baseAddress+"php/update_tickbox_N_questions.php", {tick_box_val : tick_value, id : id_uni, user1 : user}, function(data){
        if (data.length>0){
 		
 		   
